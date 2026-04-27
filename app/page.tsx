@@ -1,0 +1,35 @@
+import { Nav } from "@/components/Nav";
+import { Hero } from "@/components/Hero";
+import { TrustBar } from "@/components/TrustBar";
+import { Problem } from "@/components/Problem";
+import { Solution } from "@/components/Solution";
+import { WhoFor } from "@/components/WhoFor";
+import { Demo } from "@/components/Demo";
+import { Offer } from "@/components/Offer";
+import { SignupForm } from "@/components/SignupForm";
+import { FAQ } from "@/components/FAQ";
+import { FinalCTA } from "@/components/FinalCTA";
+import { Footer } from "@/components/Footer";
+import { AIAgent } from "@/components/AIAgent";
+
+export default function HomePage() {
+  return (
+    <>
+      <Nav />
+      <main>
+        <Hero />
+        <TrustBar />
+        <Problem />
+        <Solution />
+        <WhoFor />
+        <Demo />
+        <Offer />
+        <SignupForm />
+        <FAQ />
+        <FinalCTA />
+      </main>
+      <Footer />
+      <AIAgent />
+    </>
+  );
+}
