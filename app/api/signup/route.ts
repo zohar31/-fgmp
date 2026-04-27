@@ -46,11 +46,27 @@ export async function POST(req: Request) {
 
   const data = parsed.data;
 
-  await sendAdminNotification({
-    subject: `🎉 מנוי חדש: ${data.business}`,
-    html: newSignupEmailHtml({ ...data, ip, userAgent: ua }),
-    replyTo: data.email,
-  });
+  let result;
+  try {
+    result = await sendAdminNotification({
+      subject: `🎉 מנוי חדש: ${data.business}`,
+      html: newSignupEmailHtml({ ...data, ip, userAgent: ua }),
+      replyTo: data.email,
+    });
+  } catch (err) {
+    console.error("[signup] unexpected email error:", err);
+    return NextResponse.json(
+      { error: "שגיאה בשליחת ההרשמה. נסו שוב או דברו איתנו בוואטסאפ." },
+      { status: 502 }
+    );
+  }
+
+  if (!result.sent) {
+    return NextResponse.json(
+      { error: "שגיאה בשליחת ההרשמה. נסו שוב או דברו איתנו בוואטסאפ." },
+      { status: 502 }
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }
