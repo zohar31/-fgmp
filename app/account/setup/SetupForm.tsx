@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { NICHES, type Niche } from "@/lib/niches";
+import { Select } from "@/components/Select";
 
 type Defaults = {
   businessName?: string | null;
@@ -142,21 +143,13 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       <Section title="הגדרות שירות">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="תחום עיסוק" required>
-            <select
+            <Select
               name="niche"
+              options={NICHES}
               defaultValue={defaults.niche ?? ""}
+              placeholder="בחרו תחום"
               required
-              className="input"
-            >
-              <option value="" disabled>
-                בחרו תחום
-              </option>
-              {NICHES.map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
+            />
           </Field>
           <Field
             label="איזורי שירות"
