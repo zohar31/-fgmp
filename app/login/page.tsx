@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { Logo } from "@/components/Logo";
 import { ShieldCheck } from "lucide-react";
+import { isInAppWebView, isAndroid, isIOS } from "@/lib/webview";
+import { SITE } from "@/lib/config";
+import { WebViewWarning } from "./WebViewWarning";
 
 export const metadata: Metadata = {
   title: "התחברות",
@@ -20,6 +24,12 @@ export default async function LoginPage({
   const callbackUrl = params.callbackUrl || "/account";
 
   if (session?.user) redirect(isAdmin(session) ? "/admin" : callbackUrl);
+
+  const ua = (await headers()).get("user-agent");
+  if (isInAppWebView(ua)) {
+    const platform = isAndroid(ua) ? "android" : isIOS(ua) ? "ios" : "other";
+    return <WebViewWarning url={`${SITE.url}/login`} platform={platform} />;
+  }
 
   return (
     <main className="flex min-h-[80vh] items-center justify-center px-4 py-16">
@@ -65,10 +75,7 @@ export default async function LoginPage({
         </div>
 
         <p className="mt-6 text-center text-xs text-ink-400">
-          אין לך עדיין חשבון?{" "}
-          <a href="/#signup" className="text-brand-300 hover:underline">
-            התחל ניסיון של 7 ימים חינם
-          </a>
+          הכניסה היא גם ההרשמה — לחיצה אחת על Google ומקבלים 7 ימי ניסיון חינם
         </p>
       </div>
     </main>
