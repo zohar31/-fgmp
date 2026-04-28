@@ -11,7 +11,7 @@ export default function PrivacyPage() {
   return (
     <LegalLayout title="מדיניות פרטיות" updated="27.04.2026">
       <p>
-        {SITE.legalName} (ע.מ. {SITE.vatId}) (להלן: "החברה") מחויבת להגנה על פרטיות המשתמשים והמנויים
+        {SITE.legalName} (להלן: "החברה") מחויבת להגנה על פרטיות המשתמשים והמנויים
         באתר {SITE.domain} ובשירות {SITE.brand}. מסמך זה מפרט אילו נתונים אנחנו אוספים, למה הם
         משמשים, וכיצד נשמרת זכותכם לפרטיות.
       </p>
@@ -92,7 +92,7 @@ export default function PrivacyPage() {
       <ul>
         <li>בוואטסאפ: 058-5222227</li>
         <li>במייל: {SITE.notificationEmail}</li>
-        <li>{SITE.legalName} · ע.מ. {SITE.vatId}</li>
+        <li>{SITE.legalName}</li>
       </ul>
     </LegalLayout>
   );

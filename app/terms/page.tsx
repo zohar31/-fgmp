@@ -11,7 +11,7 @@ export default function TermsPage() {
   return (
     <LegalLayout title="תקנון ותנאי שימוש" updated="27.04.2026">
       <p>
-        ברוכים הבאים ל-{SITE.brand}. השירות מופעל על ידי {SITE.legalName} (ע.מ. {SITE.vatId})
+        ברוכים הבאים ל-{SITE.brand}. השירות מופעל על ידי {SITE.legalName}
         (להלן: "החברה" או "אנחנו"). השימוש באתר {SITE.domain} ובשירות מותנה בהסכמה לתנאים המפורטים
         להלן. אנא קראו אותם בעיון לפני השימוש.
       </p>

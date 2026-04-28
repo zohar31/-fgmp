@@ -54,7 +54,7 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-white/5 pt-6 text-xs text-ink-400 sm:flex-row sm:items-center">
           <div>
-            © {new Date().getFullYear()} {SITE.legalName} · ע.מ. {SITE.vatId}. כל הזכויות שמורות.
+            © {new Date().getFullYear()} כל הזכויות שמורות לצח אור.
           </div>
           <div>{SITE.domain}</div>
         </div>
