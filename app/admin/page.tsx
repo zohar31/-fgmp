@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { db, schema } from "@/lib/db";
 import { desc } from "drizzle-orm";
 import { ActivateButton } from "./ActivateButton";
-import { CheckCircle2, Clock, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, ChevronLeft } from "lucide-react";
 
 export default async function AdminUsersPage() {
   const users = await db
@@ -70,15 +71,22 @@ export default async function AdminUsersPage() {
                   return (
                     <tr key={u.id} className="hover:bg-white/[0.02]">
                       <td className="p-3 align-top">
-                        <div className="font-semibold text-white">{u.name || "—"}</div>
-                        <div className="text-xs text-ink-400" dir="ltr">{u.email}</div>
-                        <div className="mt-0.5 text-[10px] text-ink-500">
-                          {new Date(u.createdAt).toLocaleDateString("he-IL")}
-                        </div>
+                        <Link
+                          href={`/admin/users/${u.id}`}
+                          className="block hover:text-brand-300"
+                        >
+                          <div className="font-semibold text-white">{u.name || "—"}</div>
+                          <div className="text-xs text-ink-400" dir="ltr">{u.email}</div>
+                          <div className="mt-0.5 text-[10px] text-ink-500">
+                            {new Date(u.createdAt).toLocaleDateString("he-IL")}
+                          </div>
+                        </Link>
                       </td>
                       <td className="p-3 align-top">
-                        <div className="text-white">{cfg?.businessName || "—"}</div>
-                        <div className="text-xs text-ink-400">{cfg?.niche || "—"}</div>
+                        <Link href={`/admin/users/${u.id}`} className="block hover:text-brand-300">
+                          <div className="text-white">{cfg?.businessName || "—"}</div>
+                          <div className="text-xs text-ink-400">{cfg?.niche || "—"}</div>
+                        </Link>
                       </td>
                       <td className="p-3 align-top">
                         <StatusBadge status={sub?.status} activated={!!sub?.activatedAt} />
@@ -96,18 +104,25 @@ export default async function AdminUsersPage() {
                         {cfg?.leadPhone || "—"}
                       </td>
                       <td className="p-3 align-top">
-                        {sub && sub.status === "pending_activation" && !sub.activatedAt ? (
-                          <ActivateButton
-                            userId={u.id}
-                            defaultPhone={cfg?.leadPhone || ""}
-                          />
-                        ) : sub?.activatedAt ? (
-                          <span className="text-xs text-wa">
-                            ✓ {new Date(sub.activatedAt).toLocaleDateString("he-IL")}
-                          </span>
-                        ) : (
-                          <span className="text-xs text-ink-500">—</span>
-                        )}
+                        <div className="flex flex-col gap-2">
+                          {sub && sub.status === "pending_activation" && !sub.activatedAt ? (
+                            <ActivateButton
+                              userId={u.id}
+                              defaultPhone={cfg?.leadPhone || ""}
+                            />
+                          ) : sub?.activatedAt ? (
+                            <span className="text-xs text-wa">
+                              ✓ {new Date(sub.activatedAt).toLocaleDateString("he-IL")}
+                            </span>
+                          ) : null}
+                          <Link
+                            href={`/admin/users/${u.id}`}
+                            className="inline-flex items-center gap-1 text-xs text-brand-300 hover:text-brand-200"
+                          >
+                            פרטים מלאים
+                            <ChevronLeft className="h-3 w-3" />
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   );
