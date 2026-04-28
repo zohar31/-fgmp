@@ -4,6 +4,8 @@ import { db, schema } from "@/lib/db";
 import { eq, desc } from "drizzle-orm";
 import { ChevronRight, Mail, Phone, Building, User, Hash, MapPin, Search, Clock, FileText, MessageCircle, Bell, AlertCircle, CheckCircle2 } from "lucide-react";
 import { ActivateButton } from "../../ActivateButton";
+import { DeleteUserButton } from "./DeleteUserButton";
+import { auth } from "@/lib/auth";
 import { SITE } from "@/lib/config";
 
 export default async function AdminUserDetailPage({
@@ -12,6 +14,8 @@ export default async function AdminUserDetailPage({
   params: Promise<{ userId: string }>;
 }) {
   const { userId } = await params;
+  const session = await auth();
+  const isSelf = session?.user?.id === userId;
 
   const user = await db.query.users.findFirst({
     where: eq(schema.users.id, userId),
@@ -93,9 +97,17 @@ export default async function AdminUserDetailPage({
           </div>
         </div>
 
-        {subscription && subscription.status === "pending_activation" && !subscription.activatedAt && (
-          <ActivateButton userId={userId} defaultPhone={settings?.leadPhone || ""} />
-        )}
+        <div className="flex flex-col gap-2 sm:items-end">
+          {subscription && subscription.status === "pending_activation" && !subscription.activatedAt && (
+            <ActivateButton userId={userId} defaultPhone={settings?.leadPhone || ""} />
+          )}
+          {!isSelf && (
+            <DeleteUserButton
+              userId={userId}
+              userLabel={settings?.businessName || user.name || user.email}
+            />
+          )}
+        </div>
       </header>
 
       {/* Subscription card */}
