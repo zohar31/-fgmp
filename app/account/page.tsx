@@ -1,11 +1,14 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { Settings, MessageCircle, AlertCircle, CheckCircle2, Clock } from "lucide-react";
 
 export default async function AccountDashboardPage() {
   const session = await auth();
+  if (isAdmin(session)) redirect("/admin");
   const userId = session!.user.id;
 
   const [subscription, settings, recentNotifs] = await Promise.all([

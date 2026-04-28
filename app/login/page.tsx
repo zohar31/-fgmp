@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/lib/auth";
+import { isAdmin } from "@/lib/admin";
 import { Logo } from "@/components/Logo";
 import { ShieldCheck } from "lucide-react";
 
@@ -18,7 +19,7 @@ export default async function LoginPage({
   const params = await searchParams;
   const callbackUrl = params.callbackUrl || "/account";
 
-  if (session?.user) redirect(callbackUrl);
+  if (session?.user) redirect(isAdmin(session) ? "/admin" : callbackUrl);
 
   return (
     <main className="flex min-h-[80vh] items-center justify-center px-4 py-16">

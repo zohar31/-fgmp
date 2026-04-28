@@ -59,11 +59,11 @@ export default async function AdminLayout({
 
             <div className="mt-5 space-y-1 border-t border-white/5 pt-4">
               <Link
-                href="/account"
+                href="/account/setup"
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-200 transition hover:bg-white/5 hover:text-white"
               >
                 <Home className="h-4 w-4" />
-                <span>חזרה לאזור אישי</span>
+                <span>צפייה כלקוח</span>
               </Link>
               <form
                 action={async () => {
