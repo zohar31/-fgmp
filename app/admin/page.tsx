@@ -2,9 +2,17 @@ import Link from "next/link";
 import { db, schema } from "@/lib/db";
 import { desc } from "drizzle-orm";
 import { ActivateButton } from "./ActivateButton";
+import { SearchInput } from "./SearchInput";
 import { CheckCircle2, Clock, XCircle, ChevronLeft } from "lucide-react";
 
-export default async function AdminUsersPage() {
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+  const query = q?.trim().toLowerCase() || "";
+
   const users = await db
     .select({
       id: schema.users.id,
@@ -20,6 +28,27 @@ export default async function AdminUsersPage() {
 
   const subByUser = new Map(subs.map((s) => [s.userId, s]));
   const settingsByUser = new Map(settings.map((s) => [s.userId, s]));
+
+  const filteredUsers = query
+    ? users.filter((u) => {
+        const cfg = settingsByUser.get(u.id);
+        const sub = subByUser.get(u.id);
+        const haystack = [
+          u.name,
+          u.email,
+          cfg?.businessName,
+          cfg?.contactName,
+          cfg?.leadPhone,
+          cfg?.contactEmail,
+          cfg?.vatId,
+          sub?.activationToken,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(query);
+      })
+    : users;
 
   const totals = {
     all: users.length,
@@ -48,8 +77,21 @@ export default async function AdminUsersPage() {
         <Stat label="מבוטל" value={totals.cancelled} accent="ink" />
       </div>
 
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <SearchInput />
+        {query && (
+          <p className="text-xs text-ink-400">
+            {filteredUsers.length} מתוך {users.length} מנויים תואמים לחיפוש
+          </p>
+        )}
+      </div>
+
       {users.length === 0 ? (
         <div className="card p-8 text-center text-ink-300">אין עדיין משתמשים.</div>
+      ) : filteredUsers.length === 0 ? (
+        <div className="card p-8 text-center text-ink-300">
+          לא נמצאו תוצאות לחיפוש "<span className="text-white">{query}</span>".
+        </div>
       ) : (
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
@@ -65,7 +107,7 @@ export default async function AdminUsersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {users.map((u) => {
+                {filteredUsers.map((u) => {
                   const sub = subByUser.get(u.id);
                   const cfg = settingsByUser.get(u.id);
                   return (
