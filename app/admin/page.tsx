@@ -89,7 +89,14 @@ export default async function AdminUsersPage() {
                         </Link>
                       </td>
                       <td className="p-3 align-top">
-                        <StatusBadge status={sub?.status} activated={!!sub?.activatedAt} />
+                        <div className="flex flex-col gap-1">
+                          <StatusBadge status={sub?.status} activated={!!sub?.activatedAt} />
+                          {sub?.suspendedAt && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] text-amber-300 ring-1 ring-amber-500/30">
+                              ⏸ מושעה
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="p-3 align-top">
                         {sub?.activationToken ? (

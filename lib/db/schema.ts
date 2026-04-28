@@ -81,6 +81,8 @@ export const subscriptions = pgTable("subscriptions", {
   trialEndsAt: timestamp("trialEndsAt", { mode: "date" }),
   activatedAt: timestamp("activatedAt", { mode: "date" }),
   activatedFromPhone: text("activatedFromPhone"),
+  suspendedAt: timestamp("suspendedAt", { mode: "date" }),
+  suspendedReason: text("suspendedReason"),
   cancelledAt: timestamp("cancelledAt", { mode: "date" }),
   cancellationReason: text("cancellationReason"),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),

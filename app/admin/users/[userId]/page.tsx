@@ -5,6 +5,7 @@ import { eq, desc } from "drizzle-orm";
 import { ChevronRight, Mail, Phone, Building, User, Hash, MapPin, Search, Clock, FileText, MessageCircle, Bell, AlertCircle, CheckCircle2 } from "lucide-react";
 import { ActivateButton } from "../../ActivateButton";
 import { DeleteUserButton } from "./DeleteUserButton";
+import { SuspendButton } from "./SuspendButton";
 import { auth } from "@/lib/auth";
 import { SITE } from "@/lib/config";
 
@@ -101,6 +102,9 @@ export default async function AdminUserDetailPage({
           {subscription && subscription.status === "pending_activation" && !subscription.activatedAt && (
             <ActivateButton userId={userId} defaultPhone={settings?.leadPhone || ""} />
           )}
+          {subscription && subscription.status !== "cancelled" && !isSelf && (
+            <SuspendButton userId={userId} isSuspended={!!subscription.suspendedAt} />
+          )}
           {!isSelf && (
             <DeleteUserButton
               userId={userId}
@@ -109,6 +113,23 @@ export default async function AdminUserDetailPage({
           )}
         </div>
       </header>
+
+      {subscription?.suspendedAt && (
+        <div className="card border-l-4 border-amber-500 p-5">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
+            <div>
+              <h3 className="font-display font-bold text-white">המנוי מושעה</h3>
+              <p className="mt-1 text-sm text-ink-300">
+                הושעה ב-{new Date(subscription.suspendedAt).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" })}.
+              </p>
+              {subscription.suspendedReason && (
+                <p className="mt-1 text-sm text-ink-300">סיבה: {subscription.suspendedReason}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Subscription card */}
       <section className="card p-6">

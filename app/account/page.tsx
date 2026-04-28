@@ -72,6 +72,23 @@ export default async function AccountDashboardPage() {
         />
       </section>
 
+      {subscription?.suspendedAt && (
+        <div className="card border-l-4 border-amber-500 p-5">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
+            <div className="flex-1">
+              <h3 className="font-display font-bold text-white">המנוי שלך מושעה זמנית</h3>
+              <p className="mt-1 text-sm text-ink-300">
+                {subscription.suspendedReason
+                  ? `סיבה: ${subscription.suspendedReason}.`
+                  : "המערכת אינה שולחת לידים כרגע."}
+                {" "}ליצירת קשר ולחידוש המנוי — וואטסאפ 058-5222227.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {!setupComplete && (
         <div className="card border-l-4 border-brand-500 p-5">
           <div className="flex items-start gap-3">
