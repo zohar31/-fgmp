@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { sendAdminNotification, newSignupEmailHtml } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { db, schema } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -45,6 +46,20 @@ export async function POST(req: Request) {
   }
 
   const data = parsed.data;
+
+  try {
+    await db.insert(schema.signupIntents).values({
+      email: data.email,
+      businessName: data.business,
+      whatsapp: data.whatsapp,
+      service: data.service,
+      ip,
+      userAgent: ua,
+    });
+  } catch (err) {
+    console.error("[signup] DB insert failed:", err);
+    // continue — email notification is the source of truth for now
+  }
 
   let result;
   try {
