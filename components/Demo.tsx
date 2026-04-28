@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 
 const benefits = [
@@ -5,6 +6,13 @@ const benefits = [
   "אתה בפגישה 💼 — המערכת עובדת",
   "אתה בחופש ✅ — המערכת עובדת",
   "אתה אוכל 🍕 — המערכת עובדת",
+];
+
+const screenshots = [
+  { src: "/screenshots/lead-cosmetics.jpg", alt: "ליד מקבוצת פייסבוק לשירותי איפור" },
+  { src: "/screenshots/lead-bakery.jpg", alt: "ליד מקבוצת פייסבוק לעוגות אירועים" },
+  { src: "/screenshots/lead-photographer.jpg", alt: "ליד מקבוצת פייסבוק לצלם חתונות" },
+  { src: "/screenshots/lead-insurance.jpg", alt: "ליד מקבוצת פייסבוק לסוכן ביטוח" },
 ];
 
 export function Demo() {
@@ -36,43 +44,29 @@ export function Demo() {
 
             <div className="relative">
               <div className="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-br from-brand-500/20 to-wa/20 blur-2xl" />
-              <div className="rounded-2xl bg-[#0b141a] p-4 ring-1 ring-white/10">
-                <div className="space-y-2 text-right">
-                  <NotifLine label="08:14" text='קונדיטורית באזור פתח תקווה? צריכה עוגת יום הולדת לשבוע הבא' />
-                  <NotifLine label="09:32" text='מחפשת צלם לבר מצווה ב-22.7, תקציב 4-5K' highlight />
-                  <NotifLine label="10:48" text='מי יכול להמליץ על שיפוצניק רציני בשרון?' />
-                  <NotifLine label="11:15" text='וילה לסופ"ש עם בריכה ל-12 איש בצפון' />
-                  <NotifLine label="12:47" text='מאפרת לאירוע ביום שלישי הקרוב — דחוף' highlight />
-                </div>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                {screenshots.map((s) => (
+                  <div
+                    key={s.src}
+                    className="relative aspect-[9/14] overflow-hidden rounded-2xl bg-[#0b141a] ring-1 ring-white/10 shadow-lg"
+                  >
+                    <Image
+                      src={s.src}
+                      alt={s.alt}
+                      fill
+                      sizes="(max-width:640px) 45vw, (max-width:1024px) 30vw, 220px"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                ))}
               </div>
+              <p className="mt-4 text-center text-xs text-ink-400">
+                צילומי מסך אמיתיים — לידים שהתקבלו דרך FGMP
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function NotifLine({
-  label,
-  text,
-  highlight,
-}: {
-  label: string;
-  text: string;
-  highlight?: boolean;
-}) {
-  return (
-    <div
-      className={`rounded-xl px-3 py-2 text-sm text-white ring-1 ring-white/5 ${
-        highlight ? "bg-emerald-700/60" : "bg-white/[0.04]"
-      }`}
-    >
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-[10px] text-ink-400">{label}</span>
-        <span className="text-emerald-300 text-xs">🔥 ליד חדש</span>
-      </div>
-      <div className="mt-0.5 leading-snug">{text}</div>
-    </div>
   );
 }

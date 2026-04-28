@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { MessageCircle, Sparkles, Bell, ShieldCheck } from "lucide-react";
 import { SITE, waLink } from "@/lib/config";
 
@@ -72,73 +73,20 @@ function PhoneMockup() {
       <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand-500/30 via-transparent to-wa/20 blur-3xl" />
       <div className="mx-auto aspect-[9/19] max-w-xs rounded-[2.5rem] bg-gradient-to-br from-bg-card to-bg-soft p-3 shadow-2xl ring-1 ring-white/10">
         <div className="relative h-full w-full overflow-hidden rounded-[2rem] bg-[#0b141a]">
-          <div className="flex items-center justify-between bg-[#1f2c33] px-4 py-3">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-wa grid place-items-center text-white font-bold text-sm">F</div>
-              <div>
-                <div className="text-sm font-semibold text-white">FGMP</div>
-                <div className="text-[10px] text-emerald-300">פעיל עכשיו</div>
-              </div>
-            </div>
-            <div className="text-[10px] text-ink-400">12:47</div>
-          </div>
-
-          <div className="space-y-3 p-3">
-            <Bubble
-              time="12:31"
-              title="🔥 ליד חדש מקבוצה"
-              text='"מחפשת מאפרת לחתונה ב-15.6 באזור המרכז, מקסימום 1,500₪"'
-              meta="קבוצה: כלות 2026 ❤️"
-            />
-            <Bubble
-              time="12:42"
-              title="🔥 ליד חדש מקבוצה"
-              text='"דרוש דחוף שיפוצניק לתיקון אינסטלציה בנתניה, מוכן לשלם טוב"'
-              meta="קבוצה: שכנים נתניה"
-            />
-            <Bubble
-              time="12:47"
-              title="🔥 ליד חדש מקבוצה"
-              text='"ממליצים על צלם לאירוע 50 איש בסוף החודש?"'
-              meta="קבוצה: עצמאיים שוהם"
-              highlight
-            />
-          </div>
+          <Image
+            src="/screenshots/lead-bakery.jpg"
+            alt="צילום מסך של ליד אמיתי שהתקבל בוואטסאפ דרך FGMP"
+            fill
+            sizes="(max-width:1024px) 320px, 360px"
+            priority
+            className="object-cover object-top"
+          />
         </div>
       </div>
 
       <div className="pointer-events-none absolute -right-4 top-12 hidden rotate-3 rounded-2xl bg-wa px-4 py-2 text-sm font-bold text-white shadow-glow-wa md:block">
         <Bell className="inline h-4 w-4 ms-1" />
         ליד חדש!
-      </div>
-    </div>
-  );
-}
-
-function Bubble({
-  time,
-  title,
-  text,
-  meta,
-  highlight,
-}: {
-  time: string;
-  title: string;
-  text: string;
-  meta: string;
-  highlight?: boolean;
-}) {
-  return (
-    <div
-      className={`max-w-[85%] rounded-2xl rounded-tr-sm px-3 py-2 text-right text-white shadow-md ${
-        highlight ? "bg-emerald-700 animate-pulse-slow" : "bg-emerald-800"
-      }`}
-    >
-      <div className="text-xs font-bold text-emerald-200">{title}</div>
-      <div className="mt-1 text-sm leading-snug">{text}</div>
-      <div className="mt-1 flex items-center justify-between gap-2 text-[10px] text-emerald-300">
-        <span>{meta}</span>
-        <span>{time} ✓✓</span>
       </div>
     </div>
   );
