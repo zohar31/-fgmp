@@ -6,7 +6,6 @@ import { Solution } from "@/components/Solution";
 import { WhoFor } from "@/components/WhoFor";
 import { Demo } from "@/components/Demo";
 import { Offer } from "@/components/Offer";
-import { SignupForm } from "@/components/SignupForm";
 import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
@@ -24,7 +23,6 @@ export default function HomePage() {
         <WhoFor />
         <Demo />
         <Offer />
-        <SignupForm />
         <FAQ />
         <FinalCTA />
       </main>

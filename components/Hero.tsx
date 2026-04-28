@@ -26,7 +26,7 @@ export function Hero() {
 
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-end lg:justify-end">
               <a
-                href="#signup"
+                href="/login"
                 className="btn-wa w-full sm:w-auto text-base"
               >
                 <MessageCircle className="h-5 w-5" />

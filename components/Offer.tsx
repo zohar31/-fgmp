@@ -67,7 +67,7 @@ export function Offer() {
               </ul>
 
               <a
-                href="#signup"
+                href="/login"
                 className="btn-wa mt-8 w-full text-base"
               >
                 התחילו עכשיו — {SITE.pricing.trialDays} ימים חינם

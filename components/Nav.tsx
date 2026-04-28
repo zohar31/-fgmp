@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MessageCircle } from "lucide-react";
+import { LogIn } from "lucide-react";
 import clsx from "clsx";
 import { Logo } from "./Logo";
-import { SITE, waLink } from "@/lib/config";
+import { SITE } from "@/lib/config";
 
 const links = [
   { href: "#how", label: "איך זה עובד" },
@@ -49,16 +49,20 @@ export function Nav() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <a
-            href={waLink("היי, אני רוצה להתחיל ניסיון חינם ב-FGMP")}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/login"
+            className="rounded-xl px-3 py-2 text-sm font-medium text-ink-200 hover:bg-white/5 hover:text-white transition-colors"
+          >
+            התחברות
+          </Link>
+          <Link
+            href="/login"
             className="btn-wa text-sm py-2 px-4"
           >
-            <MessageCircle className="h-4 w-4" />
+            <LogIn className="h-4 w-4" />
             <span className="hidden sm:inline">התחילו חינם</span>
             <span className="sm:hidden">חינם</span>
-          </a>
+          </Link>
         </div>
       </div>
     </header>

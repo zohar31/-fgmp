@@ -19,7 +19,7 @@ export function FinalCTA() {
               {SITE.pricing.trialDays} ימי ניסיון חינם. ללא כרטיס אשראי. ביטול בלחיצה.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a href="#signup" className="btn-wa text-base">
+              <a href="/login" className="btn-wa text-base">
                 <MessageCircle className="h-5 w-5" />
                 התחילו עכשיו — חינם
               </a>

@@ -5,7 +5,10 @@
     "app/api/chat/route.ts": {
       "maxDuration": 60
     },
-    "app/api/signup/route.ts": {
+    "app/api/account/settings/route.ts": {
+      "maxDuration": 15
+    },
+    "app/api/account/cancel/route.ts": {
       "maxDuration": 15
     }
   }
