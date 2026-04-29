@@ -4,6 +4,7 @@ import { db, schema } from "@/lib/db";
 import { eq, desc } from "drizzle-orm";
 import { ChevronRight, Mail, Phone, Building, User, Hash, MapPin, Search, Clock, FileText, MessageCircle, Bell, AlertCircle, CheckCircle2 } from "lucide-react";
 import { ActivateButton } from "../../ActivateButton";
+import { RemindButton } from "../../RemindButton";
 import { DeleteUserButton } from "./DeleteUserButton";
 import { SuspendButton } from "./SuspendButton";
 import { auth } from "@/lib/auth";
@@ -101,6 +102,9 @@ export default async function AdminUserDetailPage({
         <div className="flex flex-col gap-2 sm:items-end">
           {subscription && subscription.status === "pending_activation" && !subscription.activatedAt && (
             <ActivateButton userId={userId} defaultPhone={settings?.leadPhone || ""} />
+          )}
+          {subscription && (subscription.status === "pending_setup" || subscription.status === "pending_activation") && (
+            <RemindButton userId={userId} />
           )}
           {subscription && subscription.status !== "cancelled" && !isSelf && (
             <SuspendButton userId={userId} isSuspended={!!subscription.suspendedAt} />

@@ -34,6 +34,69 @@ export async function sendAdminNotification(args: {
   return { sent: true };
 }
 
+export async function sendCustomerEmail(args: {
+  to: string;
+  subject: string;
+  html: string;
+}) {
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY missing — skipping customer email");
+    return { sent: false, reason: "no_api_key" as const };
+  }
+
+  const { error } = await resend.emails.send({
+    from: `${SITE.brand} <${from}>`,
+    to: [args.to],
+    subject: args.subject,
+    html: args.html,
+  });
+
+  if (error) {
+    console.error("[email] customer send failed:", error);
+    return { sent: false, reason: "send_failed" as const, error };
+  }
+
+  return { sent: true };
+}
+
+export function reminderEmailHtml(args: {
+  name: string;
+  ctaUrl: string;
+  ctaLabel: string;
+  headline: string;
+  body: string;
+}) {
+  const escape = (s: string) =>
+    s.replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!
+    );
+  return `<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<body style="font-family:-apple-system,system-ui,sans-serif;background:#f5f5f7;padding:24px;margin:0;">
+  <div style="max-width:560px;margin:0 auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+    <div style="background:linear-gradient(135deg,#8b5cf6,#25D366);padding:24px;color:white;">
+      <div style="font-size:13px;opacity:0.9;">${SITE.brand}</div>
+      <div style="font-size:22px;font-weight:800;margin-top:4px;">${escape(args.headline)}</div>
+    </div>
+    <div style="padding:28px 24px;">
+      <p style="font-size:16px;color:#111;margin:0 0 16px;">היי ${escape(args.name)},</p>
+      <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 24px;">${escape(args.body)}</p>
+      <div style="text-align:center;margin:28px 0;">
+        <a href="${args.ctaUrl}" style="display:inline-block;background:#25D366;color:white;text-decoration:none;font-weight:700;padding:14px 32px;border-radius:12px;font-size:15px;">${escape(args.ctaLabel)}</a>
+      </div>
+      <p style="font-size:13px;color:#888;line-height:1.6;margin:24px 0 0;border-top:1px solid #eee;padding-top:16px;">
+        אם הקישור לא עובד, העתיקו את הכתובת הבאה לדפדפן:<br>
+        <span style="word-break:break-all;color:#444;">${args.ctaUrl}</span>
+      </p>
+      <p style="font-size:12px;color:#999;margin:16px 0 0;">
+        קיבלת מייל זה מכיוון שהתחלת תהליך הצטרפות ב-${SITE.domain}. אם זו טעות — אפשר להתעלם.
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
 export function newSignupEmailHtml(args: {
   business: string;
   service: string;
