@@ -59,8 +59,6 @@ export default async function AdminUserDetailPage({
     serviceAreas: settings.serviceAreas ?? "",
     keywords: settings.keywords ?? "",
     leadPhone: settings.leadPhone ?? "",
-    hoursStart: settings.hoursStart ?? null,
-    hoursEnd: settings.hoursEnd ?? null,
     description: settings.description ?? "",
   }) : null;
 
@@ -221,11 +219,6 @@ export default async function AdminUserDetailPage({
             <DataItem label="איזורי שירות" icon={MapPin}>
               {settings.serviceAreas || "—"}
             </DataItem>
-            <DataItem label="שעות לקבלת לידים" icon={Clock}>
-              {settings.hoursStart && settings.hoursEnd
-                ? <span dir="ltr">{settings.hoursStart}–{settings.hoursEnd}</span>
-                : "24/7"}
-            </DataItem>
             <DataItem label="מילות מפתח" icon={Search} fullWidth>
               {settings.keywords || "—"}
             </DataItem>
@@ -370,12 +363,8 @@ function buildActivationMessage(p: {
   serviceAreas: string;
   keywords: string;
   leadPhone: string;
-  hoursStart: string | null;
-  hoursEnd: string | null;
   description: string;
 }): string {
-  const hours =
-    p.hoursStart && p.hoursEnd ? `${p.hoursStart}-${p.hoursEnd}` : "24/7";
   return [
     p.token,
     "",
@@ -384,7 +373,6 @@ function buildActivationMessage(p: {
     `תחום: ${p.niche}`,
     `איזורי שירות: ${p.serviceAreas}`,
     `מילות מפתח: ${p.keywords}`,
-    `שעות לידים: ${hours}`,
     `טלפון לידים: ${p.leadPhone}`,
     "",
     "תיאור:",

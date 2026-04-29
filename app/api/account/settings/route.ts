@@ -21,16 +21,6 @@ const SettingsSchema = z.object({
   niche: z.string().trim().min(2).max(80),
   serviceAreas: z.string().trim().min(2).max(200),
   keywords: z.string().trim().min(2).max(400),
-  hoursStart: z
-    .string()
-    .regex(/^\d{2}:\d{2}$/)
-    .optional()
-    .or(z.literal("")),
-  hoursEnd: z
-    .string()
-    .regex(/^\d{2}:\d{2}$/)
-    .optional()
-    .or(z.literal("")),
   description: z.string().trim().min(20).max(500),
   telegramUsername: z
     .string()
@@ -82,8 +72,8 @@ export async function POST(req: Request) {
     niche: data.niche,
     serviceAreas: data.serviceAreas,
     keywords: data.keywords,
-    hoursStart: data.hoursStart || null,
-    hoursEnd: data.hoursEnd || null,
+    hoursStart: null,
+    hoursEnd: null,
     description: data.description,
     telegramUsername: telegramNormalized || null,
     updatedAt: new Date(),

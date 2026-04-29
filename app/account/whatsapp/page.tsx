@@ -98,8 +98,6 @@ export default async function WhatsAppActivationPage() {
     serviceAreas: settings.serviceAreas ?? "",
     keywords: settings.keywords ?? "",
     leadPhone: settings.leadPhone ?? "",
-    hoursStart: settings.hoursStart ?? null,
-    hoursEnd: settings.hoursEnd ?? null,
     description: settings.description ?? "",
   });
 
@@ -188,13 +186,8 @@ function buildActivationMessage(p: {
   serviceAreas: string;
   keywords: string;
   leadPhone: string;
-  hoursStart: string | null;
-  hoursEnd: string | null;
   description: string;
 }): string {
-  const hours =
-    p.hoursStart && p.hoursEnd ? `${p.hoursStart}-${p.hoursEnd}` : "24/7";
-
   return [
     p.token,
     "",
@@ -203,7 +196,6 @@ function buildActivationMessage(p: {
     `תחום: ${p.niche}`,
     `איזורי שירות: ${p.serviceAreas}`,
     `מילות מפתח: ${p.keywords}`,
-    `שעות לידים: ${hours}`,
     `טלפון לידים: ${p.leadPhone}`,
     "",
     "תיאור:",

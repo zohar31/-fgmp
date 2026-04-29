@@ -129,8 +129,6 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       niche: submittedNiche as Niche,
       serviceAreas: String(fd.get("serviceAreas") || "").trim(),
       keywords: keywords.trim(),
-      hoursStart: String(fd.get("hoursStart") || ""),
-      hoursEnd: String(fd.get("hoursEnd") || ""),
       description: String(fd.get("description") || "").trim(),
       telegramUsername: String(fd.get("telegramUsername") || "").trim(),
     };
@@ -387,27 +385,6 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
             )}
           </div>
         </Field>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="שעת התחלה (לידים)" hint="ברירת מחדל: 24/7">
-            <input
-              name="hoursStart"
-              type="time"
-              defaultValue={defaults.hoursStart ?? ""}
-              className="input"
-              dir="ltr"
-            />
-          </Field>
-          <Field label="שעת סיום (לידים)">
-            <input
-              name="hoursEnd"
-              type="time"
-              defaultValue={defaults.hoursEnd ?? ""}
-              className="input"
-              dir="ltr"
-            />
-          </Field>
-        </div>
 
         <Field
           label="תיאור חופשי"
