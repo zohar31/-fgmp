@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Sparkles, MessageCircle, Bell, ChevronLeft } from "lucide-react";
+import { Sparkles, MessageCircle, ChevronLeft } from "lucide-react";
 import { TelegramIcon } from "./TelegramIcon";
 
 const STEP_COUNT = 4;
@@ -172,30 +173,17 @@ function Arrow({ active }: { active: boolean }) {
 function FacebookCard({ hot }: { hot: boolean }) {
   return (
     <div
-      className={`rounded-xl bg-[#1c1e21] p-3 text-right ring-1 ring-white/10 transition-all duration-500 ${
+      className={`relative overflow-hidden rounded-xl bg-white ring-1 ring-white/10 transition-all duration-500 ${
         hot ? "scale-[1.02]" : ""
       }`}
     >
-      <div className="flex items-center gap-2">
-        <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-600 text-xs font-bold text-white">
-          מ
-        </div>
-        <div className="min-w-0 flex-1 text-xs">
-          <div className="truncate font-semibold text-white">מיכל לוי</div>
-          <div className="text-[10px] text-ink-400">
-            קבוצה: כלות 2026 ❤️ · לפני {hot ? "כעת" : "2 דקות"}
-          </div>
-        </div>
-        <span className="text-blue-400">f</span>
-      </div>
-      <p className="mt-2 text-[13px] leading-5 text-ink-100">
-        מחפשת קונדיטוריה לחתונה ב-15.6 באזור המרכז. תקציב 4-5K. ממליצות? 🎂
-      </p>
-      <div className="mt-2 flex items-center gap-3 border-t border-white/5 pt-2 text-[10px] text-ink-400">
-        <span>👍 12</span>
-        <span>💬 8</span>
-        <span>↪ 2</span>
-      </div>
+      <Image
+        src="/screenshots/facebook-post.jpeg"
+        alt="פוסט אמיתי בקבוצת פייסבוק 'צלמים מתחילים' — מחפש צלם לאירוע ברעננה"
+        width={886}
+        height={680}
+        className="h-auto w-full"
+      />
     </div>
   );
 }
@@ -228,7 +216,7 @@ function AiBlock({ hot }: { hot: boolean }) {
           hot ? "opacity-100" : "opacity-50"
         }`}
       >
-        ✓ ליד רלוונטי — קונדיטוריה
+        ✓ ליד רלוונטי — צלם אירועים
       </div>
     </div>
   );
@@ -262,35 +250,22 @@ function NotificationCard({ hot }: { hot: boolean }) {
   return (
     <div className="relative">
       {hot && (
-        <span className="absolute -right-2 -top-2 grid h-6 w-6 animate-bounce place-items-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-lg ring-2 ring-bg">
+        <span className="absolute -right-2 -top-2 z-10 grid h-6 w-6 animate-bounce place-items-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-lg ring-2 ring-bg">
           1
         </span>
       )}
       <div
-        className={`rounded-xl bg-[#0b141a] p-3 text-right ring-1 ring-white/10 transition-all duration-500 ${
+        className={`relative aspect-[9/14] overflow-hidden rounded-xl bg-[#0b141a] ring-1 ring-white/10 transition-all duration-500 ${
           hot ? "scale-[1.02]" : ""
         }`}
       >
-        <div className="flex items-center gap-2 border-b border-white/5 pb-2">
-          <div className="grid h-7 w-7 place-items-center rounded-full bg-wa text-[10px] font-bold text-white">
-            F
-          </div>
-          <div className="text-xs">
-            <div className="font-semibold text-white">FGMP</div>
-            <div className="text-[10px] text-emerald-300">פעיל עכשיו</div>
-          </div>
-          <Bell className="ms-auto h-3.5 w-3.5 text-wa" />
-        </div>
-        <div className="mt-2 rounded-lg bg-emerald-700 p-2 text-[11px] text-white">
-          <div className="text-[10px] font-bold text-emerald-200">🔥 ליד חדש מקבוצה</div>
-          <div className="mt-0.5 leading-4">
-            "מחפשת קונדיטוריה לחתונה ב-15.6, מרכז, ₪4-5K"
-          </div>
-          <div className="mt-1.5 flex items-center justify-between text-[9px] text-emerald-300">
-            <span>קבוצה: כלות 2026 ❤️</span>
-            <span>{hot ? "12:47 ✓✓" : "12:47"}</span>
-          </div>
-        </div>
+        <Image
+          src="/screenshots/whatsapp-lead.jpeg"
+          alt="הליד מתקבל בוואטסאפ של בעל העסק עם כל הפרטים"
+          fill
+          sizes="(max-width:768px) 90vw, 240px"
+          className="object-cover object-top"
+        />
       </div>
     </div>
   );
