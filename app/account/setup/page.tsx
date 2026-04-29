@@ -61,8 +61,6 @@ export default async function SetupPage() {
           niche: settings?.niche ?? null,
           serviceAreas: settings?.serviceAreas ?? null,
           keywords: settings?.keywords ?? null,
-          hoursStart: settings?.hoursStart ?? null,
-          hoursEnd: settings?.hoursEnd ?? null,
           description: settings?.description ?? null,
           telegramUsername: settings?.telegramUsername ?? null,
         }}

@@ -19,7 +19,7 @@ const SettingsSchema = z.object({
     .trim()
     .regex(/^(\+?\d[\d\s-]{6,18}\d)$/, "מספר טלפון לא תקין"),
   niche: z.string().trim().min(2).max(80),
-  serviceAreas: z.string().trim().min(2).max(200),
+  serviceAreas: z.string().trim().min(2).max(800),
   keywords: z.string().trim().min(2).max(400),
   description: z.string().trim().min(20).max(500),
   telegramUsername: z

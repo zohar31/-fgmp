@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { CheckCircle2, AlertCircle, Loader2, MessageCircle, ArrowLeft, Sparkles, X, Plus } from "lucide-react";
 import { NICHES, type Niche } from "@/lib/niches";
 import { Select } from "@/components/Select";
+import { RegionSelect } from "@/components/RegionSelect";
 
 type Defaults = {
   businessName?: string | null;
@@ -16,8 +17,6 @@ type Defaults = {
   niche?: string | null;
   serviceAreas?: string | null;
   keywords?: string | null;
-  hoursStart?: string | null;
-  hoursEnd?: string | null;
   description?: string | null;
   telegramUsername?: string | null;
 };
@@ -243,53 +242,48 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       </Section>
 
       <Section title="הגדרות שירות">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="תחום עיסוק" required>
-            <div className="space-y-2">
-              <Select
-                name="niche"
-                options={NICHES}
-                defaultValue={
-                  initialNicheIsKnown
-                    ? (defaults.niche as string)
-                    : defaults.niche
-                      ? "אחר"
-                      : ""
-                }
-                placeholder="בחרו תחום"
-                required
-                onChange={(v) => setNiche(v)}
-              />
-              {showCustomNiche && (
-                <input
-                  name="customNiche"
-                  value={customNiche}
-                  onChange={(e) => setCustomNiche(e.target.value)}
-                  required
-                  minLength={2}
-                  maxLength={80}
-                  className="input"
-                  placeholder="פרטו את התחום הספציפי (למשל: בית קפה, סוכן ביטוח, מורה לטיס)"
-                />
-              )}
-            </div>
-          </Field>
-          <Field
-            label="איזורי שירות"
-            hint="ערים, אזורים, או רדיוס. הפרידו בפסיקים."
-            required
-          >
-            <input
-              name="serviceAreas"
-              defaultValue={defaults.serviceAreas ?? ""}
+        <Field label="תחום עיסוק" required>
+          <div className="space-y-2">
+            <Select
+              name="niche"
+              options={NICHES}
+              defaultValue={
+                initialNicheIsKnown
+                  ? (defaults.niche as string)
+                  : defaults.niche
+                    ? "אחר"
+                    : ""
+              }
+              placeholder="בחרו תחום"
               required
-              minLength={2}
-              maxLength={200}
-              className="input"
-              placeholder="לדוגמה: רמת גן, גבעתיים, פתח תקווה"
+              onChange={(v) => setNiche(v)}
             />
-          </Field>
-        </div>
+            {showCustomNiche && (
+              <input
+                name="customNiche"
+                value={customNiche}
+                onChange={(e) => setCustomNiche(e.target.value)}
+                required
+                minLength={2}
+                maxLength={80}
+                className="input"
+                placeholder="פרטו את התחום הספציפי (למשל: בית קפה, סוכן ביטוח, מורה לטיס)"
+              />
+            )}
+          </div>
+        </Field>
+
+        <Field
+          label="איזורי שירות"
+          hint='בחרו אזורים בארץ שבהם העסק פעיל. "תל אביב" כוללת אוטומטית את גוש דן והשרון. "כל הארץ" מסמן את הכל בלחיצה.'
+          required
+        >
+          <RegionSelect
+            name="serviceAreas"
+            defaultValue={defaults.serviceAreas ?? ""}
+            required
+          />
+        </Field>
 
         <Field
           label="מילות מפתח לסינון"
