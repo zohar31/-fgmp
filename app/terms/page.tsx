@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/LegalLayout";
 import { SITE } from "@/lib/config";
+import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "תקנון ותנאי שימוש",
   description: `תקנון השימוש בשירות ${SITE.brand}`,
+  alternates: { canonical: `${SITE.url}/terms` },
 };
 
 export default function TermsPage() {
   return (
-    <LegalLayout title="תקנון ותנאי שימוש" updated="27.04.2026">
+    <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "דף הבית", url: SITE.url },
+          { name: "תקנון", url: `${SITE.url}/terms` },
+        ])}
+      />
+      <LegalLayout title="תקנון ותנאי שימוש" updated="27.04.2026">
       <p>
         ברוכים הבאים ל-{SITE.brand}. השירות מופעל על ידי {SITE.legalName}
         (להלן: "החברה" או "אנחנו"). השימוש באתר {SITE.domain} ובשירות מותנה בהסכמה לתנאים המפורטים
@@ -109,5 +118,6 @@ export default function TermsPage() {
         <li>במייל: {SITE.notificationEmail}</li>
       </ul>
     </LegalLayout>
+    </>
   );
 }

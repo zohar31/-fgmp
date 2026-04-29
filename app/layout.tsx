@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Heebo, Assistant } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { SITE } from "@/lib/config";
+import { JsonLd, organizationSchema, websiteSchema, serviceSchema } from "@/lib/jsonld";
 
 const heebo = Heebo({
   subsets: ["hebrew", "latin"],
@@ -89,6 +92,9 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-screen bg-bg bg-grad-hero">
+        <JsonLd data={organizationSchema()} />
+        <JsonLd data={websiteSchema()} />
+        <JsonLd data={serviceSchema()} />
         {gtmId && (
           <noscript>
             <iframe
@@ -100,6 +106,8 @@ export default function RootLayout({
           </noscript>
         )}
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

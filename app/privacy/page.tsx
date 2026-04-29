@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/LegalLayout";
 import { SITE } from "@/lib/config";
+import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "מדיניות פרטיות",
   description: `מדיניות הפרטיות של ${SITE.brand}`,
+  alternates: { canonical: `${SITE.url}/privacy` },
 };
 
 export default function PrivacyPage() {
   return (
-    <LegalLayout title="מדיניות פרטיות" updated="27.04.2026">
+    <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "דף הבית", url: SITE.url },
+          { name: "מדיניות פרטיות", url: `${SITE.url}/privacy` },
+        ])}
+      />
+      <LegalLayout title="מדיניות פרטיות" updated="27.04.2026">
       <p>
         {SITE.legalName} (להלן: "החברה") מחויבת להגנה על פרטיות המשתמשים והמנויים
         באתר {SITE.domain} ובשירות {SITE.brand}. מסמך זה מפרט אילו נתונים אנחנו אוספים, למה הם
@@ -95,5 +104,6 @@ export default function PrivacyPage() {
         <li>{SITE.legalName}</li>
       </ul>
     </LegalLayout>
+    </>
   );
 }

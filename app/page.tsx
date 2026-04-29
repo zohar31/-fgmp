@@ -10,10 +10,13 @@ import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
 import { AIAgent } from "@/components/AIAgent";
+import { JsonLd, faqSchema } from "@/lib/jsonld";
+import { faqs } from "@/lib/faqs";
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={faqSchema(faqs)} />
       <Nav />
       <main>
         <Hero />
