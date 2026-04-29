@@ -21,11 +21,12 @@ export function Offer() {
             הצעה לזמן מוגבל
           </div>
           <h2 className="mt-4 font-display text-3xl font-extrabold text-white sm:text-4xl text-balance">
-            <span className="gradient-text">{SITE.pricing.trialDays} ימי ניסיון חינם</span> —
-            ואחר כך רק אם תרצה
+            <span className="gradient-text">{SITE.pricing.trialDays} ימי ניסיון בחינם</span>{" "}
+            ולאחר מכן רק{" "}
+            <span className="gradient-text">{SITE.pricing.monthlyILS}₪</span>
           </h2>
-          <p className="mt-4 text-lg text-ink-300">
-            תתחיל עכשיו, תקבל לידים, ותחליט בעצמך אם זה שווה לך.
+          <p className="mt-4 text-lg text-ink-200">
+            תוכל לקבל לידים חמים כבר מהיום!
           </p>
         </div>
 
