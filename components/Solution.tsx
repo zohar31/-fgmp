@@ -1,23 +1,29 @@
-import { Search, Brain, Send } from "lucide-react";
+import { Search, Brain, MessageCircle } from "lucide-react";
+import { TelegramIcon } from "./TelegramIcon";
 
 const steps = [
   {
-    icon: Search,
     n: "01",
     title: "סריקה מתמדת",
     text: "המערכת סורקת אלפי קבוצות פייסבוק 24 שעות ביממה, 7 ימים בשבוע. בלי הפסקות, בלי שינה.",
+    Icon: () => <Search className="h-7 w-7 text-brand-300" />,
   },
   {
-    icon: Brain,
     n: "02",
     title: "סינון חכם ב-AI",
     text: "מודל בינה מלאכותית מבין הקשר וכוונה — לא רק מילות מפתח. רק לידים אמיתיים מגיעים אליך.",
+    Icon: () => <Brain className="h-7 w-7 text-brand-300" />,
   },
   {
-    icon: Send,
     n: "03",
     title: "התראה לוואטסאפ או טלגרם",
     text: "ברגע שזוהה לקוח שמחפש את השירות שלך — קופצת אליך הודעה לוואטסאפ או לטלגרם (לבחירתך) עם הקישור לפוסט המקורי.",
+    Icon: () => (
+      <div className="flex items-center gap-1.5">
+        <MessageCircle className="h-7 w-7 text-wa" />
+        <TelegramIcon className="h-7 w-7" />
+      </div>
+    ),
   },
 ];
 
@@ -45,8 +51,8 @@ export function Solution() {
               <div className="absolute -top-4 right-6 rounded-full bg-bg px-3 py-1 font-display text-xs font-bold text-brand-300 ring-1 ring-brand-500/40">
                 שלב {s.n}
               </div>
-              <div className="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-brand-500/10 ring-1 ring-brand-500/30">
-                <s.icon className="h-7 w-7 text-brand-300" />
+              <div className="mb-5 inline-flex h-14 min-w-14 items-center justify-center rounded-2xl bg-brand-500/10 px-3 ring-1 ring-brand-500/30">
+                <s.Icon />
               </div>
               <h3 className="font-display text-xl font-bold text-white">
                 {s.title}
