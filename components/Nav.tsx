@@ -8,10 +8,10 @@ import { Logo } from "./Logo";
 import { SITE } from "@/lib/config";
 
 const links = [
-  { href: "#how", label: "איך זה עובד" },
-  { href: "#who", label: "למי זה מתאים" },
-  { href: "#pricing", label: "מחיר" },
-  { href: "#faq", label: "שאלות" },
+  { href: "/#how", label: "איך זה עובד" },
+  { href: "/#who", label: "למי זה מתאים" },
+  { href: "/#pricing", label: "מחיר" },
+  { href: "/#faq", label: "שאלות" },
 ];
 
 export function Nav() {

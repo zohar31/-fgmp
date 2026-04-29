@@ -17,10 +17,10 @@ export function Footer() {
           <div>
             <h4 className="font-display font-bold text-white">ניווט</h4>
             <ul className="mt-4 space-y-2 text-sm text-ink-300">
-              <li><a href="#how" className="hover:text-white">איך זה עובד</a></li>
-              <li><a href="#who" className="hover:text-white">למי זה מתאים</a></li>
-              <li><a href="#pricing" className="hover:text-white">מחיר</a></li>
-              <li><a href="#faq" className="hover:text-white">שאלות נפוצות</a></li>
+              <li><a href="/#how" className="hover:text-white">איך זה עובד</a></li>
+              <li><a href="/#who" className="hover:text-white">למי זה מתאים</a></li>
+              <li><a href="/#pricing" className="hover:text-white">מחיר</a></li>
+              <li><a href="/#faq" className="hover:text-white">שאלות נפוצות</a></li>
               <li><a href="/login" className="hover:text-white">הרשמה</a></li>
             </ul>
           </div>
