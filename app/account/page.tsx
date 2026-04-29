@@ -4,7 +4,8 @@ import { auth } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { Settings, MessageCircle, AlertCircle, CheckCircle2, Clock } from "lucide-react";
+import { Settings, MessageCircle, AlertCircle, CheckCircle2, Clock, Play } from "lucide-react";
+import { ReactivateButton } from "@/components/ReactivateButton";
 
 export default async function AccountDashboardPage() {
   const session = await auth();
@@ -71,6 +72,23 @@ export default async function AccountDashboardPage() {
           icon={MessageCircle}
         />
       </section>
+
+      {subscription?.status === "cancelled" && (
+        <div className="card border-l-4 border-wa p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-3">
+              <Play className="mt-1 h-5 w-5 shrink-0 text-wa" />
+              <div>
+                <h3 className="font-display font-bold text-white">המנוי שלך מבוטל</h3>
+                <p className="mt-1 text-sm text-ink-300">
+                  הנתונים שלך נשמרו. ניתן להפעיל מחדש בלחיצה אחת והמערכת תחזור לפעילות.
+                </p>
+              </div>
+            </div>
+            <ReactivateButton />
+          </div>
+        </div>
+      )}
 
       {subscription?.suspendedAt && (
         <div className="card border-l-4 border-amber-500 p-5">

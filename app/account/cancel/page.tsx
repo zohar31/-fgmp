@@ -5,6 +5,7 @@ import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { CheckCircle2 } from "lucide-react";
 import { CancelForm } from "./CancelForm";
+import { ReactivateButton } from "@/components/ReactivateButton";
 
 export const metadata: Metadata = { title: "ביטול מנוי" };
 
@@ -39,12 +40,11 @@ export default async function CancelPage() {
                 </p>
               )}
               <p className="mt-3 text-sm text-ink-300">
-                רוצה לחזור?{" "}
-                <Link href="/" className="text-brand-300 hover:underline">
-                  צור איתנו קשר
-                </Link>
-                .
+                רוצה לחזור? לחיצה אחת ואת/ה שוב פעיל/ה במערכת:
               </p>
+              <div className="mt-4">
+                <ReactivateButton size="md" />
+              </div>
             </div>
           </div>
         </div>
