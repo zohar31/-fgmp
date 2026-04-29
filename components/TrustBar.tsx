@@ -1,10 +1,10 @@
-import { Activity, Clock, Globe, Zap, MessageCircle } from "lucide-react";
+import { Activity, Bell, Globe, Zap, MessageCircle } from "lucide-react";
 import { TelegramIcon } from "./TelegramIcon";
 
 const stats = [
-  { icon: Globe, label: "קבוצות פייסבוק נסרקות", value: "אלפי" },
-  { icon: Activity, label: "פוסטים בניתוח יומי", value: "100K+" },
-  { icon: Clock, label: "פעילות", value: "24/7" },
+  { icon: Globe, label: "קבוצות פייסבוק נסרקות", value: "21,000+" },
+  { icon: Activity, label: "פוסטים בניתוח יומי", value: "60,000+" },
+  { icon: Bell, label: "לידים נשלחים יומית", value: "1,000+" },
   { icon: Zap, label: "זמן תגובה ממוצע", value: "<60ש׳" },
 ];
 
