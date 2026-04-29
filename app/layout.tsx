@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Heebo, Assistant } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Tracker } from "@/components/Tracker";
 import "./globals.css";
 import { SITE } from "@/lib/config";
 import { JsonLd, organizationSchema, websiteSchema, serviceSchema } from "@/lib/jsonld";
@@ -106,6 +108,9 @@ export default function RootLayout({
           </noscript>
         )}
         {children}
+        <Suspense fallback={null}>
+          <Tracker />
+        </Suspense>
         <Analytics />
         <SpeedInsights />
       </body>

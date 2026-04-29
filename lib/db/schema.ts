@@ -169,3 +169,27 @@ export const signupIntents = pgTable("signup_intents", {
   linkedUserId: text("linkedUserId").references(() => users.id, { onDelete: "set null" }),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
+
+export const pageViews = pgTable(
+  "page_views",
+  {
+    id: serial("id").primaryKey(),
+    path: text("path").notNull(),
+    referrer: text("referrer"),
+    referrerDomain: text("referrerDomain"),
+    utmSource: text("utmSource"),
+    utmMedium: text("utmMedium"),
+    utmCampaign: text("utmCampaign"),
+    fingerprint: text("fingerprint"),
+    country: text("country"),
+    device: text("device"),
+    browser: text("browser"),
+    os: text("os"),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("page_views_createdAt_idx").on(t.createdAt),
+    index("page_views_path_idx").on(t.path),
+    index("page_views_fingerprint_idx").on(t.fingerprint, t.createdAt),
+  ]
+);
