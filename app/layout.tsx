@@ -54,6 +54,9 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   alternates: { canonical: SITE.url },
+  verification: {
+    google: "t1VDu0yboLSuMl6plLXEcaHCzLxi-hnPaMzjQ2Ap24Y",
+  },
 };
 
 export const viewport: Viewport = {
