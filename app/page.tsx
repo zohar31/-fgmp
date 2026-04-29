@@ -7,6 +7,7 @@ import { Solution } from "@/components/Solution";
 import { WhoFor } from "@/components/WhoFor";
 import { Demo } from "@/components/Demo";
 import { Offer } from "@/components/Offer";
+import { CustomerStories } from "@/components/CustomerStories";
 import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
@@ -28,6 +29,7 @@ export default function HomePage() {
         <WhoFor />
         <Demo />
         <Offer />
+        <CustomerStories />
         <FAQ />
         <FinalCTA />
       </main>

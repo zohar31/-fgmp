@@ -11,6 +11,7 @@ const links = [
   { href: "/#how", label: "איך זה עובד" },
   { href: "/#who", label: "למי זה מתאים" },
   { href: "/#pricing", label: "מחיר" },
+  { href: "/#stories", label: "לקוחות" },
   { href: "/#faq", label: "שאלות" },
   { href: "/accessibility", label: "נגישות" },
 ];
