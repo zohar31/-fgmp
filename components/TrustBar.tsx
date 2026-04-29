@@ -1,9 +1,10 @@
-import { Activity, Bell, Globe, Zap, MessageCircle } from "lucide-react";
+import { Activity, Bell, Globe, Zap, MessageCircle, Search } from "lucide-react";
 import { TelegramIcon } from "./TelegramIcon";
 
 const stats = [
   { icon: Globe, label: "קבוצות פייסבוק נסרקות", value: "21,000+" },
   { icon: Activity, label: "פוסטים בניתוח יומי", value: "60,000+" },
+  { icon: Search, label: "מילות מפתח פעילות", value: "4,670+" },
   { icon: Bell, label: "לידים נשלחים יומית", value: "1,000+" },
   { icon: Zap, label: "זמן תגובה ממוצע", value: "<60ש׳" },
 ];
@@ -12,7 +13,7 @@ export function TrustBar() {
   return (
     <section className="border-y border-white/5 bg-bg-soft/50">
       <div className="container-x py-8">
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="mx-auto mb-2 grid h-10 w-10 place-items-center rounded-xl bg-brand-500/10 ring-1 ring-brand-500/20">
