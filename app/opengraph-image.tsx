@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { SITE } from "@/lib/config";
 
 export const runtime = "edge";
-export const alt = `${SITE.brand} — לידים מקבוצות פייסבוק ישירות לוואטסאפ`;
+export const alt = `לידים מקבוצות פייסבוק לוואטסאפ או טלגרם — ${SITE.brand}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

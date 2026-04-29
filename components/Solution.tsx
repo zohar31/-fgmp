@@ -34,7 +34,8 @@ export function Solution() {
         <div className="mx-auto max-w-2xl text-center">
           <div className="pill text-wa ring-wa/30">הפתרון</div>
           <h2 className="mt-4 font-display text-3xl font-extrabold text-white sm:text-4xl text-balance">
-            <span className="gradient-text">3 צעדים פשוטים</span> שעובדים בשבילך — תמיד
+            איך לקבל לידים מפייסבוק —{" "}
+            <span className="gradient-text">3 צעדים פשוטים</span>
           </h2>
           <p className="mt-4 text-lg text-ink-300">
             בזמן שאתה ישן 🌙 · בזמן שאתה בפגישה 💼 · בזמן שאתה נהנה ✅

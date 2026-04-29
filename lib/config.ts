@@ -12,7 +12,7 @@ export const SITE = {
   },
   notificationEmail: process.env.NOTIFICATIONS_TO_EMAIL || "a0545911111@gmail.com",
   description:
-    "מערכת AI שסורקת קבוצות פייסבוק 24/7 ושולחת לידים רלוונטיים ישירות לוואטסאפ של העסק שלך — בזמן אמת.",
+    "FGMP — מערכת לידים אוטומטית: AI שסורק קבוצות פייסבוק 24/7 ושולח לידים חמים ישירות לוואטסאפ או טלגרם של העסק שלך. ניסיון חינם 7 ימים.",
 };
 
 export function waLink(message?: string) {

@@ -11,7 +11,7 @@ export function Hero() {
           <div className="text-center lg:text-right">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-xs font-medium text-ink-200 ring-1 ring-white/10">
               <Sparkles className="h-3.5 w-3.5 text-brand-400" />
-              מערכת AI שעובדת בשבילך 24/7
+              לידים מקבוצות פייסבוק · 24/7 אוטומטית
             </div>
             <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl text-balance">
               הלקוחות שלך מחפשים אותך{" "}
