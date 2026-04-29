@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { MessageCircle, Sparkles, Bell, ShieldCheck } from "lucide-react";
 import { SITE, waLink } from "@/lib/config";
+import { TelegramIcon } from "./TelegramIcon";
 
 export function Hero() {
   return (
@@ -21,8 +22,20 @@ export function Hero() {
             <p className="mt-6 text-lg leading-8 text-ink-200 sm:text-xl text-balance">
               אלפי פוסטים ביום בקבוצות פייסבוק של אנשים שמחפשים בדיוק את השירות שלך.{" "}
               <span className="font-bold text-white">FGMP סורקת בזמן אמת</span> ושולחת לך כל ליד רלוונטי
-              ישירות לוואטסאפ — בזמן שאתה ישן, בפגישה, או נהנה.
+              ישירות לוואטסאפ או טלגרם — בזמן שאתה ישן, בפגישה, או נהנה.
             </p>
+
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 lg:justify-end">
+              <span className="text-sm text-ink-300">לידים מגיעים אל:</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-wa/10 px-3 py-1 text-sm font-medium text-wa ring-1 ring-wa/30">
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#229ED9]/10 px-3 py-1 text-sm font-medium text-[#5BBDE7] ring-1 ring-[#229ED9]/30">
+                <TelegramIcon className="h-4 w-4" />
+                Telegram
+              </span>
+            </div>
 
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-end lg:justify-end">
               <a
