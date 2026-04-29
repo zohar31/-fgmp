@@ -33,6 +33,13 @@ const SettingsSchema = z.object({
     .optional()
     .or(z.literal("")),
   description: z.string().trim().min(20).max(500),
+  telegramUsername: z
+    .string()
+    .trim()
+    .max(40)
+    .regex(/^@?[a-zA-Z0-9_]{4,32}$/, "שם משתמש בטלגרם לא תקין (אותיות לטיניות, מספרים, underscore)")
+    .optional()
+    .or(z.literal("")),
 });
 
 export async function POST(req: Request) {
@@ -63,6 +70,10 @@ export async function POST(req: Request) {
     where: eq(schema.businessSettings.userId, userId),
   });
 
+  const telegramNormalized = data.telegramUsername
+    ? data.telegramUsername.replace(/^@/, "")
+    : "";
+
   const values = {
     businessName: data.businessName,
     contactName: data.contactName,
@@ -75,6 +86,7 @@ export async function POST(req: Request) {
     hoursStart: data.hoursStart || null,
     hoursEnd: data.hoursEnd || null,
     description: data.description,
+    telegramUsername: telegramNormalized || null,
     updatedAt: new Date(),
   };
 

@@ -19,6 +19,7 @@ type Defaults = {
   hoursStart?: string | null;
   hoursEnd?: string | null;
   description?: string | null;
+  telegramUsername?: string | null;
 };
 
 export function SetupForm({ defaults }: { defaults: Defaults }) {
@@ -46,6 +47,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       hoursStart: String(fd.get("hoursStart") || ""),
       hoursEnd: String(fd.get("hoursEnd") || ""),
       description: String(fd.get("description") || "").trim(),
+      telegramUsername: String(fd.get("telegramUsername") || "").trim(),
     };
 
     try {
@@ -122,7 +124,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
         </div>
       </Section>
 
-      <Section title="WhatsApp לקבלת לידים">
+      <Section title="ערוצי קבלת לידים">
         <Field
           label="מספר WhatsApp לקבלת לידים"
           hint="זהו המספר שאליו יישלחו הלידים. ודא/י שאת/ה מקבל/ת WhatsApp במספר זה — בשלב ההפעלה תצטרך/י לשלוח הודעה מהמספר הזה."
@@ -136,6 +138,22 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
             maxLength={20}
             className="input"
             placeholder="לדוגמה: 0501234567 או +972501234567"
+            dir="ltr"
+          />
+        </Field>
+
+        <Field
+          label="שם משתמש בטלגרם (אופציונלי)"
+          hint="להוספת ערוץ קבלת לידים בטלגרם. תמיכה בטלגרם תושק בקרוב — הזנת שם המשתמש כעת תאפשר לנו להפעיל אותך אוטומטית."
+        >
+          <input
+            name="telegramUsername"
+            type="text"
+            defaultValue={defaults.telegramUsername ?? ""}
+            maxLength={40}
+            pattern="@?[a-zA-Z0-9_]{4,32}"
+            className="input"
+            placeholder="לדוגמה: @yourname"
             dir="ltr"
           />
         </Field>

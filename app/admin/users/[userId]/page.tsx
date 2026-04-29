@@ -210,6 +210,9 @@ export default async function AdminUserDetailPage({
             <DataItem label="טלפון לקבלת לידים" icon={Phone}>
               <span dir="ltr">{settings.leadPhone || "—"}</span>
             </DataItem>
+            <DataItem label="טלגרם (אופציונלי)" icon={MessageCircle}>
+              <span dir="ltr">{settings.telegramUsername ? `@${settings.telegramUsername}` : "—"}</span>
+            </DataItem>
             <DataItem label="תחום עיסוק">{settings.niche || "—"}</DataItem>
             <DataItem label="איזורי שירות" icon={MapPin}>
               {settings.serviceAreas || "—"}

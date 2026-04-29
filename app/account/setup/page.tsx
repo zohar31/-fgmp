@@ -64,6 +64,7 @@ export default async function SetupPage() {
           hoursStart: settings?.hoursStart ?? null,
           hoursEnd: settings?.hoursEnd ?? null,
           description: settings?.description ?? null,
+          telegramUsername: settings?.telegramUsername ?? null,
         }}
       />
     </div>

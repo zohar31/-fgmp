@@ -104,6 +104,7 @@ export const businessSettings = pgTable("business_settings", {
   hoursStart: time("hoursStart"),
   hoursEnd: time("hoursEnd"),
   description: text("description"),
+  telegramUsername: text("telegramUsername"),
   updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
 });
 
