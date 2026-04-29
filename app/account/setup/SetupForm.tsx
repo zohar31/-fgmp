@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, AlertCircle, Loader2, MessageCircle, ArrowLeft } from "lucide-react";
+import { CheckCircle2, AlertCircle, Loader2, MessageCircle, ArrowLeft, Sparkles, X, Plus } from "lucide-react";
 import { NICHES, type Niche } from "@/lib/niches";
 import { Select } from "@/components/Select";
 
@@ -24,10 +24,75 @@ type Defaults = {
 
 export function SetupForm({ defaults }: { defaults: Defaults }) {
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<
     { type: "ok" | "error"; msg: string } | null
   >(null);
+  const [keywords, setKeywords] = useState(defaults.keywords ?? "");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [loadingSuggest, setLoadingSuggest] = useState(false);
+  const [suggestError, setSuggestError] = useState<string | null>(null);
+
+  const selectedSet = new Set(
+    keywords
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+  );
+
+  function setKeywordsFromList(list: string[]) {
+    setKeywords([...new Set(list.filter(Boolean))].join(", "));
+  }
+
+  function toggleKeyword(kw: string) {
+    const list = keywords.split(",").map((s) => s.trim()).filter(Boolean);
+    if (list.includes(kw)) {
+      setKeywordsFromList(list.filter((k) => k !== kw));
+    } else {
+      setKeywordsFromList([...list, kw]);
+    }
+  }
+
+  function addAllSuggestions() {
+    const list = keywords.split(",").map((s) => s.trim()).filter(Boolean);
+    setKeywordsFromList([...list, ...suggestions]);
+  }
+
+  async function fetchSuggestions() {
+    if (!formRef.current) return;
+    const fd = new FormData(formRef.current);
+    const niche = String(fd.get("niche") || "").trim();
+    if (!niche) {
+      setSuggestError("בחרו תחום עיסוק קודם, ואז נציע מילות מפתח מתאימות.");
+      return;
+    }
+    setLoadingSuggest(true);
+    setSuggestError(null);
+    try {
+      const res = await fetch("/api/account/suggest-keywords", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          niche,
+          businessName: String(fd.get("businessName") || ""),
+          serviceAreas: String(fd.get("serviceAreas") || ""),
+          description: String(fd.get("description") || ""),
+        }),
+      });
+      const json = (await res.json()) as { keywords?: string[]; error?: string };
+      if (!res.ok || !json.keywords) {
+        setSuggestError(json.error || "שגיאה בקבלת הצעות");
+        setLoadingSuggest(false);
+        return;
+      }
+      setSuggestions(json.keywords);
+      setLoadingSuggest(false);
+    } catch {
+      setSuggestError("שגיאת רשת");
+      setLoadingSuggest(false);
+    }
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,7 +108,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       leadPhone: String(fd.get("leadPhone") || "").trim(),
       niche: String(fd.get("niche") || "") as Niche,
       serviceAreas: String(fd.get("serviceAreas") || "").trim(),
-      keywords: String(fd.get("keywords") || "").trim(),
+      keywords: keywords.trim(),
       hoursStart: String(fd.get("hoursStart") || ""),
       hoursEnd: String(fd.get("hoursEnd") || ""),
       description: String(fd.get("description") || "").trim(),
@@ -72,7 +137,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
+    <form ref={formRef} onSubmit={onSubmit} className="space-y-6">
       <Section title="פרטי העסק">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="שם העסק" required>
@@ -189,18 +254,97 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
 
         <Field
           label="מילות מפתח לסינון"
-          hint="מילים שמופיעות בפוסטים שאת/ה רוצה לקבל. הפרידו בפסיקים."
+          hint="מילים שמופיעות בפוסטים שאת/ה רוצה לקבל. הפרידו בפסיקים, או השתמשו בכפתור AI להלן להצעות אוטומטיות."
           required
         >
-          <input
-            name="keywords"
-            defaultValue={defaults.keywords ?? ""}
-            required
-            minLength={2}
-            maxLength={400}
-            className="input"
-            placeholder="לדוגמה: עוגה, ימי הולדת, אירועים, קייטרינג"
-          />
+          <div className="space-y-3">
+            <input
+              name="keywords"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              required
+              minLength={2}
+              maxLength={400}
+              className="input"
+              placeholder="לדוגמה: עוגה, ימי הולדת, אירועים, קייטרינג"
+            />
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={fetchSuggestions}
+                disabled={loadingSuggest}
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-l from-brand-500/20 to-wa/20 px-4 py-2 text-sm font-bold text-white ring-1 ring-brand-500/40 transition hover:from-brand-500/30 hover:to-wa/30 disabled:opacity-50"
+              >
+                {loadingSuggest ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    AI חושב...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 text-brand-300" />
+                    🪄 הצע לי מילות מפתח אוטומטית (AI)
+                  </>
+                )}
+              </button>
+              {suggestError && (
+                <span className="flex items-center gap-1 text-xs text-rose-400">
+                  <AlertCircle className="h-3.5 w-3.5" />
+                  {suggestError}
+                </span>
+              )}
+            </div>
+
+            {suggestions.length > 0 && (
+              <div className="rounded-2xl bg-white/[0.03] p-4 ring-1 ring-white/5">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                  <div className="text-xs text-ink-300">
+                    ✨ AI הציע <strong className="text-white">{suggestions.length}</strong>{" "}
+                    מילות מפתח — לחיצה מוסיפה/מסירה
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={addAllSuggestions}
+                      className="inline-flex items-center gap-1 rounded-lg bg-wa/10 px-2.5 py-1 text-xs font-bold text-wa ring-1 ring-wa/30 hover:bg-wa/20"
+                    >
+                      <Plus className="h-3 w-3" />
+                      הוסף הכל
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSuggestions([])}
+                      className="inline-flex items-center gap-1 rounded-lg bg-white/5 px-2.5 py-1 text-xs text-ink-300 ring-1 ring-white/10 hover:bg-white/10"
+                    >
+                      <X className="h-3 w-3" />
+                      סגור
+                    </button>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {suggestions.map((kw) => {
+                    const sel = selectedSet.has(kw);
+                    return (
+                      <button
+                        key={kw}
+                        type="button"
+                        onClick={() => toggleKeyword(kw)}
+                        className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs ring-1 transition ${
+                          sel
+                            ? "bg-wa/20 text-wa ring-wa/40"
+                            : "bg-white/5 text-ink-200 ring-white/10 hover:bg-white/10 hover:ring-white/20"
+                        }`}
+                      >
+                        {sel && <CheckCircle2 className="h-3 w-3" />}
+                        {kw}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         </Field>
 
         <div className="grid gap-4 sm:grid-cols-2">
