@@ -418,7 +418,11 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
               שומר...
             </>
           ) : (
-            "שמירת הגדרות"
+            <>
+              <MessageCircle className="h-5 w-5" />
+              כמעט סיימנו — שמירה והמשך להפעלת WhatsApp
+              <ArrowLeft className="h-4 w-4" />
+            </>
           )}
         </button>
       </div>
