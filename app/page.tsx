@@ -2,6 +2,7 @@ import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { TrustBar } from "@/components/TrustBar";
 import { Problem } from "@/components/Problem";
+import { HowItWorks } from "@/components/HowItWorks";
 import { Solution } from "@/components/Solution";
 import { WhoFor } from "@/components/WhoFor";
 import { Demo } from "@/components/Demo";
@@ -22,6 +23,7 @@ export default function HomePage() {
         <Hero />
         <TrustBar />
         <Problem />
+        <HowItWorks />
         <Solution />
         <WhoFor />
         <Demo />
