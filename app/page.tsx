@@ -19,7 +19,7 @@ export default function HomePage() {
     <>
       <JsonLd data={faqSchema(faqs)} />
       <Nav />
-      <main>
+      <main id="main-content">
         <Hero />
         <TrustBar />
         <Problem />

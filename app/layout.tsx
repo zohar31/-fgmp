@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Tracker } from "@/components/Tracker";
+import { AccessibilityWidget } from "@/components/AccessibilityWidget";
 import "./globals.css";
 import { SITE } from "@/lib/config";
 import { JsonLd, organizationSchema, websiteSchema, serviceSchema } from "@/lib/jsonld";
@@ -103,6 +104,7 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-screen bg-bg bg-grad-hero">
+        <a href="#main-content" className="a11y-skip">דלג לתוכן הראשי</a>
         <JsonLd data={organizationSchema()} />
         <JsonLd data={websiteSchema()} />
         <JsonLd data={serviceSchema()} />
@@ -117,6 +119,7 @@ export default function RootLayout({
           </noscript>
         )}
         {children}
+        <AccessibilityWidget />
         <Suspense fallback={null}>
           <Tracker />
         </Suspense>

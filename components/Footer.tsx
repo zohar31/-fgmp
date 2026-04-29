@@ -39,6 +39,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/accessibility" className="hover:text-white">
+                  הצהרת נגישות
+                </Link>
+              </li>
+              <li>
                 <a
                   href={waLink("היי, יש לי שאלה")}
                   target="_blank"

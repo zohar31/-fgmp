@@ -63,3 +63,95 @@
     mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
   }
 }
+
+/* ===== Accessibility (תקנות נגישות ישראלי / WCAG 2.0 AA) ===== */
+
+/* Skip link — visible on keyboard focus */
+.a11y-skip {
+  position: fixed;
+  top: -40px;
+  right: 8px;
+  z-index: 9999;
+  padding: 10px 16px;
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  border-radius: 8px;
+  transition: top 0.2s;
+}
+.a11y-skip:focus {
+  top: 8px;
+  outline: 3px solid #fbbf24;
+}
+
+/* Font size scaling */
+html.a11y-font-large { font-size: 112.5%; }
+html.a11y-font-xlarge { font-size: 125%; }
+html.a11y-font-xxlarge { font-size: 140%; }
+
+/* Readable font (override custom fonts with system sans-serif) */
+html.a11y-readable-font * {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* High contrast — white text on pure black */
+html.a11y-contrast-high {
+  background: #000 !important;
+}
+html.a11y-contrast-high body,
+html.a11y-contrast-high body * {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+html.a11y-contrast-high a,
+html.a11y-contrast-high a * {
+  color: #ffff00 !important;
+  text-decoration: underline !important;
+}
+html.a11y-contrast-high img,
+html.a11y-contrast-high svg {
+  filter: grayscale(100%) contrast(1.2);
+}
+
+/* Inverted colors */
+html.a11y-contrast-inverted {
+  filter: invert(1) hue-rotate(180deg);
+}
+html.a11y-contrast-inverted img,
+html.a11y-contrast-inverted video {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Underline all links */
+html.a11y-underline-links a {
+  text-decoration: underline !important;
+}
+
+/* Highlight focus — strong outline */
+html.a11y-focus-highlight *:focus,
+html.a11y-focus-highlight *:focus-visible {
+  outline: 4px solid #fbbf24 !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduce motion */
+html.a11y-no-motion *,
+html.a11y-no-motion *::before,
+html.a11y-no-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

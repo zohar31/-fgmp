@@ -14,7 +14,7 @@ export function LegalLayout({
   return (
     <>
       <Nav />
-      <main className="py-16 md:py-24">
+      <main id="main-content" className="py-16 md:py-24">
         <div className="container-x">
           <article className="mx-auto max-w-3xl">
             <header className="mb-10 border-b border-white/10 pb-8">
