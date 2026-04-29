@@ -34,7 +34,16 @@ export function Nav() {
       )}
     >
       <div className="container-x flex h-16 items-center justify-between gap-4">
-        <Link href="/" aria-label={SITE.brand} className="shrink-0">
+        <Link
+          href="/"
+          aria-label={SITE.brand}
+          className="shrink-0"
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+        >
           <Logo />
         </Link>
         <nav className="hidden items-center gap-1 md:flex">
