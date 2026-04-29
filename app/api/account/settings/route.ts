@@ -3,7 +3,6 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { NICHES } from "@/lib/niches";
 
 export const runtime = "nodejs";
 
@@ -19,7 +18,7 @@ const SettingsSchema = z.object({
     .string()
     .trim()
     .regex(/^(\+?\d[\d\s-]{6,18}\d)$/, "מספר טלפון לא תקין"),
-  niche: z.enum(NICHES),
+  niche: z.string().trim().min(2).max(80),
   serviceAreas: z.string().trim().min(2).max(200),
   keywords: z.string().trim().min(2).max(400),
   hoursStart: z

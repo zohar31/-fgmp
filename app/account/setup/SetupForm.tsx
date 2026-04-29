@@ -34,6 +34,16 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
   const [loadingSuggest, setLoadingSuggest] = useState(false);
   const [suggestError, setSuggestError] = useState<string | null>(null);
 
+  const initialNicheIsKnown = !!defaults.niche && (NICHES as readonly string[]).includes(defaults.niche);
+  const [niche, setNiche] = useState<string>(
+    initialNicheIsKnown ? (defaults.niche as string) : defaults.niche ? "אחר" : ""
+  );
+  const [customNiche, setCustomNiche] = useState<string>(
+    !initialNicheIsKnown && defaults.niche ? defaults.niche : ""
+  );
+  const showCustomNiche = niche === "אחר";
+  const effectiveNiche = showCustomNiche ? customNiche.trim() : niche;
+
   const selectedSet = new Set(
     keywords
       .split(",")
@@ -62,9 +72,12 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
   async function fetchSuggestions() {
     if (!formRef.current) return;
     const fd = new FormData(formRef.current);
-    const niche = String(fd.get("niche") || "").trim();
-    if (!niche) {
-      setSuggestError("בחרו תחום עיסוק קודם, ואז נציע מילות מפתח מתאימות.");
+    if (!effectiveNiche) {
+      setSuggestError(
+        showCustomNiche
+          ? "פרטו את התחום הספציפי בשדה למטה כדי שה-AI ייתן מילים מתאימות."
+          : "בחרו תחום עיסוק קודם, ואז נציע מילות מפתח מתאימות."
+      );
       return;
     }
     setLoadingSuggest(true);
@@ -74,7 +87,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          niche,
+          niche: effectiveNiche,
           businessName: String(fd.get("businessName") || ""),
           serviceAreas: String(fd.get("serviceAreas") || ""),
           description: String(fd.get("description") || ""),
@@ -99,14 +112,21 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
     setSaving(true);
     setStatus(null);
 
+    if (showCustomNiche && !customNiche.trim()) {
+      setStatus({ type: "error", msg: "פרטו את התחום הספציפי או בחרו תחום אחר מהרשימה" });
+      setSaving(false);
+      return;
+    }
+
     const fd = new FormData(e.currentTarget);
+    const submittedNiche = showCustomNiche ? customNiche.trim() : niche;
     const body = {
       businessName: String(fd.get("businessName") || "").trim(),
       contactName: String(fd.get("contactName") || "").trim(),
       vatId: String(fd.get("vatId") || "").trim(),
       contactEmail: String(fd.get("contactEmail") || "").trim(),
       leadPhone: String(fd.get("leadPhone") || "").trim(),
-      niche: String(fd.get("niche") || "") as Niche,
+      niche: submittedNiche as Niche,
       serviceAreas: String(fd.get("serviceAreas") || "").trim(),
       keywords: keywords.trim(),
       hoursStart: String(fd.get("hoursStart") || ""),
@@ -227,13 +247,34 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       <Section title="הגדרות שירות">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="תחום עיסוק" required>
-            <Select
-              name="niche"
-              options={NICHES}
-              defaultValue={defaults.niche ?? ""}
-              placeholder="בחרו תחום"
-              required
-            />
+            <div className="space-y-2">
+              <Select
+                name="niche"
+                options={NICHES}
+                defaultValue={
+                  initialNicheIsKnown
+                    ? (defaults.niche as string)
+                    : defaults.niche
+                      ? "אחר"
+                      : ""
+                }
+                placeholder="בחרו תחום"
+                required
+                onChange={(v) => setNiche(v)}
+              />
+              {showCustomNiche && (
+                <input
+                  name="customNiche"
+                  value={customNiche}
+                  onChange={(e) => setCustomNiche(e.target.value)}
+                  required
+                  minLength={2}
+                  maxLength={80}
+                  className="input"
+                  placeholder="פרטו את התחום הספציפי (למשל: בית קפה, סוכן ביטוח, מורה לטיס)"
+                />
+              )}
+            </div>
           </Field>
           <Field
             label="איזורי שירות"

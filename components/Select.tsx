@@ -9,14 +9,20 @@ export function Select({
   defaultValue = "",
   placeholder = "בחרו אפשרות",
   required,
+  onChange,
 }: {
   name: string;
   options: readonly string[];
   defaultValue?: string;
   placeholder?: string;
   required?: boolean;
+  onChange?: (value: string) => void;
 }) {
-  const [value, setValue] = useState<string>(defaultValue);
+  const [value, setValueState] = useState<string>(defaultValue);
+  const setValue = (v: string) => {
+    setValueState(v);
+    onChange?.(v);
+  };
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
