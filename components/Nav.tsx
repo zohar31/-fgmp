@@ -12,6 +12,7 @@ const links = [
   { href: "/#who", label: "למי זה מתאים" },
   { href: "/#pricing", label: "מחיר" },
   { href: "/#faq", label: "שאלות" },
+  { href: "/accessibility", label: "נגישות" },
 ];
 
 export function Nav() {
