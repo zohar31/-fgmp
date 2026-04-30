@@ -410,7 +410,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
         <button
           type="submit"
           disabled={saving}
-          className="btn-wa text-base disabled:opacity-60"
+          className="btn-wa w-full text-sm sm:w-auto sm:text-base disabled:opacity-60"
         >
           {saving ? (
             <>
@@ -419,9 +419,10 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
             </>
           ) : (
             <>
-              <MessageCircle className="h-5 w-5" />
-              כמעט סיימנו — שמירה והמשך להפעלת WhatsApp
-              <ArrowLeft className="h-4 w-4" />
+              <MessageCircle className="h-5 w-5 shrink-0" />
+              <span className="hidden sm:inline">כמעט סיימנו — שמירה והמשך להפעלת WhatsApp</span>
+              <span className="sm:hidden">שמירה והמשך ל-WhatsApp</span>
+              <ArrowLeft className="h-4 w-4 shrink-0" />
             </>
           )}
         </button>

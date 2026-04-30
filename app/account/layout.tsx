@@ -35,7 +35,7 @@ export default async function AccountLayout({
   if (!session?.user) redirect("/login?callbackUrl=/account");
 
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen overflow-x-hidden bg-bg">
       <div className="container-x py-8">
         <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
           <aside className="card h-fit p-5 lg:sticky lg:top-6">

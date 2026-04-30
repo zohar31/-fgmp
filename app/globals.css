@@ -8,10 +8,12 @@
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   body {
     @apply bg-bg text-ink-100 antialiased;
     font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
   }
   ::selection {
     @apply bg-brand-500/40 text-white;

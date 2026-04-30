@@ -77,7 +77,7 @@ function ProgressSteps({ current }: { current: 1 | 2 | 3 }) {
   ] as const;
 
   return (
-    <ol className="flex items-center justify-between gap-2 rounded-2xl bg-white/[0.03] p-4 ring-1 ring-white/5">
+    <ol className="flex items-center justify-between gap-1 rounded-2xl bg-white/[0.03] p-3 ring-1 ring-white/5 sm:gap-2 sm:p-4">
       {steps.map((s, i) => {
         const done = current > s.n;
         const active = current === s.n;

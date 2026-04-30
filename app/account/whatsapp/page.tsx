@@ -135,7 +135,8 @@ export default async function WhatsAppActivationPage() {
       <div className="card p-6">
         <h2 className="font-display text-lg font-bold text-white">תצוגה מקדימה של ההודעה</h2>
         <pre
-          className="mt-4 max-h-72 overflow-auto whitespace-pre-wrap rounded-xl bg-[#0b141a] p-4 text-xs leading-6 text-emerald-100 ring-1 ring-white/10"
+          className="mt-4 max-h-72 overflow-auto whitespace-pre-wrap break-words rounded-xl bg-[#0b141a] p-4 text-xs leading-6 text-emerald-100 ring-1 ring-white/10"
+          style={{ wordBreak: "break-word", overflowWrap: "anywhere" }}
           dir="rtl"
         >
           {message}
