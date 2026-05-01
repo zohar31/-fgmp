@@ -158,6 +158,44 @@ export function faqSchema(faqs: { q: string; a: string }[]) {
   };
 }
 
+export function howToSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "איך מקבלים לידים אוטומטית מקבוצות פייסבוק",
+    description:
+      "ארבעה שלבים פשוטים: מפוסט בקבוצה — דרך סינון AI — ועד הליד שמגיע אליך לוואטסאפ או טלגרם.",
+    totalTime: "PT1M",
+    inLanguage: "he-IL",
+    step: [
+      {
+        "@type": "HowToStep",
+        position: 1,
+        name: "פוסט מתפרסם בקבוצת פייסבוק",
+        text: "אדם מפרסם בקבוצה ציבורית שאלה או בקשה לשירות שאתה נותן.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 2,
+        name: "AI סורק ומסנן את הפוסט",
+        text: "מערכת FGMP זיהתה את הפוסט תוך שניות, השוותה אותו למילות המפתח שלך, וסיווגה אותו כליד רלוונטי.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 3,
+        name: "התראה נשלחת אליך",
+        text: "המערכת שולחת אליך הודעת וואטסאפ או טלגרם עם פרטי הפוסט וקישור ישיר.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 4,
+        name: "אתה מגיב והופך את הליד לעסקה",
+        text: "אתה רואה את הליד, פונה ללקוח תוך 5 דקות, וסוגר עסקה.",
+      },
+    ],
+  };
+}
+
 export function breadcrumbSchema(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",
