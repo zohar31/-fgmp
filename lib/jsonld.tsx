@@ -123,14 +123,21 @@ export function softwareApplicationSchema(reviews: CustomerReview[] = []) {
   }
 
   // ביקורות מוטמעות בתוך ה-SoftwareApplication
-  // (Google דורש שביקורות יהיו בתוך הישות הנבחנת, לא נפרדות)
+  // Google מציג כל ביקורת כ-rich card נפרד — לכן כל itemReviewed
+  // חייב להכיל לפחות 2 שדות נדרשים (applicationCategory + operatingSystem)
   if (reviews.length > 0) {
+    const reviewedItem = {
+      "@type": "SoftwareApplication",
+      name: `${SITE.brand} — מערכת לידים אוטומטית מקבוצות פייסבוק`,
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+    };
     base.review = reviews.map((r) => ({
       "@type": "Review",
+      itemReviewed: reviewedItem,
       author: { "@type": "Person", name: r.name },
       datePublished: REVIEW_DATE,
       reviewBody: r.quote,
-      name: `${r.business} — ${r.niche}`,
       reviewRating: {
         "@type": "Rating",
         ratingValue: r.rating,
