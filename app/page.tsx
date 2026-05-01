@@ -14,7 +14,7 @@ import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
 import { AIAgent } from "@/components/AIAgent";
-import { JsonLd, faqSchema, softwareApplicationSchema, reviewsSchema, howToSchema } from "@/lib/jsonld";
+import { JsonLd, faqSchema, softwareApplicationSchema, howToSchema } from "@/lib/jsonld";
 import { faqs } from "@/lib/faqs";
 import { SITE } from "@/lib/config";
 import { customerReviews } from "@/lib/reviews";
@@ -28,7 +28,6 @@ export default function HomePage() {
     <>
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={softwareApplicationSchema(customerReviews)} />
-      <JsonLd data={reviewsSchema(customerReviews)} />
       <JsonLd data={howToSchema()} />
       <Nav />
       <main id="main-content">

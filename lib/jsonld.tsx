@@ -58,6 +58,10 @@ export function softwareApplicationSchema(reviews: CustomerReview[] = []) {
       ? (reviews.reduce((s, r) => s + r.rating, 0) / ratingCount).toFixed(1)
       : null;
 
+  // תאריך פרסום קבוע לביקורות (כדי שלא יקפוץ בכל deploy)
+  // משתמשים בתאריך פתיחת השירות
+  const REVIEW_DATE = "2026-04-01";
+
   const base: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -68,6 +72,8 @@ export function softwareApplicationSchema(reviews: CustomerReview[] = []) {
     url: SITE.url,
     description: SITE.descriptions.software,
     inLanguage: "he-IL",
+    image: `${SITE.url}/opengraph-image`,
+    screenshot: `${SITE.url}/opengraph-image`,
     audience: {
       "@type": "BusinessAudience",
       audienceType: "עסקים קטנים ובינוניים, פרילנסרים, נותני שירות",
@@ -116,34 +122,25 @@ export function softwareApplicationSchema(reviews: CustomerReview[] = []) {
     };
   }
 
-  return base;
-}
+  // ביקורות מוטמעות בתוך ה-SoftwareApplication
+  // (Google דורש שביקורות יהיו בתוך הישות הנבחנת, לא נפרדות)
+  if (reviews.length > 0) {
+    base.review = reviews.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.name },
+      datePublished: REVIEW_DATE,
+      reviewBody: r.quote,
+      name: `${r.business} — ${r.niche}`,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: r.rating,
+        bestRating: 5,
+        worstRating: 1,
+      },
+    }));
+  }
 
-export function reviewsSchema(reviews: CustomerReview[]) {
-  return reviews.map((r) => ({
-    "@context": "https://schema.org",
-    "@type": "Review",
-    itemReviewed: {
-      "@type": "SoftwareApplication",
-      name: `${SITE.brand} — מערכת לידים אוטומטית מקבוצות פייסבוק`,
-      applicationCategory: "BusinessApplication",
-    },
-    author: {
-      "@type": "Person",
-      name: r.name,
-    },
-    reviewBody: r.quote,
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: r.rating,
-      bestRating: 5,
-      worstRating: 1,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: r.business,
-    },
-  }));
+  return base;
 }
 
 export function faqSchema(faqs: { q: string; a: string }[]) {
