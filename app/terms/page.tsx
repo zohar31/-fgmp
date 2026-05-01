@@ -18,7 +18,14 @@ export default function TermsPage() {
           { name: "תקנון", url: `${SITE.url}/terms` },
         ])}
       />
-      <LegalLayout title="תקנון ותנאי שימוש" updated="27.04.2026">
+      <LegalLayout
+        title="תקנון ותנאי שימוש"
+        updated="27.04.2026"
+        breadcrumbs={[
+          { name: "דף הבית", href: "/" },
+          { name: "תקנון", href: "/terms" },
+        ]}
+      >
       <p>
         ברוכים הבאים ל-{SITE.brand}. השירות מופעל על ידי {SITE.legalName}
         (להלן: "החברה" או "אנחנו"). השימוש באתר {SITE.domain} ובשירות מותנה בהסכמה לתנאים המפורטים

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/LegalLayout";
 import { SITE } from "@/lib/config";
+import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "הצהרת נגישות",
@@ -10,7 +11,21 @@ export const metadata: Metadata = {
 
 export default function AccessibilityPage() {
   return (
-    <LegalLayout title="הצהרת נגישות" updated="29.04.2026">
+    <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "דף הבית", url: SITE.url },
+          { name: "הצהרת נגישות", url: `${SITE.url}/accessibility` },
+        ])}
+      />
+      <LegalLayout
+        title="הצהרת נגישות"
+        updated="29.04.2026"
+        breadcrumbs={[
+          { name: "דף הבית", href: "/" },
+          { name: "הצהרת נגישות", href: "/accessibility" },
+        ]}
+      >
       <h2>1. הקדמה — מחויבות החברה לנגישות</h2>
       <p>
         ב-{SITE.legalName} (להלן: "החברה" או "אנו") אנו מחויבים לאפשר לאנשים עם מוגבלויות
@@ -189,6 +204,7 @@ export default function AccessibilityPage() {
           <strong>Chrome:</strong> chrome://settings/accessibility
         </li>
       </ul>
-    </LegalLayout>
+      </LegalLayout>
+    </>
   );
 }

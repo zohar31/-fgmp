@@ -1,22 +1,30 @@
 import { Nav } from "./Nav";
 import { Footer } from "./Footer";
 import { AIAgent } from "./AIAgent";
+import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 
 export function LegalLayout({
   title,
   updated,
+  breadcrumbs,
   children,
 }: {
   title: string;
   updated: string;
+  breadcrumbs?: Crumb[];
   children: React.ReactNode;
 }) {
   return (
     <>
       <Nav />
-      <main id="main-content" className="py-16 md:py-24">
+      <main id="main-content" className="py-12 md:py-20">
         <div className="container-x">
           <article className="mx-auto max-w-3xl">
+            {breadcrumbs && breadcrumbs.length > 0 && (
+              <div className="mb-6">
+                <Breadcrumbs items={breadcrumbs} />
+              </div>
+            )}
             <header className="mb-10 border-b border-white/10 pb-8">
               <h1 className="font-display text-4xl font-extrabold text-white sm:text-5xl">
                 {title}

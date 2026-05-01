@@ -18,7 +18,14 @@ export default function PrivacyPage() {
           { name: "מדיניות פרטיות", url: `${SITE.url}/privacy` },
         ])}
       />
-      <LegalLayout title="מדיניות פרטיות" updated="27.04.2026">
+      <LegalLayout
+        title="מדיניות פרטיות"
+        updated="27.04.2026"
+        breadcrumbs={[
+          { name: "דף הבית", href: "/" },
+          { name: "מדיניות פרטיות", href: "/privacy" },
+        ]}
+      >
       <p>
         {SITE.legalName} (להלן: "החברה") מחויבת להגנה על פרטיות המשתמשים והמנויים
         באתר {SITE.domain} ובשירות {SITE.brand}. מסמך זה מפרט אילו נתונים אנחנו אוספים, למה הם

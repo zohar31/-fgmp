@@ -4,6 +4,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db, schema } from "./db";
 import { eq } from "drizzle-orm";
 import { generateActivationToken } from "./activation-token";
+import { sendLeadEvent, isConfigured as isCapiConfigured } from "./meta-capi";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db, {
@@ -76,6 +77,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         title: "ברוכים הבאים ל-FGMP! 🎉",
         body: `קיבלתם ${trialDays} ימי ניסיון חינם. השלימו את ההגדרות באזור האישי כדי להתחיל לקבל לידים.`,
       });
+
+      // Meta CAPI — שולח אירוע Lead לאופטימיזציה של קמפיינים
+      // לא חוסם את הרישום במקרה של כשל
+      if (isCapiConfigured()) {
+        const [firstName, ...rest] = (user.name || "").split(/\s+/);
+        sendLeadEvent({
+          email: user.email,
+          phone: intent?.whatsapp,
+          firstName: firstName || null,
+          lastName: rest.join(" ") || null,
+          externalId: user.id,
+          eventSourceUrl: "https://fgmp.net/login",
+          eventId: `signup_${user.id}_${now.getTime()}`,
+        })
+          .then((r) => {
+            if (!r.ok) console.warn("[meta-capi] lead event failed:", r.error);
+          })
+          .catch((e) => console.warn("[meta-capi] lead event error:", e));
+      }
     },
   },
 });
