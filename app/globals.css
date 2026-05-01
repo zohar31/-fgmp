@@ -157,3 +157,10 @@ html.a11y-no-motion *::after {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* mobile only: when chat agent is open, lift the a11y FAB above the chat textbox */
+@media (max-width: 639px) {
+  body.chat-agent-open .fgmp-a11y-fab {
+    bottom: 7rem;
+  }
+}

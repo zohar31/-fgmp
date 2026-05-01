@@ -38,6 +38,11 @@ export function AIAgent() {
   }, [open]);
 
   useEffect(() => {
+    document.body.classList.toggle("chat-agent-open", open);
+    return () => document.body.classList.remove("chat-agent-open");
+  }, [open]);
+
+  useEffect(() => {
     const t = setTimeout(() => setHint(true), 5000);
     return () => clearTimeout(t);
   }, []);

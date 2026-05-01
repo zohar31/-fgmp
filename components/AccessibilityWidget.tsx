@@ -117,7 +117,8 @@ export function AccessibilityWidget() {
         aria-label="פתח תפריט נגישות"
         aria-expanded={open}
         accessKey="a"
-        className="fixed bottom-4 right-4 z-50 grid h-14 w-14 place-items-center rounded-full bg-blue-600 text-white shadow-lg ring-4 ring-white/20 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-yellow-400"
+        data-fgmp-a11y-fab
+        className="fgmp-a11y-fab fixed bottom-4 right-4 z-50 grid h-14 w-14 place-items-center rounded-full bg-blue-600 text-white shadow-lg ring-4 ring-white/20 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-yellow-400"
       >
         <Accessibility className="h-7 w-7" aria-hidden />
       </button>
