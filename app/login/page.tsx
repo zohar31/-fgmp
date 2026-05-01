@@ -12,6 +12,7 @@ import { WebViewWarning } from "./WebViewWarning";
 export const metadata: Metadata = {
   title: "התחברות",
   description: "התחבר/י עם חשבון Google כדי להיכנס לאזור האישי",
+  robots: { index: false, follow: false },
 };
 
 export default async function LoginPage({

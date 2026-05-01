@@ -8,7 +8,7 @@ import { Tracker } from "@/components/Tracker";
 import { AccessibilityWidget } from "@/components/AccessibilityWidget";
 import "./globals.css";
 import { SITE } from "@/lib/config";
-import { JsonLd, organizationSchema, websiteSchema, serviceSchema } from "@/lib/jsonld";
+import { JsonLd, organizationSchema, websiteSchema } from "@/lib/jsonld";
 
 const heebo = Heebo({
   subsets: ["hebrew", "latin"],
@@ -27,21 +27,27 @@ const assistant = Assistant({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `לידים מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
+    default: `מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
     template: `%s | ${SITE.brand} לידים`,
   },
-  description: SITE.description,
+  description: SITE.descriptions.meta,
   keywords: [
     "לידים",
+    "ליד",
     "לידים מפייסבוק",
     "לידים חמים",
     "לידים אוטומטיים",
     "לידים בוואטסאפ",
     "לידים בטלגרם",
     "מערכת לידים",
+    "מערכת לידים אוטומטית",
+    "ליד חם בוואטסאפ",
     "איך להשיג לידים",
+    "איך משיגים לידים",
     "קבוצות פייסבוק",
     "סריקת קבוצות פייסבוק",
+    "סורק קבוצות פייסבוק",
+    "generator לידים",
     "AI לעסקים",
     "FGMP",
     "צח אור",
@@ -51,16 +57,24 @@ export const metadata: Metadata = {
     locale: "he_IL",
     url: SITE.url,
     siteName: SITE.brand,
-    title: `לידים מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
-    description: SITE.description,
+    title: `מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
+    description: SITE.descriptions.og,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `לידים מקבוצות פייסבוק לוואטסאפ או טלגרם — ${SITE.brand}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `לידים מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
-    description: SITE.description,
+    title: `מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
+    description: SITE.descriptions.og,
+    images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: SITE.url },
   verification: {
     google: "t1VDu0yboLSuMl6plLXEcaHCzLxi-hnPaMzjQ2Ap24Y",
   },
@@ -107,7 +121,6 @@ export default function RootLayout({
         <a href="#main-content" className="a11y-skip">דלג לתוכן הראשי</a>
         <JsonLd data={organizationSchema()} />
         <JsonLd data={websiteSchema()} />
-        <JsonLd data={serviceSchema()} />
         {gtmId && (
           <noscript>
             <iframe

@@ -15,6 +15,7 @@ import {
 
 export const metadata: Metadata = {
   title: { template: "%s · אזור אישי FGMP", default: "אזור אישי FGMP" },
+  robots: { index: false, follow: false },
 };
 
 const navItems = [

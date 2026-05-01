@@ -12,8 +12,8 @@ const links = [
   { href: "/#who", label: "למי זה מתאים" },
   { href: "/#pricing", label: "מחיר" },
   { href: "/#stories", label: "לקוחות" },
+  { href: "/guides", label: "מדריכים" },
   { href: "/#faq", label: "שאלות" },
-  { href: "/accessibility", label: "נגישות" },
 ];
 
 export function Nav() {

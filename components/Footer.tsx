@@ -20,6 +20,7 @@ export function Footer() {
               <li><a href="/#how" className="hover:text-white">איך זה עובד</a></li>
               <li><a href="/#who" className="hover:text-white">למי זה מתאים</a></li>
               <li><a href="/#pricing" className="hover:text-white">מחיר</a></li>
+              <li><Link href="/guides" className="hover:text-white">מדריכי לידים</Link></li>
               <li><a href="/#faq" className="hover:text-white">שאלות נפוצות</a></li>
               <li><a href="/login" className="hover:text-white">הרשמה</a></li>
             </ul>

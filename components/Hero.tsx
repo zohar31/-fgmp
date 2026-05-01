@@ -14,12 +14,13 @@ export function Hero() {
               לידים מקבוצות פייסבוק · 24/7 אוטומטית
             </div>
             <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl text-balance">
-              הלקוחות שלך מחפשים אותך{" "}
-              <span className="gradient-text">עכשיו</span>.
-              <br />
-              אתה רק לא רואה את זה.
+              מערכת לידים אוטומטית מקבוצות פייסבוק{" "}
+              <span className="gradient-text">לוואטסאפ</span>.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-ink-200 sm:text-xl text-balance">
+            <p className="mt-4 text-base font-semibold text-ink-100 sm:text-lg">
+              הלקוחות שלך מחפשים אותך עכשיו — אתה רק לא רואה את זה.
+            </p>
+            <p className="mt-4 text-lg leading-8 text-ink-200 sm:text-xl text-balance">
               אלפי פוסטים ביום בקבוצות פייסבוק של אנשים שמחפשים בדיוק את השירות שלך.{" "}
               <span className="font-bold text-white">FGMP סורקת בזמן אמת</span> ושולחת לך כל ליד רלוונטי
               ישירות לוואטסאפ או טלגרם — בזמן שאתה ישן, בפגישה, או נהנה.

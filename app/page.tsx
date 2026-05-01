@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { TrustBar } from "@/components/TrustBar";
@@ -12,13 +13,21 @@ import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
 import { AIAgent } from "@/components/AIAgent";
-import { JsonLd, faqSchema } from "@/lib/jsonld";
+import { JsonLd, faqSchema, softwareApplicationSchema, reviewsSchema } from "@/lib/jsonld";
 import { faqs } from "@/lib/faqs";
+import { SITE } from "@/lib/config";
+import { customerReviews } from "@/lib/reviews";
+
+export const metadata: Metadata = {
+  alternates: { canonical: SITE.url },
+};
 
 export default function HomePage() {
   return (
     <>
       <JsonLd data={faqSchema(faqs)} />
+      <JsonLd data={softwareApplicationSchema(customerReviews)} />
+      <JsonLd data={reviewsSchema(customerReviews)} />
       <Nav />
       <main id="main-content">
         <Hero />
