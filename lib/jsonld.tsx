@@ -72,8 +72,8 @@ export function softwareApplicationSchema(reviews: CustomerReview[] = []) {
     url: SITE.url,
     description: SITE.descriptions.software,
     inLanguage: "he-IL",
-    image: `${SITE.url}/opengraph-image`,
-    screenshot: `${SITE.url}/opengraph-image`,
+    image: `${SITE.url}/og-image.jpeg`,
+    screenshot: `${SITE.url}/og-image.jpeg`,
     audience: {
       "@type": "BusinessAudience",
       audienceType: "עסקים קטנים ובינוניים, פרילנסרים, נותני שירות",

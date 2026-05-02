@@ -42,7 +42,7 @@ const articleSchema = {
     url: SITE.url,
     logo: { "@type": "ImageObject", url: `${SITE.url}/icon` },
   },
-  image: `${SITE.url}/opengraph-image`,
+  image: `${SITE.url}/og-image.jpeg`,
 };
 
 export default function FollowUpGuide() {

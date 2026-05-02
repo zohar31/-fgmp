@@ -61,10 +61,11 @@ export const metadata: Metadata = {
     description: SITE.descriptions.og,
     images: [
       {
-        url: "/opengraph-image",
+        url: "/og-image.jpeg",
         width: 1200,
         height: 630,
         alt: `לידים מקבוצות פייסבוק לוואטסאפ או טלגרם — ${SITE.brand}`,
+        type: "image/jpeg",
       },
     ],
   },
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
     description: SITE.descriptions.og,
-    images: ["/opengraph-image"],
+    images: ["/og-image.jpeg"],
   },
   robots: { index: true, follow: true },
   verification: {

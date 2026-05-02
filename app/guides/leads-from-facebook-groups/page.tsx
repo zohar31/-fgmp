@@ -58,7 +58,7 @@ const articleSchema = {
       url: `${SITE.url}/icon`,
     },
   },
-  image: `${SITE.url}/opengraph-image`,
+  image: `${SITE.url}/og-image.jpeg`,
   keywords: guide.keywords.join(", "),
 };
 
