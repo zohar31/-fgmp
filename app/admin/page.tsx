@@ -5,13 +5,35 @@ import { ActivateButton } from "./ActivateButton";
 import { SearchInput } from "./SearchInput";
 import { CheckCircle2, Clock, XCircle, ChevronLeft, RefreshCw } from "lucide-react";
 
+type TabKey =
+  | "all"
+  | "newly_registered"
+  | "awaiting_whatsapp"
+  | "awaiting_push"
+  | "needs_resync"
+  | "active_in_extension"
+  | "cancelled";
+
 export default async function AdminUsersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; tab?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, tab: tabRaw } = await searchParams;
   const query = q?.trim().toLowerCase() || "";
+  const tab: TabKey = (
+    [
+      "all",
+      "newly_registered",
+      "awaiting_whatsapp",
+      "awaiting_push",
+      "needs_resync",
+      "active_in_extension",
+      "cancelled",
+    ] as const
+  ).includes(tabRaw as TabKey)
+    ? (tabRaw as TabKey)
+    : "all";
 
   const users = await db
     .select({
@@ -41,35 +63,66 @@ export default async function AdminUsersPage({
   const subByUser = new Map(subs.map((s) => [s.userId, s]));
   const settingsByUser = new Map(settings.map((s) => [s.userId, s]));
 
-  const filteredUsers = query
-    ? users.filter((u) => {
-        const cfg = settingsByUser.get(u.id);
-        const sub = subByUser.get(u.id);
-        const haystack = [
-          u.name,
-          u.email,
-          cfg?.businessName,
-          cfg?.contactName,
-          cfg?.leadPhone,
-          cfg?.contactEmail,
-          cfg?.vatId,
-          sub?.activationToken,
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-        return haystack.includes(query);
-      })
-    : users;
+  // ── סווג כל משתמש לקטגוריה ──
+  function categorize(userId: string): TabKey | "other" {
+    const sub = subByUser.get(userId);
+    const cfg = settingsByUser.get(userId);
+    if (!sub) return "other";
+    if (sub.status === "cancelled") return "cancelled";
+    if (sub.status === "pending_setup") return "newly_registered";
+    if (!sub.activatedAt) return "awaiting_whatsapp";
 
-  const totals = {
+    const lastPush = lastPushByUser.get(userId);
+    const settingsTime = cfg?.updatedAt?.getTime() || 0;
+    const pushTime = lastPush?.getTime() || 0;
+    if (!lastPush) return "awaiting_push";
+    if (settingsTime > pushTime + 5000) return "needs_resync";
+    return "active_in_extension";
+  }
+
+  const userCategoryByUser = new Map<string, TabKey | "other">();
+  for (const u of users) userCategoryByUser.set(u.id, categorize(u.id));
+
+  const filteredUsers = users
+    .filter((u) => {
+      // Tab filter
+      if (tab === "all") return true;
+      return userCategoryByUser.get(u.id) === tab;
+    })
+    .filter((u) => {
+      // Search filter
+      if (!query) return true;
+      const cfg = settingsByUser.get(u.id);
+      const sub = subByUser.get(u.id);
+      const haystack = [
+        u.name,
+        u.email,
+        cfg?.businessName,
+        cfg?.contactName,
+        cfg?.leadPhone,
+        cfg?.contactEmail,
+        cfg?.vatId,
+        sub?.activationToken,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(query);
+    });
+
+  // ספירות לכל קטגוריה
+  const counts = {
     all: users.length,
-    pendingSetup: subs.filter((s) => s.status === "pending_setup").length,
-    pendingActivation: subs.filter((s) => s.status === "pending_activation").length,
-    trialActive: subs.filter((s) => s.status === "trial_active").length,
-    active: subs.filter((s) => s.status === "active").length,
-    cancelled: subs.filter((s) => s.status === "cancelled").length,
+    newly_registered: 0,
+    awaiting_whatsapp: 0,
+    awaiting_push: 0,
+    needs_resync: 0,
+    active_in_extension: 0,
+    cancelled: 0,
   };
+  for (const cat of userCategoryByUser.values()) {
+    if (cat in counts) counts[cat as Exclude<TabKey, "all">]++;
+  }
 
   return (
     <div className="space-y-6">
@@ -80,13 +133,16 @@ export default async function AdminUsersPage({
         </p>
       </header>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <Stat label="סה״כ" value={totals.all} />
-        <Stat label="הגדרות" value={totals.pendingSetup} accent="amber" />
-        <Stat label="ממתין הפעלה" value={totals.pendingActivation} accent="brand" />
-        <Stat label="ניסיון פעיל" value={totals.trialActive} accent="wa" />
-        <Stat label="פעיל" value={totals.active} accent="wa" />
-        <Stat label="מבוטל" value={totals.cancelled} accent="ink" />
+      <div className="overflow-x-auto">
+        <div className="flex gap-2 pb-2">
+          <TabButton tab="all" current={tab} q={query} icon="👥" label="הכל" count={counts.all} />
+          <TabButton tab="newly_registered" current={tab} q={query} icon="🆕" label="חדשים" count={counts.newly_registered} />
+          <TabButton tab="awaiting_whatsapp" current={tab} q={query} icon="⏳" label="ממתין WhatsApp" count={counts.awaiting_whatsapp} />
+          <TabButton tab="awaiting_push" current={tab} q={query} icon="📤" label="ממתין דחיפה" count={counts.awaiting_push} accent="brand" />
+          <TabButton tab="needs_resync" current={tab} q={query} icon="🔔" label="עודכנו" count={counts.needs_resync} accent="amber" />
+          <TabButton tab="active_in_extension" current={tab} q={query} icon="✅" label="פעילים בתוסף" count={counts.active_in_extension} accent="wa" />
+          <TabButton tab="cancelled" current={tab} q={query} icon="❌" label="מבוטלים" count={counts.cancelled} accent="ink" />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -221,28 +277,53 @@ export default async function AdminUsersPage({
   );
 }
 
-function Stat({
+function TabButton({
+  tab,
+  current,
+  q,
+  icon,
   label,
-  value,
+  count,
   accent = "ink",
 }: {
+  tab: TabKey;
+  current: TabKey;
+  q: string;
+  icon: string;
   label: string;
-  value: number;
+  count: number;
   accent?: "wa" | "brand" | "amber" | "ink";
 }) {
-  const colors = {
-    wa: "text-wa",
-    brand: "text-brand-300",
-    amber: "text-amber-300",
-    ink: "text-ink-200",
-  };
+  const isActive = tab === current;
+  const accentCls = {
+    wa: "text-wa ring-wa/40 bg-wa/10",
+    brand: "text-brand-300 ring-brand-500/40 bg-brand-500/10",
+    amber: "text-amber-300 ring-amber-500/40 bg-amber-500/10",
+    ink: "text-ink-200 ring-white/15 bg-white/5",
+  }[accent];
+  const params = new URLSearchParams();
+  if (tab !== "all") params.set("tab", tab);
+  if (q) params.set("q", q);
+  const href = params.toString() ? `/admin?${params.toString()}` : "/admin";
   return (
-    <div className="card p-4 text-center">
-      <div className="text-xs text-ink-400">{label}</div>
-      <div className={`mt-1 font-display text-2xl font-extrabold ${colors[accent]}`}>
-        {value}
-      </div>
-    </div>
+    <Link
+      href={href}
+      className={`shrink-0 inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-bold ring-1 transition ${
+        isActive
+          ? `${accentCls} shadow-[0_0_0_2px_rgba(255,255,255,0.05)]`
+          : "bg-white/[0.02] text-ink-300 ring-white/10 hover:bg-white/[0.05] hover:text-white"
+      }`}
+    >
+      <span>{icon}</span>
+      <span>{label}</span>
+      <span
+        className={`min-w-[1.5rem] rounded-full px-2 py-0.5 text-xs font-bold ${
+          isActive ? "bg-white/15" : "bg-white/[0.05]"
+        }`}
+      >
+        {count}
+      </span>
+    </Link>
   );
 }
 
