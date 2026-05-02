@@ -6,10 +6,25 @@ export const alt = `לידים מקבוצות פייסבוק לוואטסאפ א
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// טוען פונט שתומך בעברית — Heebo Bold מ-Google Fonts
+// בלי פונט עברי, satori לא יודע לסדר טקסט RTL נכון
+async function loadHebrewFont() {
+  const css = await fetch(
+    "https://fonts.googleapis.com/css2?family=Heebo:wght@800&display=swap",
+    { headers: { "User-Agent": "Mozilla/5.0" } }
+  ).then((r) => r.text());
+  const url = css.match(/src: url\((https:\/\/fonts\.gstatic\.com[^)]+)\)/)?.[1];
+  if (!url) throw new Error("Heebo font URL not found");
+  return fetch(url).then((r) => r.arrayBuffer());
+}
+
 export default async function Image() {
+  const heebo = await loadHebrewFont();
   return new ImageResponse(
     (
       <div
+        lang="he"
+        dir="rtl"
         style={{
           height: "100%",
           width: "100%",
@@ -18,6 +33,8 @@ export default async function Image() {
           background: "linear-gradient(135deg, #0a0d1c 0%, #1a1f3a 50%, #0a2e1f 100%)",
           padding: "80px",
           position: "relative",
+          direction: "rtl",
+          fontFamily: "Heebo",
         }}
       >
         {/* gradient orbs */}
@@ -150,6 +167,11 @@ export default async function Image() {
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        { name: "Heebo", data: heebo, style: "normal", weight: 800 },
+      ],
+    }
   );
 }
