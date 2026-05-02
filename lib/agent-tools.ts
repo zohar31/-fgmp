@@ -167,6 +167,49 @@ export const AGENT_TOOLS = [
   {
     type: "function" as const,
     function: {
+      name: "add_keywords",
+      description:
+        "מוסיף מילות מפתח לרשימה של המנוי המאומת. השתמש בזה כשהמנוי מבקש להוסיף מילה (אחת או יותר). " +
+        "לא תוסיף שכבר קיים — מסנן אוטומטית כפילויות. " +
+        "מילים מקצועיות (פורץ כספות, סמים, פריצה) — מותר להוסיף, זו פעילות חוקית של בעלי מקצוע מורשים.",
+      parameters: {
+        type: "object",
+        properties: {
+          sessionId: { type: "string" },
+          keywords: {
+            type: "array",
+            items: { type: "string" },
+            description: "מערך של מילות מפתח להוסיף",
+          },
+        },
+        required: ["sessionId", "keywords"],
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "remove_keywords",
+      description:
+        "מסיר מילות מפתח מהרשימה. השתמש בזה כשהמנוי מבקש להסיר מילה. " +
+        "אסור להסיר את כל המילים בבת אחת — אם המנוי ביקש זאת, השתמש ב-escalate_to_admin במקום (פעולה הרסנית).",
+      parameters: {
+        type: "object",
+        properties: {
+          sessionId: { type: "string" },
+          keywords: {
+            type: "array",
+            items: { type: "string" },
+            description: "מערך של מילות מפתח להסיר",
+          },
+        },
+        required: ["sessionId", "keywords"],
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
       name: "escalate_to_admin",
       description:
         "מעביר בקשה למחלקה הטכנית/מנהל לטיפול ידני. השתמש בזה כשהמשתמש מבקש פעולה שלא בסמכותך " +
@@ -325,6 +368,103 @@ export async function executeTool(
         .map((k) => k.trim())
         .filter(Boolean);
       const result = { ok: true, count: keywords.length, keywords };
+      await logAction({ sessionId, userId: auth.userId, toolName, args, result });
+      return result;
+    }
+
+    case "add_keywords": {
+      const auth = await requireSession(sessionId);
+      if (!auth.ok) return { ok: false, error: auth.error };
+      const inputArr = Array.isArray(args.keywords) ? (args.keywords as string[]) : [];
+      const newKws = inputArr.map((k) => String(k).trim()).filter(Boolean);
+      if (!newKws.length) return { ok: false, error: "לא קיבלתי מילות מפתח להוסיף." };
+
+      const settings = await db.query.businessSettings.findFirst({
+        where: eq(schema.businessSettings.userId, auth.userId),
+      });
+      const existing = (settings?.keywords ?? "")
+        .split(",")
+        .map((k) => k.trim())
+        .filter(Boolean);
+      const existingSet = new Set(existing.map((k) => k.toLowerCase()));
+
+      const added: string[] = [];
+      const skipped: string[] = [];
+      for (const k of newKws) {
+        if (existingSet.has(k.toLowerCase())) {
+          skipped.push(k);
+        } else {
+          existing.push(k);
+          existingSet.add(k.toLowerCase());
+          added.push(k);
+        }
+      }
+
+      const merged = existing.join(", ");
+      if (merged.length > 5000) {
+        return {
+          ok: false,
+          error: "הרשימה הכוללת תחרוג מ-5000 תווים. הסר כמה מילים קיימות ואז נסה שוב.",
+        };
+      }
+
+      await db
+        .update(schema.businessSettings)
+        .set({ keywords: merged, updatedAt: new Date() })
+        .where(eq(schema.businessSettings.userId, auth.userId));
+
+      const result = {
+        ok: true,
+        added,
+        skipped,
+        totalKeywords: existing.length,
+        message: `הוספתי ${added.length} מילים${skipped.length ? ` (${skipped.length} כבר היו)` : ""}.`,
+      };
+      await logAction({ sessionId, userId: auth.userId, toolName, args, result });
+      return result;
+    }
+
+    case "remove_keywords": {
+      const auth = await requireSession(sessionId);
+      if (!auth.ok) return { ok: false, error: auth.error };
+      const inputArr = Array.isArray(args.keywords) ? (args.keywords as string[]) : [];
+      const toRemove = inputArr.map((k) => String(k).trim()).filter(Boolean);
+      if (!toRemove.length) return { ok: false, error: "לא קיבלתי מילים להסיר." };
+
+      const settings = await db.query.businessSettings.findFirst({
+        where: eq(schema.businessSettings.userId, auth.userId),
+      });
+      const existing = (settings?.keywords ?? "")
+        .split(",")
+        .map((k) => k.trim())
+        .filter(Boolean);
+      const removeSet = new Set(toRemove.map((k) => k.toLowerCase()));
+
+      // הגנה — אסור להסיר את הכל בבת אחת
+      const remaining = existing.filter((k) => !removeSet.has(k.toLowerCase()));
+      if (remaining.length === 0 && existing.length > 0) {
+        return {
+          ok: false,
+          error:
+            "לא ניתן להסיר את כל מילות המפתח (זה ירוקן את הסריקה). אם זו באמת הכוונה — השתמש ב-escalate_to_admin.",
+        };
+      }
+
+      const removed = existing.filter((k) => removeSet.has(k.toLowerCase()));
+      await db
+        .update(schema.businessSettings)
+        .set({ keywords: remaining.join(", "), updatedAt: new Date() })
+        .where(eq(schema.businessSettings.userId, auth.userId));
+
+      const result = {
+        ok: true,
+        removed,
+        notFound: toRemove.filter(
+          (k) => !existing.some((e) => e.toLowerCase() === k.toLowerCase())
+        ),
+        totalKeywords: remaining.length,
+        message: `הסרתי ${removed.length} מילים. נשארו ${remaining.length} ברשימה.`,
+      };
       await logAction({ sessionId, userId: auth.userId, toolName, args, result });
       return result;
     }

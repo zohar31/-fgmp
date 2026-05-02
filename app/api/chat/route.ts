@@ -148,7 +148,13 @@ export async function POST(req: Request) {
         if (
           activeSession &&
           existingSessionId &&
-          ["get_my_status", "get_my_settings", "get_my_keywords"].includes(tc.function.name) &&
+          [
+            "get_my_status",
+            "get_my_settings",
+            "get_my_keywords",
+            "add_keywords",
+            "remove_keywords",
+          ].includes(tc.function.name) &&
           !argsObj.sessionId
         ) {
           argsObj.sessionId = existingSessionId;
