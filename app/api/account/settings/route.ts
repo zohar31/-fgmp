@@ -104,5 +104,39 @@ export async function POST(req: Request) {
       .where(eq(schema.subscriptions.userId, userId));
   }
 
+  // ── התראה לאדמין: מנוי פעיל עדכן נתונים → דחיפה לתוסף נדרשת ──
+  // לא חוסם את התגובה (fire-and-forget)
+  if (sub?.activatedAt && existing) {
+    const changedFields: string[] = [];
+    if (existing.keywords !== data.keywords) changedFields.push("מילות מפתח");
+    if (existing.serviceAreas !== data.serviceAreas) changedFields.push("אזורי שירות");
+    if (existing.niche !== data.niche) changedFields.push("תחום עיסוק");
+    if (existing.description !== data.description) changedFields.push("תיאור");
+    if (existing.businessName !== data.businessName) changedFields.push("שם עסק");
+    if (existing.leadPhone !== data.leadPhone) changedFields.push("טלפון לידים");
+
+    if (changedFields.length > 0) {
+      const waServer = process.env.WA_SERVER_URL || "http://85.130.174.200:3030";
+      const token = process.env.EXTENSION_API_TOKEN;
+      if (token) {
+        const text =
+          `🔔 *מנוי עדכן נתונים*\n\n` +
+          `🏢 ${data.businessName}\n` +
+          `👤 ${data.contactName}\n` +
+          `📱 ${data.leadPhone}\n` +
+          `\n📝 שינה: ${changedFields.join(", ")}\n` +
+          `\n👉 דחוף לתוסף שוב מהאדמין.`;
+        fetch(`${waServer.replace(/\/$/, "")}/admin-notify`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text }),
+        }).catch((e) => console.warn("[settings] admin-notify failed:", e?.message));
+      }
+    }
+  }
+
   return NextResponse.json({ ok: true });
 }
