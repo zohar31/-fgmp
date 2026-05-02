@@ -2,7 +2,7 @@ import { Activity, Bell, Globe, Zap, MessageCircle, Search } from "lucide-react"
 import { TelegramIcon } from "./TelegramIcon";
 
 const stats = [
-  { icon: Globe, label: "קבוצות פייסבוק נסרקות", value: "21,000+" },
+  { icon: Globe, label: "קבוצות פייסבוק נסרקות", value: "50,000+" },
   { icon: Activity, label: "פוסטים בניתוח יומי", value: "60,000+" },
   { icon: Search, label: "מילות מפתח פעילות", value: "4,670+" },
   { icon: Bell, label: "לידים נשלחים יומית", value: "1,000+" },
