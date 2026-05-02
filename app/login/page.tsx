@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth, signIn } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { Logo } from "@/components/Logo";
+import { AIAgent } from "@/components/AIAgent";
 import { ShieldCheck } from "lucide-react";
 import { isInAppWebView, isAndroid, isIOS } from "@/lib/webview";
 import { SITE } from "@/lib/config";
@@ -79,6 +80,7 @@ export default async function LoginPage({
           הכניסה היא גם ההרשמה — לחיצה אחת על Google ומקבלים 7 ימי ניסיון חינם
         </p>
       </div>
+      <AIAgent />
     </main>
   );
 }

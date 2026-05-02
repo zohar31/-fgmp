@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import { Logo } from "@/components/Logo";
+import { AIAgent } from "@/components/AIAgent";
 import {
   LayoutDashboard,
   Settings,
@@ -100,6 +101,7 @@ export default async function AccountLayout({
           <main>{children}</main>
         </div>
       </div>
+      <AIAgent />
     </div>
   );
 }
