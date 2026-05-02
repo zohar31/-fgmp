@@ -4,8 +4,12 @@ import OpenAI from "openai";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { SYSTEM_PROMPT } from "@/lib/agent-prompt";
 import { AGENT_TOOLS, executeTool } from "@/lib/agent-tools";
+import { getValidSession } from "@/lib/agent-verification";
 
 export const runtime = "nodejs";
+
+const SESSION_COOKIE = "fgmp_agent_session";
+const SESSION_COOKIE_MAX_AGE = 30 * 60; // 30 minutes (matches agent_sessions TTL)
 
 const Message = z.object({
   role: z.enum(["user", "assistant"]),
@@ -54,6 +58,19 @@ export async function POST(req: Request) {
   const truncated = parsed.data.messages.slice(-HISTORY_LIMIT);
   const openai = new OpenAI({ apiKey });
 
+  // ── שלוף sessionId מ-cookie אם קיים ועדיין תקף ──
+  // זה מאפשר לסוכן לזכור את האימות בין תורים בלי לבקש קוד שוב
+  const existingSessionId = req.headers
+    .get("cookie")
+    ?.split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${SESSION_COOKIE}=`))
+    ?.split("=")[1];
+  let activeSession = null as Awaited<ReturnType<typeof getValidSession>> | null;
+  if (existingSessionId) {
+    activeSession = await getValidSession(existingSessionId);
+  }
+
   // Build the multi-turn conversation that may include tool calls
   // Messages array we hand to OpenAI grows during the loop as we add tool results
   type ChatMessage =
@@ -62,13 +79,25 @@ export async function POST(req: Request) {
     | { role: "assistant"; content: string | null; tool_calls?: Array<{ id: string; type: "function"; function: { name: string; arguments: string } }> }
     | { role: "tool"; content: string; tool_call_id: string };
 
+  const systemMessages: ChatMessage[] = [{ role: "system", content: SYSTEM_PROMPT }];
+  if (activeSession) {
+    systemMessages.push({
+      role: "system",
+      content:
+        `המשתמש כבר אומת בהצלחה. ה-sessionId שלו: ${existingSessionId}\n` +
+        `השתמש ב-sessionId הזה בכל קריאה לכלים שדורשים sessionId (get_my_status, get_my_settings, get_my_keywords).\n` +
+        `אל תבקש מהמשתמש לאמת שוב — הוא כבר מאומת. תוקף הסשן: ${activeSession.expiresAt.toISOString()}.`,
+    });
+  }
+
   const messages: ChatMessage[] = [
-    { role: "system", content: SYSTEM_PROMPT },
+    ...systemMessages,
     ...truncated.map((m) => ({ role: m.role, content: m.content })),
   ];
 
   try {
     let finalText = "";
+    let newlyVerifiedSessionId: string | null = null;
     for (let iter = 0; iter < MAX_TOOL_ITERATIONS; iter++) {
       const response = await openai.chat.completions.create({
         model: MODEL,
@@ -114,7 +143,25 @@ export async function POST(req: Request) {
         } catch {
           argsObj = {};
         }
+        // אם הסוכן ניסה לקרוא לכלי שדורש sessionId בלי sessionId — ננסה לחזור על
+        // ה-active session מה-cookie (אם קיים).
+        if (
+          activeSession &&
+          existingSessionId &&
+          ["get_my_status", "get_my_settings", "get_my_keywords"].includes(tc.function.name) &&
+          !argsObj.sessionId
+        ) {
+          argsObj.sessionId = existingSessionId;
+        }
         const result = await executeTool(tc.function.name, argsObj);
+        // Detect a successful verification → store sessionId for cookie response
+        if (
+          tc.function.name === "verify_code" &&
+          (result as { ok?: boolean; sessionId?: string }).ok &&
+          (result as { sessionId?: string }).sessionId
+        ) {
+          newlyVerifiedSessionId = (result as { sessionId: string }).sessionId;
+        }
         messages.push({
           role: "tool",
           tool_call_id: tc.id,
@@ -137,13 +184,18 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response(readable, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-store",
-        "X-Accel-Buffering": "no",
-      },
-    });
+    const responseHeaders: Record<string, string> = {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Accel-Buffering": "no",
+    };
+    if (newlyVerifiedSessionId) {
+      // הגדרת cookie של אימות — תוקף 30 דק׳
+      responseHeaders["Set-Cookie"] =
+        `${SESSION_COOKIE}=${newlyVerifiedSessionId}; Path=/api/chat; Max-Age=${SESSION_COOKIE_MAX_AGE}; HttpOnly; SameSite=Strict; Secure`;
+    }
+
+    return new Response(readable, { headers: responseHeaders });
   } catch (err) {
     console.error("[chat] openai error:", err);
     return NextResponse.json(
