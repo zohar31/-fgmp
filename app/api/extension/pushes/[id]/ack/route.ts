@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { db, schema } from "@/lib/db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { z } from "zod";
+
+const TRIAL_DAYS = 7;
 
 export const runtime = "nodejs";
 
@@ -63,14 +65,56 @@ export async function POST(
     return NextResponse.json({ ok: true, alreadyAcked: true, status: existing.status });
   }
 
+  const now = new Date();
   await db
     .update(schema.extensionPushes)
     .set({
       status: parsed.data.status,
-      ackAt: new Date(),
+      ackAt: now,
       errorMessage: parsed.data.error || null,
     })
     .where(eq(schema.extensionPushes.id, id));
 
-  return NextResponse.json({ ok: true });
+  // ── אם זו הדחיפה הראשונה שמועברה בהצלחה — אפס את תאריכי הניסיון ──
+  // הניסיון מתחיל מרגע שהלקוח עבר לתוסף בפועל, לא מרגע ההרשמה
+  let trialReset = false;
+  if (parsed.data.status === "delivered") {
+    const priorDelivered = await db.query.extensionPushes.findFirst({
+      where: and(
+        eq(schema.extensionPushes.userId, existing.userId),
+        eq(schema.extensionPushes.status, "delivered")
+      ),
+    });
+    // priorDelivered יכלול את הנוכחי כי כבר עידכנו — נבדוק אם יש מוקדם יותר
+    const earlierDelivered = await db
+      .select()
+      .from(schema.extensionPushes)
+      .where(
+        and(
+          eq(schema.extensionPushes.userId, existing.userId),
+          eq(schema.extensionPushes.status, "delivered")
+        )
+      )
+      .limit(2);
+    if (earlierDelivered.length === 1) {
+      // רק הדחיפה הנוכחית — אפס את הניסיון
+      const sub = await db.query.subscriptions.findFirst({
+        where: eq(schema.subscriptions.userId, existing.userId),
+      });
+      if (sub && sub.status === "trial_active") {
+        const trialEnds = new Date(now.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
+        await db
+          .update(schema.subscriptions)
+          .set({
+            trialStartedAt: now,
+            trialEndsAt: trialEnds,
+            updatedAt: now,
+          })
+          .where(eq(schema.subscriptions.userId, existing.userId));
+        trialReset = true;
+      }
+    }
+  }
+
+  return NextResponse.json({ ok: true, trialReset });
 }
