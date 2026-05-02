@@ -31,9 +31,48 @@ export async function DELETE(
     return NextResponse.json({ error: "משתמש לא נמצא" }, { status: 404 });
   }
 
-  // Cascade deletes (configured in schema) handle:
-  // accounts, sessions, subscriptions, business_settings, notifications, invoices
-  await db.delete(schema.users).where(eq(schema.users.id, userId));
+  try {
+    // מחיקה מפורשת של רשומות תלויות, ליתר ביטחון (גם אם cascade לא הוגדר נכון)
+    // כל אחד עם try/catch כדי שטבלאות חסרות לא יחסמו
+    await safeDelete(() =>
+      db.delete(schema.extensionPushes).where(eq(schema.extensionPushes.userId, userId))
+    );
+    await safeDelete(() =>
+      db.delete(schema.notifications).where(eq(schema.notifications.userId, userId))
+    );
+    await safeDelete(() =>
+      db.delete(schema.invoices).where(eq(schema.invoices.userId, userId))
+    );
+    await safeDelete(() =>
+      db.delete(schema.businessSettings).where(eq(schema.businessSettings.userId, userId))
+    );
+    await safeDelete(() =>
+      db.delete(schema.subscriptions).where(eq(schema.subscriptions.userId, userId))
+    );
+    await safeDelete(() =>
+      db.delete(schema.sessions).where(eq(schema.sessions.userId, userId))
+    );
+    await safeDelete(() =>
+      db.delete(schema.accounts).where(eq(schema.accounts.userId, userId))
+    );
 
-  return NextResponse.json({ ok: true });
+    // לבסוף — המשתמש עצמו
+    await db.delete(schema.users).where(eq(schema.users.id, userId));
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("[admin delete user] error:", err);
+    const msg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json(
+      { ok: false, error: `מחיקה נכשלה ב-DB: ${msg}` },
+      { status: 500 }
+    );
+  }
+}
+
+async function safeDelete(fn: () => Promise<unknown>): Promise<void> {
+  try {
+    await fn();
+  } catch (e) {
+    console.warn("[admin delete user] dependency delete failed (continuing):", e);
+  }
 }
