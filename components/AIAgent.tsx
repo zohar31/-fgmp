@@ -133,7 +133,7 @@ export function AIAgent() {
             : "translate-y-6 opacity-0 pointer-events-none"
         )}
       >
-        <div className="mx-auto flex h-[80vh] max-h-[640px] w-full flex-col overflow-hidden bg-bg-card shadow-2xl ring-1 ring-white/10 sm:h-[560px] sm:w-[380px] sm:rounded-3xl">
+        <div className="mx-auto flex h-[100dvh] max-h-[100dvh] w-full flex-col overflow-hidden bg-bg-card shadow-2xl ring-1 ring-white/10 sm:h-[560px] sm:max-h-[640px] sm:w-[380px] sm:rounded-3xl">
           <div className="flex items-center justify-between gap-3 bg-gradient-to-l from-brand-700 to-brand-500 px-4 py-3 text-white">
             <div className="flex items-center gap-3">
               <div className="grid h-9 w-9 place-items-center rounded-full bg-white/20 ring-1 ring-white/30">
