@@ -297,7 +297,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
               onChange={(e) => setKeywords(e.target.value)}
               required
               minLength={2}
-              maxLength={400}
+              maxLength={5000}
               className="input"
               placeholder="לדוגמה: עוגה, ימי הולדת, אירועים, קייטרינג"
             />
