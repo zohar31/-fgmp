@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, AlertCircle, Loader2, MessageCircle, ArrowLeft, Sparkles, X, Plus } from "lucide-react";
 import { NICHES, type Niche } from "@/lib/niches";
@@ -144,9 +143,8 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
         setSaving(false);
         return;
       }
-      setStatus({ type: "ok", msg: "ההגדרות נשמרו בהצלחה" });
-      setSaving(false);
-      router.refresh();
+      // הצלחה — מעבר ישיר ל-WhatsApp ללא באנר ביניים
+      router.push("/account/whatsapp");
     } catch {
       setStatus({ type: "error", msg: "שגיאה ברשת. נסו שוב." });
       setSaving(false);
@@ -429,31 +427,6 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
         </button>
       </div>
 
-      {status?.type === "ok" && (
-        <div className="card border-l-4 border-wa p-6">
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="mt-1 h-6 w-6 shrink-0 text-wa" />
-            <div className="flex-1">
-              <h3 className="font-display text-lg font-bold text-white">
-                ✓ ההגדרות נשמרו בהצלחה
-              </h3>
-              <p className="mt-1 text-sm leading-7 text-ink-200">
-                <strong className="text-white">השלב הבא והאחרון:</strong> הפעלת ה-WhatsApp.
-                תועברו לעמוד הפעלה — שם תלחצו על כפתור גדול שיפתח את WhatsApp עם הודעה מוכנה,
-                ותסיימו את ההרשמה.
-              </p>
-              <Link
-                href="/account/whatsapp"
-                className="btn-wa mt-4 text-base"
-              >
-                <MessageCircle className="h-5 w-5" />
-                המשך לשלב הבא — הפעלת WhatsApp
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </form>
   );
 }
