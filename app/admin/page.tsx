@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { db, schema } from "@/lib/db";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { ActivateButton } from "./ActivateButton";
 import { SearchInput } from "./SearchInput";
-import { CheckCircle2, Clock, XCircle, ChevronLeft } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, ChevronLeft, RefreshCw } from "lucide-react";
 
 export default async function AdminUsersPage({
   searchParams,
@@ -25,6 +25,18 @@ export default async function AdminUsersPage({
 
   const subs = await db.select().from(schema.subscriptions);
   const settings = await db.select().from(schema.businessSettings);
+
+  // ── Last delivered push per user — לזיהוי "צריך לדחוף שוב" ──
+  const deliveredPushes = await db
+    .select()
+    .from(schema.extensionPushes)
+    .where(eq(schema.extensionPushes.status, "delivered"))
+    .orderBy(desc(schema.extensionPushes.pushedAt));
+
+  const lastPushByUser = new Map<string, Date>();
+  for (const p of deliveredPushes) {
+    if (!lastPushByUser.has(p.userId)) lastPushByUser.set(p.userId, p.pushedAt);
+  }
 
   const subByUser = new Map(subs.map((s) => [s.userId, s]));
   const settingsByUser = new Map(settings.map((s) => [s.userId, s]));
@@ -138,6 +150,30 @@ export default async function AdminUsersPage({
                               ⏸ מושעה
                             </span>
                           )}
+                          {(() => {
+                            // Indicator: עודכן אחרי הדחיפה האחרונה — צריך לדחוף שוב
+                            if (!sub?.activatedAt) return null;
+                            if (!cfg?.updatedAt) return null;
+                            const lastPush = lastPushByUser.get(u.id);
+                            const settingsTime = cfg.updatedAt.getTime();
+                            const pushTime = lastPush ? lastPush.getTime() : 0;
+                            const needsPush = !lastPush || settingsTime > pushTime + 5000;
+                            // 5s buffer כדי לא להציג ישר אחרי דחיפה
+                            if (!needsPush) return null;
+                            return (
+                              <span
+                                className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-300 ring-1 ring-amber-500/40"
+                                title={
+                                  lastPush
+                                    ? `המנוי עדכן נתונים אחרי הדחיפה האחרונה (${lastPush.toLocaleString("he-IL")})`
+                                    : "מעולם לא נדחף לתוסף"
+                                }
+                              >
+                                <RefreshCw className="h-3 w-3" />
+                                {lastPush ? "עודכן — צריך לדחוף שוב" : "טרם נדחף"}
+                              </span>
+                            );
+                          })()}
                         </div>
                       </td>
                       <td className="p-3 align-top">

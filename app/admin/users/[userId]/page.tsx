@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db, schema } from "@/lib/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { ChevronRight, Mail, Phone, Building, User, Hash, MapPin, Search, Clock, FileText, MessageCircle, Bell, AlertCircle, CheckCircle2 } from "lucide-react";
 import { ActivateButton } from "../../ActivateButton";
 import { RemindButton } from "../../RemindButton";
@@ -26,7 +26,7 @@ export default async function AdminUserDetailPage({
 
   if (!user) notFound();
 
-  const [subscription, settings, notifications, intent] = await Promise.all([
+  const [subscription, settings, notifications, intent, lastDeliveredPush] = await Promise.all([
     db.query.subscriptions.findFirst({
       where: eq(schema.subscriptions.userId, userId),
     }),
@@ -41,7 +41,20 @@ export default async function AdminUserDetailPage({
     db.query.signupIntents.findFirst({
       where: eq(schema.signupIntents.linkedUserId, userId),
     }),
+    db.query.extensionPushes.findFirst({
+      where: and(
+        eq(schema.extensionPushes.userId, userId),
+        eq(schema.extensionPushes.status, "delivered")
+      ),
+      orderBy: [desc(schema.extensionPushes.pushedAt)],
+    }),
   ]);
+
+  // המנוי עדכן נתונים אחרי הדחיפה האחרונה?
+  const settingsUpdated = settings?.updatedAt?.getTime() || 0;
+  const lastPushAt = lastDeliveredPush?.pushedAt?.getTime() || 0;
+  const needsResync = subscription?.activatedAt && settingsUpdated > lastPushAt + 5000;
+  const neverPushed = subscription?.activatedAt && !lastDeliveredPush;
 
   const trialDaysLeft = subscription?.trialEndsAt
     ? Math.max(
@@ -104,6 +117,18 @@ export default async function AdminUserDetailPage({
           )}
           {subscription && (subscription.status === "pending_setup" || subscription.status === "pending_activation") && (
             <RemindButton userId={userId} />
+          )}
+          {subscription && (needsResync || neverPushed) && (
+            <span
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-300 ring-1 ring-amber-500/40"
+              title={
+                neverPushed
+                  ? "המנוי הופעל אבל מעולם לא נדחף לתוסף"
+                  : `המנוי עדכן נתונים אחרי הדחיפה האחרונה (${lastDeliveredPush?.pushedAt.toLocaleString("he-IL")})`
+              }
+            >
+              🔔 {neverPushed ? "טרם נדחף לתוסף" : "המנוי עדכן נתונים — דחוף שוב"}
+            </span>
           )}
           {subscription && (
             <PushToExtensionButton
