@@ -31,21 +31,31 @@ export function PushToExtensionButton({
 
   async function loadHistory() {
     try {
-      const res = await fetch(`/api/admin/users/${userId}/push-to-extension`);
+      const res = await fetch(`/api/admin/users/${userId}/push-to-extension`, {
+        cache: "no-store",
+      });
       const json = (await res.json()) as { ok?: boolean; pushes?: PushHistoryItem[] };
-      if (json.ok && json.pushes) setHistory(json.pushes);
+      if (json.ok && json.pushes) {
+        // אם הפעם הקודמת היה pending והעכשווי הוא delivered → רענן את העמוד
+        // (כדי שה-badge "🔔 דחוף שוב" יעלם)
+        const wasPending = history.some((p) => p.status === "pending");
+        const nowAllResolved = !json.pushes.some((p) => p.status === "pending");
+        setHistory(json.pushes);
+        if (wasPending && nowAllResolved) {
+          router.refresh();
+        }
+      }
     } catch {}
   }
 
   useEffect(() => {
     loadHistory();
-    // רענון הסטטוס כל 10 שנ׳ אם יש pending
-    const id = setInterval(() => {
-      if (history.some((p) => p.status === "pending")) loadHistory();
-    }, 10_000);
+    // רענון רציף כל 10 שנ׳ — קל מאוד (קריאה אחת ל-DB)
+    // וחשוב כדי לראות את המעבר מ-pending ל-delivered/failed
+    const id = setInterval(loadHistory, 10_000);
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userId]);
 
   async function send() {
     setSubmitting(true);
