@@ -63,9 +63,6 @@ export default async function SetupPage() {
           keywords: settings?.keywords ?? null,
           description: settings?.description ?? null,
           telegramUsername: settings?.telegramUsername ?? null,
-          aiFilterEnabled: settings?.aiFilterEnabled ?? true,
-          aiPositiveExamples: settings?.aiPositiveExamples ?? null,
-          aiNegativeExamples: settings?.aiNegativeExamples ?? null,
         }}
       />
     </div>
