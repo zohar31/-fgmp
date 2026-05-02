@@ -174,6 +174,35 @@ export const signupIntents = pgTable("signup_intents", {
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
 
+// extension pushes — אדמין לוחץ "שלח לתוסף" → שורה כאן
+// התוסף ב-VPS פולל endpoint שמחזיר את כל ה-pendings, ומאשר עם /ack
+export const extensionPushStatus = pgEnum("extension_push_status", [
+  "pending",
+  "delivered",
+  "failed",
+]);
+
+export const extensionPushes = pgTable(
+  "extension_pushes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    pushedByAdminId: text("pushedByAdminId").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    pushedAt: timestamp("pushedAt", { mode: "date" }).notNull().defaultNow(),
+    ackAt: timestamp("ackAt", { mode: "date" }),
+    status: extensionPushStatus("status").notNull().default("pending"),
+    errorMessage: text("errorMessage"),
+  },
+  (t) => [
+    index("extension_pushes_status_idx").on(t.status, t.pushedAt),
+    index("extension_pushes_user_idx").on(t.userId, t.pushedAt),
+  ]
+);
+
 export const pageViews = pgTable(
   "page_views",
   {
