@@ -32,3 +32,19 @@ export function waLink(message?: string) {
   const text = message ? `?text=${encodeURIComponent(message)}` : "";
   return `https://wa.me/${SITE.whatsapp}${text}`;
 }
+
+// מנרמל את serviceAreas להצגה — מנויים ישנים שמרו רשימה מלאה של אזורים
+// כש"כל הארץ" כלול → מציג "ארצי" במקום לרשום את כל הארץ
+export function formatServiceAreas(raw: string | null | undefined): string {
+  if (!raw) return "—";
+  const s = raw.trim();
+  if (!s) return "—";
+  // ארצי — חדש או ישן (כש"כל הארץ" מופיע ברשימה)
+  if (s === "ארצי" || /(^|,\s*)כל הארץ(,|$)/.test(s) || /(^|,\s*)ארצי(,|$)/.test(s)) {
+    return "ארצי";
+  }
+  // מקומי חדש: "מקומי — תל אביב"
+  if (s.startsWith("מקומי — ")) return s;
+  // ערכים חופשיים — הצג כמו שהם
+  return s;
+}

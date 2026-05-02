@@ -9,7 +9,7 @@ import { DeleteUserButton } from "./DeleteUserButton";
 import { SuspendButton } from "./SuspendButton";
 import { PushToExtensionButton } from "./PushToExtensionButton";
 import { auth } from "@/lib/auth";
-import { SITE } from "@/lib/config";
+import { SITE, formatServiceAreas } from "@/lib/config";
 
 export default async function AdminUserDetailPage({
   params,
@@ -70,7 +70,7 @@ export default async function AdminUserDetailPage({
     businessName: settings.businessName ?? "",
     contactName: settings.contactName ?? "",
     niche: settings.niche ?? "",
-    serviceAreas: settings.serviceAreas ?? "",
+    serviceAreas: formatServiceAreas(settings.serviceAreas),
     keywords: settings.keywords ?? "",
     leadPhone: settings.leadPhone ?? "",
     description: settings.description ?? "",
@@ -257,7 +257,7 @@ export default async function AdminUserDetailPage({
             </DataItem>
             <DataItem label="תחום עיסוק">{settings.niche || "—"}</DataItem>
             <DataItem label="איזורי שירות" icon={MapPin}>
-              {settings.serviceAreas || "—"}
+              {formatServiceAreas(settings.serviceAreas)}
             </DataItem>
             <DataItem label="מילות מפתח" icon={Search} fullWidth>
               {settings.keywords || "—"}

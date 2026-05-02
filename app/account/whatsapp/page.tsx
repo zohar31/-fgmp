@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { CheckCircle2, AlertCircle, MessageCircle, Settings } from "lucide-react";
-import { SITE } from "@/lib/config";
+import { SITE, formatServiceAreas } from "@/lib/config";
 
 export const metadata: Metadata = { title: "הפעלת WhatsApp" };
 
@@ -95,7 +95,7 @@ export default async function WhatsAppActivationPage() {
     businessName: settings.businessName ?? "",
     contactName: settings.contactName ?? "",
     niche: settings.niche ?? "",
-    serviceAreas: settings.serviceAreas ?? "",
+    serviceAreas: formatServiceAreas(settings.serviceAreas),
     keywords: settings.keywords ?? "",
     leadPhone: settings.leadPhone ?? "",
     description: settings.description ?? "",
