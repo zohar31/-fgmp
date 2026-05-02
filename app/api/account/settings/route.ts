@@ -12,7 +12,7 @@ const SettingsSchema = z.object({
   vatId: z
     .string()
     .trim()
-    .regex(/^\d{9}$/, "ח.פ. / עוסק מורשה חייב להיות 9 ספרות"),
+    .regex(/^\d{9}$/, "ח.פ. / ע.מ. / ת.ז. חייב להיות 9 ספרות"),
   contactEmail: z.string().trim().email().max(120),
   leadPhone: z
     .string()

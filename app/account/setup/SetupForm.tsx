@@ -3,9 +3,6 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, AlertCircle, Loader2, MessageCircle, ArrowLeft, Sparkles, X, Plus } from "lucide-react";
-import { NICHES, type Niche } from "@/lib/niches";
-import { Select } from "@/components/Select";
-import { RegionSelect } from "@/components/RegionSelect";
 
 type Defaults = {
   businessName?: string | null;
@@ -32,15 +29,11 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
   const [loadingSuggest, setLoadingSuggest] = useState(false);
   const [suggestError, setSuggestError] = useState<string | null>(null);
 
-  const initialNicheIsKnown = !!defaults.niche && (NICHES as readonly string[]).includes(defaults.niche);
-  const [niche, setNiche] = useState<string>(
-    initialNicheIsKnown ? (defaults.niche as string) : defaults.niche ? "אחר" : ""
+  const [niche, setNiche] = useState<string>(defaults.niche ?? "");
+  const [serviceAreaMode, setServiceAreaMode] = useState<"national" | "local">(
+    defaults.serviceAreas?.includes("ארצי") || defaults.serviceAreas === "ארצי" ? "national" : "local"
   );
-  const [customNiche, setCustomNiche] = useState<string>(
-    !initialNicheIsKnown && defaults.niche ? defaults.niche : ""
-  );
-  const showCustomNiche = niche === "אחר";
-  const effectiveNiche = showCustomNiche ? customNiche.trim() : niche;
+  const effectiveNiche = niche.trim();
 
   const selectedSet = new Set(
     keywords
@@ -71,11 +64,7 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
     if (!formRef.current) return;
     const fd = new FormData(formRef.current);
     if (!effectiveNiche) {
-      setSuggestError(
-        showCustomNiche
-          ? "פרטו את התחום הספציפי בשדה למטה כדי שה-AI ייתן מילים מתאימות."
-          : "בחרו תחום עיסוק קודם, ואז נציע מילות מפתח מתאימות."
-      );
+      setSuggestError("מלאו את תחום העיסוק קודם, ואז נציע מילות מפתח מתאימות.");
       return;
     }
     setLoadingSuggest(true);
@@ -110,22 +99,28 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
     setSaving(true);
     setStatus(null);
 
-    if (showCustomNiche && !customNiche.trim()) {
-      setStatus({ type: "error", msg: "פרטו את התחום הספציפי או בחרו תחום אחר מהרשימה" });
+    if (!niche.trim()) {
+      setStatus({ type: "error", msg: "יש למלא את תחום העיסוק" });
+      setSaving(false);
+      return;
+    }
+    const localArea = String(new FormData(e.currentTarget).get("localArea") || "").trim();
+    if (serviceAreaMode === "local" && !localArea) {
+      setStatus({ type: "error", msg: "יש לציין באיזה אזור/עיר אתם פועלים" });
       setSaving(false);
       return;
     }
 
     const fd = new FormData(e.currentTarget);
-    const submittedNiche = showCustomNiche ? customNiche.trim() : niche;
+    const serviceAreasValue = serviceAreaMode === "national" ? "ארצי" : `מקומי — ${localArea}`;
     const body = {
       businessName: String(fd.get("businessName") || "").trim(),
       contactName: String(fd.get("contactName") || "").trim(),
       vatId: String(fd.get("vatId") || "").trim(),
       contactEmail: String(fd.get("contactEmail") || "").trim(),
       leadPhone: String(fd.get("leadPhone") || "").trim(),
-      niche: submittedNiche as Niche,
-      serviceAreas: String(fd.get("serviceAreas") || "").trim(),
+      niche: niche.trim(),
+      serviceAreas: serviceAreasValue,
       keywords: keywords.trim(),
       description: String(fd.get("description") || "").trim(),
       telegramUsername: String(fd.get("telegramUsername") || "").trim(),
@@ -177,7 +172,11 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
               placeholder="לדוגמה: חופית חדד"
             />
           </Field>
-          <Field label="ח.פ. / עוסק מורשה" required>
+          <Field
+            label="ח.פ. / ע.מ. / ת.ז."
+            hint="9 ספרות — חברה (ח.פ.), עוסק מורשה (ע.מ.) או יחיד (ת.ז.)"
+            required
+          >
             <input
               name="vatId"
               defaultValue={defaults.vatId ?? ""}
@@ -240,47 +239,71 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       </Section>
 
       <Section title="הגדרות שירות">
-        <Field label="תחום עיסוק" required>
-          <div className="space-y-2">
-            <Select
-              name="niche"
-              options={NICHES}
-              defaultValue={
-                initialNicheIsKnown
-                  ? (defaults.niche as string)
-                  : defaults.niche
-                    ? "אחר"
-                    : ""
-              }
-              placeholder="בחרו תחום"
-              required
-              onChange={(v) => setNiche(v)}
-            />
-            {showCustomNiche && (
-              <input
-                name="customNiche"
-                value={customNiche}
-                onChange={(e) => setCustomNiche(e.target.value)}
-                required
-                minLength={2}
-                maxLength={80}
-                className="input"
-                placeholder="פרטו את התחום הספציפי (למשל: בית קפה, סוכן ביטוח, מורה לטיס)"
-              />
-            )}
-          </div>
+        <Field
+          label="תחום עיסוק"
+          hint="כתבו במילים שלכם — לדוגמה: סוכן ביטוח, קונדיטוריה, שיפוצניק, מאלפת כלבים."
+          required
+        >
+          <input
+            name="niche"
+            value={niche}
+            onChange={(e) => setNiche(e.target.value)}
+            required
+            minLength={2}
+            maxLength={80}
+            className="input"
+            placeholder="לדוגמה: סוכן ביטוח, מנעולן, צלם אירועים"
+          />
         </Field>
 
         <Field
-          label="איזורי שירות"
-          hint='בחרו אזורים בארץ שבהם העסק פעיל. "תל אביב" כוללת אוטומטית את גוש דן והשרון. "כל הארץ" מסמן את הכל בלחיצה.'
+          label="אזורי שירות"
+          hint='ארצי = פעילות בכל הארץ. מקומי = פעילות באזור/עיר ספציפיים — נא לציין.'
           required
         >
-          <RegionSelect
-            name="serviceAreas"
-            defaultValue={defaults.serviceAreas ?? ""}
-            required
-          />
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setServiceAreaMode("national")}
+                className={`rounded-xl px-4 py-3 text-sm font-bold ring-1 transition ${
+                  serviceAreaMode === "national"
+                    ? "bg-wa/15 text-wa ring-wa/40"
+                    : "bg-white/5 text-ink-200 ring-white/10 hover:bg-white/10"
+                }`}
+              >
+                🇮🇱 ארצי — בכל הארץ
+              </button>
+              <button
+                type="button"
+                onClick={() => setServiceAreaMode("local")}
+                className={`rounded-xl px-4 py-3 text-sm font-bold ring-1 transition ${
+                  serviceAreaMode === "local"
+                    ? "bg-brand-500/15 text-brand-300 ring-brand-500/40"
+                    : "bg-white/5 text-ink-200 ring-white/10 hover:bg-white/10"
+                }`}
+              >
+                📍 מקומי — אזור ספציפי
+              </button>
+            </div>
+            {serviceAreaMode === "local" && (
+              <input
+                name="localArea"
+                defaultValue={
+                  defaults.serviceAreas?.startsWith("מקומי — ")
+                    ? defaults.serviceAreas.replace(/^מקומי — /, "")
+                    : !defaults.serviceAreas?.includes("ארצי")
+                      ? defaults.serviceAreas ?? ""
+                      : ""
+                }
+                required
+                minLength={2}
+                maxLength={400}
+                className="input"
+                placeholder="לדוגמה: תל אביב והסביבה, חיפה, מרכז הארץ, ירושלים..."
+              />
+            )}
+          </div>
         </Field>
 
         <Field
