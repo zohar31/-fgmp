@@ -164,6 +164,34 @@ export const AGENT_TOOLS = [
       },
     },
   },
+  {
+    type: "function" as const,
+    function: {
+      name: "escalate_to_admin",
+      description:
+        "מעביר בקשה למחלקה הטכנית/מנהל לטיפול ידני. השתמש בזה כשהמשתמש מבקש פעולה שלא בסמכותך " +
+        "(הוספת/שינוי מילות מפתח, ביטול מנוי, החזר כסף, הארכת ניסיון, וכו׳). " +
+        "תן סיכום ברור של הבקשה ותגיד למשתמש שהבקשה הועברה ויחזרו אליו בקרוב.",
+      parameters: {
+        type: "object",
+        properties: {
+          sessionId: {
+            type: "string",
+            description: "אופציונלי — sessionId אם המשתמש מאומת",
+          },
+          reason: {
+            type: "string",
+            description: "סוג הבקשה (לדוגמה: 'הוספת מילת מפתח', 'בקשת הארכת ניסיון')",
+          },
+          summary: {
+            type: "string",
+            description: "תקציר מפורט בעברית של מה המשתמש מבקש",
+          },
+        },
+        required: ["reason", "summary"],
+      },
+    },
+  },
 ];
 
 // ──────────────────────────────────────────────────────────
@@ -298,6 +326,59 @@ export async function executeTool(
         .filter(Boolean);
       const result = { ok: true, count: keywords.length, keywords };
       await logAction({ sessionId, userId: auth.userId, toolName, args, result });
+      return result;
+    }
+
+    case "escalate_to_admin": {
+      // עובד גם בלי session — מבקרים אנונימיים יכולים לבקש העברה לאדמין.
+      const reason = String(args.reason ?? "פנייה כללית");
+      const summary = String(args.summary ?? "");
+      let userInfo = "";
+      let auth: { ok: true; userId: string; phone: string } | { ok: false; error: string } = { ok: false, error: "" };
+      if (sessionId) {
+        auth = await requireSession(sessionId);
+        if (auth.ok) {
+          const settings = await db.query.businessSettings.findFirst({
+            where: eq(schema.businessSettings.userId, auth.userId),
+          });
+          userInfo =
+            `\n👤 ${settings?.businessName || "לא ידוע"}` +
+            (settings?.contactName ? ` (${settings.contactName})` : "") +
+            `\n📱 ${auth.phone}\n`;
+        }
+      }
+
+      const text =
+        `🤖 *פנייה מסוכן AI*\n\n` +
+        `📝 סוג: ${reason}` +
+        userInfo +
+        `\n💬 *תקציר:*\n${summary}\n\n` +
+        `👉 בדוק ב-/admin אם נדרשת פעולה.`;
+
+      const waUrl = process.env.WA_SERVER_URL || "http://85.130.174.200:3030";
+      const token = process.env.EXTENSION_API_TOKEN;
+      try {
+        if (token) {
+          await fetch(`${waUrl.replace(/\/$/, "")}/admin-notify`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text }),
+          });
+        }
+      } catch (e) {
+        console.warn("[escalate_to_admin] notify failed:", e);
+      }
+
+      const userId = auth.ok ? auth.userId : null;
+      const result = {
+        ok: true,
+        message:
+          "הבקשה הועברה למחלקה הטכנית. נחזור אליך בהקדם דרך הוואטסאפ או באזור האישי.",
+      };
+      await logAction({ sessionId, userId, toolName, args, result });
       return result;
     }
 

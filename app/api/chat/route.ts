@@ -153,7 +153,17 @@ export async function POST(req: Request) {
         ) {
           argsObj.sessionId = existingSessionId;
         }
-        const result = await executeTool(tc.function.name, argsObj);
+        // הרצה בטוחה — שגיאה בכלי לא תקריס את הסוכן
+        let result: Record<string, unknown>;
+        try {
+          result = await executeTool(tc.function.name, argsObj);
+        } catch (toolErr) {
+          console.error(`[chat] tool ${tc.function.name} threw:`, toolErr);
+          result = {
+            ok: false,
+            error: "כלי הסוכן נכשל — אעביר את הבקשה למחלקה הטכנית.",
+          };
+        }
         // Detect a successful verification → store sessionId for cookie response
         if (
           tc.function.name === "verify_code" &&
