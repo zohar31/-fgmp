@@ -312,13 +312,14 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
           required
         >
           <div className="space-y-3">
-            <input
+            <textarea
               name="keywords"
               value={keywords}
               onChange={(e) => setKeywords(e.target.value)}
               required
               minLength={2}
               maxLength={5000}
+              rows={4}
               className="input"
               placeholder="לדוגמה: עוגה, ימי הולדת, אירועים, קייטרינג"
             />
