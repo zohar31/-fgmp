@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import OpenAI from "openai";
+import { eq } from "drizzle-orm";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { SYSTEM_PROMPT } from "@/lib/agent-prompt";
 import { AGENT_TOOLS, executeTool } from "@/lib/agent-tools";
 import { getValidSession } from "@/lib/agent-verification";
+import { auth } from "@/lib/auth";
+import { db, schema } from "@/lib/db";
 
 export const runtime = "nodejs";
 
 const SESSION_COOKIE = "fgmp_agent_session";
 const SESSION_COOKIE_MAX_AGE = 30 * 60; // 30 minutes (matches agent_sessions TTL)
+const AGENT_SESSION_TTL_MS = 30 * 60 * 1000;
 
 const Message = z.object({
   role: z.enum(["user", "assistant"]),
@@ -60,7 +64,7 @@ export async function POST(req: Request) {
 
   // ── שלוף sessionId מ-cookie אם קיים ועדיין תקף ──
   // זה מאפשר לסוכן לזכור את האימות בין תורים בלי לבקש קוד שוב
-  const existingSessionId = req.headers
+  let existingSessionId = req.headers
     .get("cookie")
     ?.split(";")
     .map((c) => c.trim())
@@ -69,6 +73,33 @@ export async function POST(req: Request) {
   let activeSession = null as Awaited<ReturnType<typeof getValidSession>> | null;
   if (existingSessionId) {
     activeSession = await getValidSession(existingSessionId);
+  }
+
+  // ── Auto-verification למשתמשים מחוברי Google ──
+  // אם המשתמש מחובר עם NextAuth (Google login) — אין צורך לאמת אותו דרך
+  // קוד SMS. ניצור לו אוטומטית agent_session ונחזיר cookie.
+  let autoCreatedSessionId: string | null = null;
+  if (!activeSession) {
+    const nextAuthSession = await auth();
+    if (nextAuthSession?.user?.id) {
+      const userId = nextAuthSession.user.id;
+      const settings = await db.query.businessSettings.findFirst({
+        where: eq(schema.businessSettings.userId, userId),
+      });
+      const phone = settings?.leadPhone || "google_auto";
+      const expiresAt = new Date(Date.now() + AGENT_SESSION_TTL_MS);
+      const [newSess] = await db
+        .insert(schema.agentSessions)
+        .values({ userId, phone, expiresAt })
+        .returning();
+      activeSession = {
+        userId: newSess.userId,
+        phone: newSess.phone,
+        expiresAt: newSess.expiresAt,
+      };
+      existingSessionId = newSess.id;
+      autoCreatedSessionId = newSess.id;
+    }
   }
 
   // Build the multi-turn conversation that may include tool calls
@@ -205,10 +236,11 @@ export async function POST(req: Request) {
       "Cache-Control": "no-store",
       "X-Accel-Buffering": "no",
     };
-    if (newlyVerifiedSessionId) {
+    const sessionToCookie = newlyVerifiedSessionId || autoCreatedSessionId;
+    if (sessionToCookie) {
       // הגדרת cookie של אימות — תוקף 30 דק׳
       responseHeaders["Set-Cookie"] =
-        `${SESSION_COOKIE}=${newlyVerifiedSessionId}; Path=/api/chat; Max-Age=${SESSION_COOKIE_MAX_AGE}; HttpOnly; SameSite=Strict; Secure`;
+        `${SESSION_COOKIE}=${sessionToCookie}; Path=/api/chat; Max-Age=${SESSION_COOKIE_MAX_AGE}; HttpOnly; SameSite=Strict; Secure`;
     }
 
     return new Response(readable, { headers: responseHeaders });
