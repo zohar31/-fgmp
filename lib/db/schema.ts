@@ -106,6 +106,10 @@ export const businessSettings = pgTable("business_settings", {
   hoursEnd: time("hoursEnd"),
   description: text("description"),
   telegramUsername: text("telegramUsername"),
+  // AI filter — enabled by default for every new customer
+  aiFilterEnabled: boolean("aiFilterEnabled").notNull().default(true),
+  aiPositiveExamples: text("aiPositiveExamples"),
+  aiNegativeExamples: text("aiNegativeExamples"),
   updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
 });
 
