@@ -158,9 +158,14 @@ html.a11y-no-motion *::after {
   }
 }
 
-/* mobile only: when chat agent is open, lift the a11y FAB above the chat textbox */
-@media (max-width: 639px) {
-  body.chat-agent-open .fgmp-a11y-fab {
-    bottom: 7rem;
-  }
+/* a11y FAB — fade out while chat is open so it doesn't cover the chat input/buttons.
+   Returns smoothly when chat closes. */
+.fgmp-a11y-fab {
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+body.chat-agent-open .fgmp-a11y-fab {
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+  visibility: hidden;
+  pointer-events: none;
 }
