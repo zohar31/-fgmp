@@ -6,8 +6,13 @@ export const alt = `לידים מקבוצות פייסבוק לוואטסאפ א
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// satori לא תומך באלגוריתם BiDi של Unicode. הפתרון המוכר: להפוך ידנית טקסט עברי
+// לפני העברה ל-renderer, כך שיראה תקין בתמונה הסופית
+function rev(s: string): string {
+  return s.split("").reverse().join("");
+}
+
 // טוען פונט שתומך בעברית — Heebo Bold מ-Google Fonts
-// בלי פונט עברי, satori לא יודע לסדר טקסט RTL נכון
 async function loadHebrewFont() {
   const css = await fetch(
     "https://fonts.googleapis.com/css2?family=Heebo:wght@800&display=swap",
@@ -70,6 +75,7 @@ export default async function Image() {
             fontWeight: 800,
             color: "white",
             letterSpacing: "-0.02em",
+            fontFamily: "Heebo",
           }}
         >
           {SITE.brand}
@@ -83,6 +89,7 @@ export default async function Image() {
             justifyContent: "center",
             flex: 1,
             marginTop: "40px",
+            alignItems: "flex-start",
           }}
         >
           <div
@@ -92,9 +99,13 @@ export default async function Image() {
               color: "white",
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
+              fontFamily: "Heebo",
+              direction: "rtl",
+              textAlign: "right",
+              display: "flex",
             }}
           >
-            לידים מקבוצות פייסבוק
+            {rev("לידים מקבוצות פייסבוק")}
           </div>
           <div
             style={{
@@ -106,9 +117,13 @@ export default async function Image() {
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
               marginTop: "12px",
+              fontFamily: "Heebo",
+              direction: "rtl",
+              textAlign: "right",
+              display: "flex",
             }}
           >
-            ישירות ל-WhatsApp ו-Telegram
+            {rev("ישירות לוואטסאפ וטלגרם")}
           </div>
           <div
             style={{
@@ -116,14 +131,18 @@ export default async function Image() {
               color: "#cbd5e1",
               marginTop: "32px",
               lineHeight: 1.4,
+              fontFamily: "Heebo",
+              direction: "rtl",
+              textAlign: "right",
+              display: "flex",
             }}
           >
-            מערכת AI שסורקת 24/7 ושולחת לידים בזמן אמת
+            {rev("מערכת AI שסורקת 24/7 ושולחת לידים בזמן אמת")}
           </div>
         </div>
 
         {/* footer pills */}
-        <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "16px", alignItems: "center", flexDirection: "row-reverse" }}>
           <div
             style={{
               display: "flex",
@@ -136,9 +155,10 @@ export default async function Image() {
               fontSize: "26px",
               color: "#25D366",
               fontWeight: 600,
+              fontFamily: "Heebo",
             }}
           >
-            7 ימי ניסיון חינם
+            {rev("7 ימי ניסיון חינם")}
           </div>
           <div
             style={{
@@ -151,15 +171,17 @@ export default async function Image() {
               fontSize: "26px",
               color: "#c4b5fd",
               fontWeight: 600,
+              fontFamily: "Heebo",
             }}
           >
-            ללא כרטיס אשראי
+            {rev("ללא כרטיס אשראי")}
           </div>
           <div
             style={{
-              marginLeft: "auto",
+              marginRight: "auto",
               fontSize: "26px",
               color: "#94a3b8",
+              fontFamily: "Heebo",
             }}
           >
             {SITE.domain}
