@@ -203,6 +203,66 @@ export const extensionPushes = pgTable(
   ]
 );
 
+// ─────────────────────────────────────────────────────────
+// Agent — phone verification + sessions + audit log
+// ─────────────────────────────────────────────────────────
+//
+// The website agent verifies subscribers via a 5-digit code sent to their
+// leadPhone (via wa-server). Once verified, an agent_sessions row is created
+// (30 min TTL). Every tool the agent invokes is logged to agent_actions.
+
+export const phoneVerifications = pgTable(
+  "phone_verifications",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    phone: text("phone").notNull(),
+    codeHash: text("codeHash").notNull(), // bcrypt of the 5-digit code
+    expiresAt: timestamp("expiresAt", { mode: "date" }).notNull(),
+    attempts: integer("attempts").notNull().default(0),
+    verifiedAt: timestamp("verifiedAt", { mode: "date" }),
+    blockedUntil: timestamp("blockedUntil", { mode: "date" }),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("phone_verifications_phone_idx").on(t.phone, t.createdAt),
+  ]
+);
+
+export const agentSessions = pgTable(
+  "agent_sessions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    phone: text("phone").notNull(),
+    expiresAt: timestamp("expiresAt", { mode: "date" }).notNull(),
+    lastUsedAt: timestamp("lastUsedAt", { mode: "date" }).notNull().defaultNow(),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("agent_sessions_user_idx").on(t.userId, t.expiresAt),
+  ]
+);
+
+export const agentActions = pgTable(
+  "agent_actions",
+  {
+    id: serial("id").primaryKey(),
+    sessionId: uuid("sessionId"),
+    userId: text("userId"),
+    toolName: text("toolName").notNull(),
+    args: text("args"), // JSON string
+    result: text("result"), // JSON string
+    error: text("error"),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("agent_actions_user_idx").on(t.userId, t.createdAt),
+    index("agent_actions_tool_idx").on(t.toolName, t.createdAt),
+  ]
+);
+
 export const pageViews = pgTable(
   "page_views",
   {
