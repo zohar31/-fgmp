@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { Logo } from "@/components/Logo";
-import { Users, FileText, LogOut, Home, Mail, BarChart3, Search } from "lucide-react";
+import { Users, FileText, LogOut, Home, Mail, BarChart3, Search, Bot } from "lucide-react";
 
 export const metadata: Metadata = {
   title: { template: "%s · Admin", default: "Admin · FGMP" },
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 const navItems = [
   { href: "/admin", label: "מנויים", icon: Users },
+  { href: "/admin/agent-log", label: "פעולות סוכן", icon: Bot },
   { href: "/admin/analytics", label: "סטטיסטיקה", icon: BarChart3 },
   { href: "/admin/seo", label: "SEO ובריאות אתר", icon: Search },
   { href: "/admin/reminders", label: "תזכורות", icon: Mail },

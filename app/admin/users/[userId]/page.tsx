@@ -8,6 +8,7 @@ import { RemindButton } from "../../RemindButton";
 import { DeleteUserButton } from "./DeleteUserButton";
 import { SuspendButton } from "./SuspendButton";
 import { PushToExtensionButton } from "./PushToExtensionButton";
+import { AgentActionsCard } from "./AgentActionsCard";
 import { auth } from "@/lib/auth";
 import { SITE, formatServiceAreas } from "@/lib/config";
 
@@ -318,6 +319,9 @@ export default async function AdminUserDetailPage({
           </dl>
         </section>
       )}
+
+      {/* Agent actions */}
+      <AgentActionsCard userId={userId} />
 
       {/* Notifications */}
       <section className="card p-6">
