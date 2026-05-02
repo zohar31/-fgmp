@@ -8,9 +8,9 @@ export const runtime = "nodejs";
 
 const Body = z.object({
   niche: z.string().trim().min(2).max(80),
-  serviceAreas: z.string().trim().max(200).optional().default(""),
-  description: z.string().trim().max(500).optional().default(""),
-  businessName: z.string().trim().max(80).optional().default(""),
+  serviceAreas: z.string().trim().max(1000).optional().default(""),
+  description: z.string().trim().max(800).optional().default(""),
+  businessName: z.string().trim().max(120).optional().default(""),
 });
 
 export async function POST(req: Request) {
@@ -31,7 +31,11 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const parsed = Body.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "פרטים לא תקינים" }, { status: 400 });
+    const issue = parsed.error.issues[0];
+    const msg = issue
+      ? `פרטים לא תקינים — ${issue.path.join(".")}: ${issue.message}`
+      : "פרטים לא תקינים";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const apiKey = process.env.OPENAI_API_KEY;
