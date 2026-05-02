@@ -7,6 +7,7 @@ import { ActivateButton } from "../../ActivateButton";
 import { RemindButton } from "../../RemindButton";
 import { DeleteUserButton } from "./DeleteUserButton";
 import { SuspendButton } from "./SuspendButton";
+import { PushToExtensionButton } from "./PushToExtensionButton";
 import { auth } from "@/lib/auth";
 import { SITE } from "@/lib/config";
 
@@ -103,6 +104,20 @@ export default async function AdminUserDetailPage({
           )}
           {subscription && (subscription.status === "pending_setup" || subscription.status === "pending_activation") && (
             <RemindButton userId={userId} />
+          )}
+          {subscription && (
+            <PushToExtensionButton
+              userId={userId}
+              disabled={
+                !subscription.activatedAt ||
+                !["trial_active", "active"].includes(subscription.status)
+              }
+              disabledReason={
+                !subscription.activatedAt
+                  ? "המשתמש לא הפעיל את WhatsApp עדיין"
+                  : `מנוי לא פעיל (${subscription.status})`
+              }
+            />
           )}
           {subscription && subscription.status !== "cancelled" && !isSelf && (
             <SuspendButton userId={userId} isSuspended={!!subscription.suspendedAt} />
