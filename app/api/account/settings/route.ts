@@ -49,10 +49,27 @@ export async function POST(req: Request) {
 
   const parsed = SettingsSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message || "פרטים לא תקינים" },
-      { status: 400 }
-    );
+    const issue = parsed.error.issues[0];
+    const fieldLabels: Record<string, string> = {
+      businessName: "שם העסק",
+      contactName: "שם איש קשר",
+      vatId: "ח.פ. / עוסק מורשה",
+      contactEmail: "אימייל",
+      leadPhone: "טלפון לקבלת לידים",
+      niche: "תחום עיסוק",
+      serviceAreas: "אזורי שירות",
+      keywords: "מילות מפתח",
+      description: "תיאור",
+      telegramUsername: "טלגרם",
+    };
+    const fieldKey = issue?.path[0] as string | undefined;
+    const fieldName = fieldKey ? fieldLabels[fieldKey] || fieldKey : "";
+    const msg = issue
+      ? fieldName
+        ? `${fieldName}: ${issue.message}`
+        : issue.message
+      : "פרטים לא תקינים";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const data = parsed.data;
