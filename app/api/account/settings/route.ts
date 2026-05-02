@@ -29,6 +29,9 @@ const SettingsSchema = z.object({
     .regex(/^@?[a-zA-Z0-9_]{4,32}$/, "שם משתמש בטלגרם לא תקין (אותיות לטיניות, מספרים, underscore)")
     .optional()
     .or(z.literal("")),
+  aiFilterEnabled: z.boolean().optional(),
+  aiPositiveExamples: z.string().trim().max(2000).optional().or(z.literal("")),
+  aiNegativeExamples: z.string().trim().max(2000).optional().or(z.literal("")),
 });
 
 export async function POST(req: Request) {
@@ -76,6 +79,9 @@ export async function POST(req: Request) {
     hoursEnd: null,
     description: data.description,
     telegramUsername: telegramNormalized || null,
+    aiFilterEnabled: data.aiFilterEnabled ?? true,
+    aiPositiveExamples: data.aiPositiveExamples || null,
+    aiNegativeExamples: data.aiNegativeExamples || null,
     updatedAt: new Date(),
   };
 

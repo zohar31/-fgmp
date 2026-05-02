@@ -19,6 +19,9 @@ type Defaults = {
   keywords?: string | null;
   description?: string | null;
   telegramUsername?: string | null;
+  aiFilterEnabled?: boolean;
+  aiPositiveExamples?: string | null;
+  aiNegativeExamples?: string | null;
 };
 
 export function SetupForm({ defaults }: { defaults: Defaults }) {
@@ -32,6 +35,16 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loadingSuggest, setLoadingSuggest] = useState(false);
   const [suggestError, setSuggestError] = useState<string | null>(null);
+
+  const [aiFilterEnabled, setAiFilterEnabled] = useState<boolean>(
+    defaults.aiFilterEnabled !== false
+  );
+  const [aiPositiveExamples, setAiPositiveExamples] = useState<string>(
+    defaults.aiPositiveExamples ?? ""
+  );
+  const [aiNegativeExamples, setAiNegativeExamples] = useState<string>(
+    defaults.aiNegativeExamples ?? ""
+  );
 
   const initialNicheIsKnown = !!defaults.niche && (NICHES as readonly string[]).includes(defaults.niche);
   const [niche, setNiche] = useState<string>(
@@ -130,6 +143,9 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
       keywords: keywords.trim(),
       description: String(fd.get("description") || "").trim(),
       telegramUsername: String(fd.get("telegramUsername") || "").trim(),
+      aiFilterEnabled,
+      aiPositiveExamples: aiPositiveExamples.trim(),
+      aiNegativeExamples: aiNegativeExamples.trim(),
     };
 
     try {
@@ -396,6 +412,86 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
             placeholder="לדוגמה: מאפיית בוטיק עם דגש על עוגות מעוצבות לאירועים. תקציב מינימום 800₪. לא רלוונטי: עוגות יום הולדת קטנות לילדים."
           />
         </Field>
+      </Section>
+
+      <Section title="סינון AI חכם">
+        <div className="rounded-2xl bg-gradient-to-br from-brand-500/10 to-wa/5 p-4 ring-1 ring-brand-500/20">
+          <button
+            type="button"
+            onClick={() => setAiFilterEnabled((v) => !v)}
+            role="switch"
+            aria-checked={aiFilterEnabled}
+            className="flex w-full items-start gap-4 text-right"
+          >
+            <span
+              className={`mt-1 grid h-6 w-11 shrink-0 place-items-center rounded-full transition ${
+                aiFilterEnabled ? "bg-wa" : "bg-white/15"
+              }`}
+            >
+              <span
+                className={`h-4 w-4 rounded-full bg-white transition-transform ${
+                  aiFilterEnabled ? "translate-x-2" : "-translate-x-2"
+                }`}
+              />
+            </span>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-brand-300" />
+                <span className="font-bold text-white">
+                  סינון AI {aiFilterEnabled ? "מופעל" : "כבוי"}
+                </span>
+                {aiFilterEnabled && (
+                  <span className="rounded-full bg-wa/20 px-2 py-0.5 text-[10px] font-bold text-wa ring-1 ring-wa/40">
+                    מומלץ
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-xs leading-6 text-ink-300">
+                {aiFilterEnabled
+                  ? "ה-AI יבדוק כל פוסט שעובר את מילות המפתח ויחליט אם הוא באמת רלוונטי לעסק שלך — מסנן ספאם, מתחרים, ושאלות לא רלוונטיות. תקבל פחות לידים אבל איכותיים יותר."
+                  : "כל פוסט שיעבור את מילות המפתח יישלח אליך ישירות — בלי בדיקה. תקבל הרבה יותר לידים, אבל גם הרבה יותר ספאם ולא רלוונטיים."}
+              </p>
+            </div>
+          </button>
+        </div>
+
+        {aiFilterEnabled && (
+          <>
+            <Field
+              label="מה כן רלוונטי? תן 3-5 דוגמאות"
+              hint="דוגמאות לפוסטים שכן היית רוצה לקבל. ככל שיותר ספציפי — סינון מדויק יותר."
+            >
+              <textarea
+                value={aiPositiveExamples}
+                onChange={(e) => setAiPositiveExamples(e.target.value)}
+                maxLength={2000}
+                rows={4}
+                className="input"
+                placeholder='לדוגמה (לעוגות):
+1. "מחפשת קונדיטוריה לחתונה ב-15.6"
+2. "מי יכול להמליץ על מאפיית בוטיק לעוגת יום הולדת מעוצבת?"
+3. "צריך עוגת אירוסין מקסימה, תקציב 1500"'
+              />
+            </Field>
+
+            <Field
+              label="מה לא רלוונטי? תן 3-5 דוגמאות"
+              hint="דוגמאות לפוסטים שלא היית רוצה לקבל — AI ידע לדחות אותם אוטומטית."
+            >
+              <textarea
+                value={aiNegativeExamples}
+                onChange={(e) => setAiNegativeExamples(e.target.value)}
+                maxLength={2000}
+                rows={4}
+                className="input"
+                placeholder='לדוגמה (לעוגות):
+1. "אני קונדיטורית, מחפשת עבודה" (מתחרה)
+2. "מתכון לעוגה ביתית?" (לא לקוח)
+3. "מבצע על תבניות אפייה" (לא רלוונטי)'
+              />
+            </Field>
+          </>
+        )}
       </Section>
 
       <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
