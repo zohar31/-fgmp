@@ -82,6 +82,12 @@ async function handle(req: Request) {
   const responseMsg = tranzilaResponseMessage(payload.Response);
   const amountInt = parseInt(payload.sum, 10) || 0;
 
+  // Save raw payload as the response message so we can see ALL keys
+  // Tranzila sent — debug helper while we figure out their payload format
+  const rawDump =
+    `Response=${payload.Response} | RawKeys=${Object.keys(payload.raw).join(",")} | ` +
+    `RawSnippet=${JSON.stringify(payload.raw).slice(0, 500)}`;
+
   await db.insert(schema.invoices).values({
     userId,
     amount: amountInt,
@@ -90,8 +96,8 @@ async function handle(req: Request) {
     paidAt: isSuccess ? new Date() : null,
     tranzilaIndex: payload.index || null,
     tranzilaConfirmationCode: payload.ConfirmationCode || null,
-    tranzilaResponseCode: payload.Response,
-    tranzilaResponseMessage: responseMsg,
+    tranzilaResponseCode: payload.Response || "no_response",
+    tranzilaResponseMessage: payload.Response ? responseMsg : rawDump,
     paymentMethod: payload.paymentMethod || "credit_card",
     isRecurring: false,
   });
