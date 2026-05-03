@@ -6,7 +6,7 @@ import { parseTranzilaNotify, tranzilaResponseMessage } from "@/lib/tranzila";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// POST /api/billing/notify
+// /api/billing/notify
 // Server-to-server webhook from Tranzila after a hosted-page payment.
 // This is the AUTHORITATIVE source of payment status — never trust the
 // browser-side success_url_address alone, since the customer can navigate
@@ -15,22 +15,45 @@ export const dynamic = "force-dynamic";
 // Tranzila POSTs a urlencoded form with: Response, index, ConfirmationCode,
 // TranzilaTK (token if requested), expdate, ccno (last 4), cardtype, sum,
 // pdesc (our externalRef = userId), and customer info echoed back.
+//
+// Some setups call this via GET with query params instead of POST — we
+// accept both.
+
+export async function GET(req: Request) {
+  return handle(req);
+}
 
 export async function POST(req: Request) {
-  // Tranzila uses application/x-www-form-urlencoded
-  const formData = await req.formData().catch(async () => {
-    // Fallback: maybe sent as URL params in body
-    const text = await req.text().catch(() => "");
-    return new URLSearchParams(text) as unknown as FormData;
+  return handle(req);
+}
+
+async function handle(req: Request) {
+  console.log("[billing/notify] hit", {
+    method: req.method,
+    url: req.url,
+    contentType: req.headers.get("content-type"),
+    userAgent: req.headers.get("user-agent")?.slice(0, 60),
   });
 
+  let formData: FormData | URLSearchParams;
+  if (req.method === "GET") {
+    const url = new URL(req.url);
+    formData = url.searchParams;
+  } else {
+    formData = await req.formData().catch(async () => {
+      const text = await req.text().catch(() => "");
+      return new URLSearchParams(text) as unknown as FormData;
+    });
+  }
+
   const payload = parseTranzilaNotify(formData);
-  console.log("[billing/notify] received", {
+  console.log("[billing/notify] payload", {
     Response: payload.Response,
     index: payload.index,
     pdesc: payload.pdesc,
     sum: payload.sum,
     paymentMethod: payload.paymentMethod,
+    rawKeys: Object.keys(payload.raw),
   });
 
   const userId = payload.pdesc;
