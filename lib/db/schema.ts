@@ -86,6 +86,14 @@ export const subscriptions = pgTable("subscriptions", {
   lastReminderAt: timestamp("lastReminderAt", { mode: "date" }),
   cancelledAt: timestamp("cancelledAt", { mode: "date" }),
   cancellationReason: text("cancellationReason"),
+  // Tranzila billing fields
+  tranzilaToken: text("tranzilaToken"),
+  tranzilaTokenExpiry: text("tranzilaTokenExpiry"), // YYMM
+  tranzilaCardLast4: text("tranzilaCardLast4"),
+  tranzilaCardBrand: text("tranzilaCardBrand"),
+  lastPaymentAt: timestamp("lastPaymentAt", { mode: "date" }),
+  nextChargeAt: timestamp("nextChargeAt", { mode: "date" }),
+  failedChargeCount: integer("failedChargeCount").notNull().default(0),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
 });
@@ -158,6 +166,13 @@ export const invoices = pgTable(
     paidAt: timestamp("paidAt", { mode: "date" }),
     pdfUrl: text("pdfUrl"),
     providerInvoiceId: text("providerInvoiceId"),
+    // Tranzila transaction details
+    tranzilaIndex: text("tranzilaIndex"),
+    tranzilaConfirmationCode: text("tranzilaConfirmationCode"),
+    tranzilaResponseCode: text("tranzilaResponseCode"),
+    tranzilaResponseMessage: text("tranzilaResponseMessage"),
+    paymentMethod: text("paymentMethod"), // 'credit_card' | 'bit' | etc.
+    isRecurring: boolean("isRecurring").notNull().default(false),
   },
   (table) => [index("invoices_userId_idx").on(table.userId, table.issuedAt)]
 );

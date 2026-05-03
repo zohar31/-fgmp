@@ -12,6 +12,7 @@ import {
   Bell,
   LogOut,
   XCircle,
+  CreditCard,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/account", label: "סטטוס", icon: LayoutDashboard },
   { href: "/account/setup", label: "הגדרות עסק", icon: Settings },
   { href: "/account/whatsapp", label: "הפעלת WhatsApp", icon: MessageCircle },
+  { href: "/account/billing", label: "תשלום ומנוי", icon: CreditCard },
   { href: "/account/invoices", label: "חשבוניות", icon: Receipt },
   { href: "/account/notifications", label: "הודעות", icon: Bell },
   { href: "/account/cancel", label: "ביטול מנוי", icon: XCircle },
