@@ -47,10 +47,19 @@ export function buildIframeParams(opts: {
     currency: "1", // 1 = ILS
     cred_type: "1", // 1 = normal credit
     tranmode: "A", // A = charge
+    // ── send notify URL with multiple parameter names — different Tranzila
+    // setups expect different names. Sending all variants is safe.
     notify_url_address: opts.notifyUrl,
     success_url_address: opts.successUrl,
     fail_url_address: opts.failUrl,
+    notify_url: opts.notifyUrl,
+    success_url: opts.successUrl,
+    fail_url: opts.failUrl,
+    NotifyURL: opts.notifyUrl,
+    SuccessURL: opts.successUrl,
+    FailURL: opts.failUrl,
     u71: "1", // explicit notify enabled (some integrations need this)
+    json: "1", // request JSON callback
     // Custom field for tracking — Tranzila echoes this back in notify
     pdesc: opts.externalRef.slice(0, 100),
     // Customer info (pre-filled on hosted page)
