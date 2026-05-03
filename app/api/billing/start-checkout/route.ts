@@ -52,9 +52,13 @@ export async function POST(req: Request) {
     email: parsed.data.email,
     phone: parsed.data.phone,
     myid: parsed.data.myid,
+    // The /api/billing/return endpoint accepts both GET and POST and
+    // handles success+fail by reading Response code, then 302-redirects
+    // the browser to /billing-success or /billing-fail (regular GET pages).
+    // notify_url_address (server-to-server) goes to a separate endpoint.
     notifyUrl: `${baseUrl}/api/billing/notify`,
-    successUrl: `${baseUrl}/billing-success`,
-    failUrl: `${baseUrl}/billing-fail`,
+    successUrl: `${baseUrl}/api/billing/return`,
+    failUrl: `${baseUrl}/api/billing/return`,
     externalRef: parsed.data.userId,
     enableTokenization: true,
     enableBit: true,
