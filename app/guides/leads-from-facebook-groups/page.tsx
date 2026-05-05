@@ -260,13 +260,14 @@ export default function GuidePage() {
               משתפים תכנים ללא רשות, לא מבצעים פעולות אוטומטיות בחשבון של אף אחד, ולא חודרים לקבוצות
               חסויות. לפרטי תקנון <Link href="/terms" className="text-brand-300 underline">כאן</Link>.
             </p>
-            <h3>צריך כרטיס אשראי כדי לנסות?</h3>
+            <h3>איך זה עם הסיכון? יש ניסיון?</h3>
             <p>
-              לא. {SITE.pricing.trialDays} ימי ניסיון חינם, ללא כרטיס אשראי. רק אם תחליט להמשיך — נבקש
-              פרטי תשלום (Tranzila, מערכת סליקה ישראלית מאובטחת).
+              יש ערבות החזר מלא {SITE.pricing.refundDays} ימים. אתה משלם 299 ₪ בהרשמה (סליקה מאובטחת
+              דרך Tranzila), ואם בתוך {SITE.pricing.refundDays} הימים הראשונים תרגיש שזה לא בשבילך —
+              שולח בקשת ביטול דרך האזור האישי, האדמין מאשר ומחזיר את כל ה-299 ₪.
             </p>
             <h3>איך מבטלים?</h3>
-            <p>בלחיצה אחת מהאזור האישי, או בהודעת וואטסאפ. ביטול מיידי, ללא התחייבות.</p>
+            <p>בלחיצה באזור האישי באתר. הבקשה עוברת למחלקת זיכויים FGMP — האדמין מאשר ידנית (בדרך כלל תוך 24 שעות). בתוך {SITE.pricing.refundDays} ימים = החזר מלא; אחרי = ביטול לסוף החודש המשולם.</p>
             <h3>כמה זמן לוקח להתחיל?</h3>
             <p>12-48 שעות מהרגע שאתה נרשם. אנחנו מגדירים את הסינון לתחום שלך, ואז ההתראות מתחילות.</p>
 
@@ -278,7 +279,7 @@ export default function GuidePage() {
             </p>
             <p>
               {SITE.brand} סורקת בשבילך 24/7, מסננת ב-AI לפי התחום שלך, ושולחת לוואטסאפ או טלגרם תוך שניות
-              מפרסום הפוסט. {SITE.pricing.trialDays} ימי ניסיון חינם, ללא כרטיס אשראי, ללא חוזה.
+              מפרסום הפוסט. {SITE.pricing.monthlyILS}₪/חודש, ערבות החזר מלא {SITE.pricing.refundDays} ימים, ללא חוזה.
             </p>
           </div>
 
@@ -290,7 +291,7 @@ export default function GuidePage() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link href="/login" className="btn-wa text-base">
                 <CheckCircle2 className="h-5 w-5" />
-                התחילו {SITE.pricing.trialDays} ימי ניסיון חינם
+                התחילו עכשיו — {SITE.pricing.monthlyILS}₪/חודש
               </Link>
               <a
                 href={waLink("היי, קראתי את המדריך ויש לי שאלה")}

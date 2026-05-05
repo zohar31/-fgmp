@@ -210,13 +210,12 @@ export default function LeadCostGuide() {
               רוצה לראות את העלות האמיתית עבור התחום שלך?
             </h3>
             <p className="mt-2 text-ink-200">
-              {SITE.pricing.trialDays} ימי ניסיון חינם. תקבל לידים אמיתיים, תחשב את שיעור ההמרה שלך,
-              ותחליט.
+              {SITE.pricing.monthlyILS}₪/חודש עם ערבות החזר מלא {SITE.pricing.refundDays} ימים. תקבל לידים אמיתיים, תחשב שיעור המרה, ותחליט.
             </p>
             <div className="mt-6">
               <Link href="/login" className="btn-wa text-base">
                 <CheckCircle2 className="h-5 w-5" />
-                התחילו ניסיון חינם
+                התחילו עכשיו
               </Link>
             </div>
           </div>

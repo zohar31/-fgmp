@@ -199,7 +199,7 @@ export default function FollowUpGuide() {
             <div className="mt-6">
               <Link href="/login" className="btn-wa text-base">
                 <CheckCircle2 className="h-5 w-5" />
-                התחילו {SITE.pricing.trialDays} ימי ניסיון חינם
+                התחילו עכשיו — {SITE.pricing.monthlyILS}₪/חודש
               </Link>
             </div>
           </div>
