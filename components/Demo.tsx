@@ -9,10 +9,22 @@ const benefits = [
 ];
 
 const screenshots = [
-  { src: "/screenshots/lead-cosmetics.jpg", alt: "ליד מקבוצת פייסבוק לשירותי איפור" },
-  { src: "/screenshots/lead-bakery.jpg", alt: "ליד מקבוצת פייסבוק לעוגות אירועים" },
-  { src: "/screenshots/lead-photographer.jpg", alt: "ליד מקבוצת פייסבוק לצלם חתונות" },
-  { src: "/screenshots/lead-insurance.jpg", alt: "ליד מקבוצת פייסבוק לסוכן ביטוח" },
+  {
+    src: "/screenshots/lead-cosmetics.jpg",
+    alt: "ליד אמיתי בוואטסאפ למאפרת אירועים — נשלח ע״י FGMP אחרי איתור פוסט בקבוצת פייסבוק",
+  },
+  {
+    src: "/screenshots/lead-bakery.jpg",
+    alt: "ליד אמיתי בוואטסאפ לקונדיטורית עוגות אירועים — איתור אוטומטי מקבוצת פייסבוק",
+  },
+  {
+    src: "/screenshots/lead-photographer.jpg",
+    alt: "ליד אמיתי בוואטסאפ לצלם חתונות — סריקת AI של קבוצות פייסבוק בישראל",
+  },
+  {
+    src: "/screenshots/lead-insurance.jpg",
+    alt: "ליד אמיתי בוואטסאפ לסוכן ביטוח — לקוח מחפש בקבוצת פייסבוק, FGMP זיהה ושלח",
+  },
 ];
 
 export function Demo() {

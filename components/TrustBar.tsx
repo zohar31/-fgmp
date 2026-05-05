@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Activity, Bell, Globe, Zap, MessageCircle, Search } from "lucide-react";
 import { TelegramIcon } from "./TelegramIcon";
 
@@ -25,6 +26,15 @@ export function TrustBar() {
               <div className="text-xs text-ink-300">{s.label}</div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-3 text-center">
+          <Link
+            href="/methodology"
+            className="text-xs text-ink-400 underline-offset-4 hover:text-ink-200 hover:underline"
+          >
+            איך מודדים את המספרים האלה? — מתודולוגיה
+          </Link>
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3 border-t border-white/5 pt-6">
