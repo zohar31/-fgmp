@@ -80,6 +80,35 @@ async function run() {
   for (const sub of due) {
     if (!sub.tranzilaToken || !sub.tranzilaTokenExpiry) continue;
 
+    // Admin marked this sub for cancellation at period end (after the 7-day
+    // refund window). Don't charge — expire instead. The customer's access
+    // ended at nextChargeAt; we transition them to 'expired' now.
+    if (sub.cancelAtPeriodEnd) {
+      await db
+        .update(schema.subscriptions)
+        .set({
+          status: "expired",
+          nextChargeAt: null,
+          updatedAt: now,
+        })
+        .where(eq(schema.subscriptions.userId, sub.userId));
+
+      await db.insert(schema.notifications).values({
+        userId: sub.userId,
+        type: "system",
+        title: "המנוי הסתיים",
+        body: "החודש המשולם הסתיים והמנוי פג תוקף לפי בקשתך. תמיד אפשר להפעיל מחדש מהאזור האישי.",
+      });
+
+      results.push({
+        userId: sub.userId,
+        ok: true,
+        code: "expired_at_period_end",
+        message: "Subscription expired at period end (no charge)",
+      });
+      continue;
+    }
+
     const settings = await db.query.businessSettings.findFirst({
       where: eq(schema.businessSettings.userId, sub.userId),
     });
