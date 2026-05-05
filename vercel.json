@@ -1,14 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "regions": ["fra1"],
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.fgmp.net" }],
-      "destination": "https://fgmp.net/:path*",
-      "permanent": true
-    }
-  ],
   "functions": {
     "app/api/chat/route.ts": {
       "maxDuration": 60
