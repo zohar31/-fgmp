@@ -138,8 +138,8 @@ export function SetupForm({ defaults }: { defaults: Defaults }) {
         setSaving(false);
         return;
       }
-      // הצלחה — מעבר ישיר ל-WhatsApp ללא באנר ביניים
-      router.push("/account/whatsapp");
+      // הצלחה — מעבר לדשבורד שיציג את הצעד הבא (תשלום אם לא שילם, או WhatsApp אם כן)
+      router.push("/account");
     } catch {
       setStatus({ type: "error", msg: "שגיאה ברשת. נסו שוב." });
       setSaving(false);

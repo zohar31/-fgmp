@@ -3,7 +3,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { CheckCircle2, AlertCircle, MessageCircle, Settings } from "lucide-react";
+import { CheckCircle2, AlertCircle, MessageCircle, Settings, CreditCard } from "lucide-react";
 import { SITE, formatServiceAreas } from "@/lib/config";
 
 export const metadata: Metadata = { title: "הפעלת WhatsApp" };
@@ -29,6 +29,11 @@ export default async function WhatsAppActivationPage() {
     settings?.keywords
   );
 
+  // Payment is mandatory before WhatsApp activation. We require both a
+  // recorded firstPaymentAt and an active/paid status — this catches the
+  // case where the customer is on a legacy trial (no firstPaymentAt yet).
+  const hasPaid = !!subscription?.firstPaymentAt;
+
   if (!setupComplete) {
     return (
       <div className="space-y-6">
@@ -42,10 +47,10 @@ export default async function WhatsAppActivationPage() {
             <AlertCircle className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
             <div className="flex-1">
               <h3 className="font-display font-bold text-white">
-                יש להשלים קודם את הגדרות העסק
+                שלב 1 — השלם קודם את הגדרות העסק
               </h3>
               <p className="mt-1 text-sm text-ink-300">
-                הפעלת ה-WhatsApp שולחת את הגדרות העסק שמילאת — לכן צריך לסיים אותן קודם.
+                התהליך: <strong>פרטי עסק → תשלום → הפעלת WhatsApp.</strong> כרגע חסרים פרטי העסק.
               </p>
               <Link
                 href="/account/setup"
@@ -53,6 +58,40 @@ export default async function WhatsAppActivationPage() {
               >
                 <Settings className="h-4 w-4" />
                 המשך להגדרות
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!hasPaid) {
+    return (
+      <div className="space-y-6">
+        <header>
+          <h1 className="font-display text-3xl font-extrabold text-white">
+            הפעלת WhatsApp
+          </h1>
+        </header>
+        <div className="card border-l-4 border-amber-500 p-6">
+          <div className="flex items-start gap-3">
+            <CreditCard className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
+            <div className="flex-1">
+              <h3 className="font-display font-bold text-white">
+                שלב 2 — נדרש תשלום לפני הפעלת WhatsApp
+              </h3>
+              <p className="mt-1 text-sm text-ink-300">
+                התהליך: פרטי עסק ✓ → <strong>תשלום</strong> → הפעלת WhatsApp. כדי שהמערכת תתחיל
+                לסרוק קבוצות עבורך, יש להשלים את התשלום של {SITE.pricing.monthlyILS}₪/חודש.
+                ערבות החזר מלא תוך {SITE.pricing.refundDays} ימים — אפס סיכון.
+              </p>
+              <Link
+                href="/account/billing"
+                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-600"
+              >
+                <CreditCard className="h-4 w-4" />
+                המשך לתשלום
               </Link>
             </div>
           </div>
@@ -99,6 +138,9 @@ export default async function WhatsAppActivationPage() {
     keywords: settings.keywords ?? "",
     leadPhone: settings.leadPhone ?? "",
     description: settings.description ?? "",
+    paid: hasPaid,
+    paidAt: subscription!.firstPaymentAt,
+    paidAmount: SITE.pricing.monthlyILS,
   });
 
   const waUrl = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`;
@@ -188,9 +230,17 @@ function buildActivationMessage(p: {
   keywords: string;
   leadPhone: string;
   description: string;
+  paid: boolean;
+  paidAt: Date | null;
+  paidAmount: number;
 }): string {
+  const paidLine = p.paid
+    ? `סטטוס: שולם ✓ (${p.paidAmount} ₪${p.paidAt ? ` ב-${p.paidAt.toLocaleDateString("he-IL", { timeZone: "Asia/Jerusalem" })}` : ""})`
+    : `סטטוס: לא שולם`;
   return [
     p.token,
+    "",
+    paidLine,
     "",
     `שם: ${p.businessName}`,
     `איש קשר: ${p.contactName}`,

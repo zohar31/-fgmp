@@ -4,8 +4,9 @@ import { auth } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { Settings, MessageCircle, AlertCircle, CheckCircle2, Clock, Play } from "lucide-react";
+import { Settings, MessageCircle, AlertCircle, CheckCircle2, Clock, Play, CreditCard } from "lucide-react";
 import { ReactivateButton } from "@/components/ReactivateButton";
+import { SITE } from "@/lib/config";
 
 export default async function AccountDashboardPage() {
   const session = await auth();
@@ -140,10 +141,10 @@ export default async function AccountDashboardPage() {
             <AlertCircle className="mt-1 h-5 w-5 shrink-0 text-brand-300" />
             <div className="flex-1">
               <h3 className="font-display font-bold text-white">
-                סיימו את ההגדרה כדי להתחיל לקבל לידים
+                שלב 1 — מילוי פרטי העסק
               </h3>
               <p className="mt-1 text-sm text-ink-300">
-                ממלאים את פרטי העסק, מילות המפתח, וקישורי WhatsApp — ואחרי זה לוחצים "שלח למערכת".
+                התהליך: <strong>פרטי עסק → תשלום → הפעלת WhatsApp</strong>. נתחיל בפרטי העסק (תחום, מילות מפתח, אזורים) — 5 דקות.
               </p>
               <Link
                 href="/account/setup"
@@ -157,16 +158,41 @@ export default async function AccountDashboardPage() {
         </div>
       )}
 
-      {setupComplete && !subscription?.activatedAt && (
+      {setupComplete && !subscription?.firstPaymentAt && (
+        <div className="card border-l-4 border-amber-500 p-5">
+          <div className="flex items-start gap-3">
+            <CreditCard className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
+            <div className="flex-1">
+              <h3 className="font-display font-bold text-white">
+                שלב 2 — תשלום
+              </h3>
+              <p className="mt-1 text-sm text-ink-300">
+                פרטי עסק ✓ הושלמו. עכשיו תשלום של {SITE.pricing.monthlyILS}₪/חודש (כולל מע"מ).
+                ערבות החזר מלא תוך {SITE.pricing.refundDays} ימים — אם לא תהיה מרוצה, מקבל את כל הכסף בחזרה.
+                <strong className="block mt-1 text-amber-200">ה-WhatsApp ייפתח להפעלה אחרי התשלום.</strong>
+              </p>
+              <Link
+                href="/account/billing"
+                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-amber-600"
+              >
+                <CreditCard className="h-4 w-4" />
+                המשך לתשלום
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {setupComplete && subscription?.firstPaymentAt && !subscription?.activatedAt && (
         <div className="card border-l-4 border-wa p-5">
           <div className="flex items-start gap-3">
             <MessageCircle className="mt-1 h-5 w-5 shrink-0 text-wa" />
             <div className="flex-1">
               <h3 className="font-display font-bold text-white">
-                שלב אחרון — הפעל את WhatsApp
+                שלב 3 — הפעלת WhatsApp
               </h3>
               <p className="mt-1 text-sm text-ink-300">
-                שלח את הגדרות העסק ב-WhatsApp מהמספר שיקבל לידים. ברגע שנקבל את ההודעה — נפעיל אותך.
+                פרטי עסק ✓ · תשלום ✓ · עכשיו השלב האחרון. שלח את הודעת ההפעלה ב-WhatsApp מהמספר שיקבל לידים — ברגע שנקבל אותה נפעיל אותך.
               </p>
               <Link
                 href="/account/whatsapp"

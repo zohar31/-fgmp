@@ -22,6 +22,7 @@ export default async function SetupPage() {
   ]);
 
   const activated = !!subscription?.activatedAt;
+  const paid = !!subscription?.firstPaymentAt;
   const setupComplete = !!(
     settings?.businessName &&
     settings?.contactName &&
@@ -30,6 +31,15 @@ export default async function SetupPage() {
     settings?.keywords
   );
 
+  // Step pointer: 1=details, 2=payment, 3=WhatsApp, 4=done
+  const currentStep: 1 | 2 | 3 | 4 = activated
+    ? 4
+    : paid
+      ? 3
+      : setupComplete
+        ? 2
+        : 1;
+
   return (
     <div className="space-y-6">
       <header>
@@ -37,17 +47,17 @@ export default async function SetupPage() {
           הגדרות העסק
         </h1>
         <p className="mt-2 text-ink-300">
-          מלא/י את הפרטים — אלה יישלחו למערכת בעת הפעלת ה-WhatsApp.
+          מלא/י את הפרטים — אלה יישלחו למערכת אחרי השלמת התשלום והפעלת ה-WhatsApp.
         </p>
       </header>
 
-      <ProgressSteps current={activated ? 3 : setupComplete ? 2 : 1} />
+      <ProgressSteps current={currentStep} />
 
       <div className="card border-l-4 border-brand-500 p-4">
         <p className="text-sm leading-7 text-ink-200">
-          <strong className="text-white">חשוב לדעת:</strong> אחרי שמירת ההגדרות
-          (שלב זה) — תועברו אוטומטית לשלב הבא: <strong className="text-wa">הפעלת WhatsApp</strong>.
-          זהו השלב האחרון לסיום ההרשמה.
+          <strong className="text-white">סדר ההרשמה:</strong> פרטי עסק (שלב זה) →{" "}
+          <strong className="text-amber-300">תשלום</strong> →{" "}
+          <strong className="text-wa">הפעלת WhatsApp</strong>. אחרי שמירת הפרטים תועבר אוטומטית לשלב הבא.
         </p>
       </div>
 
@@ -69,10 +79,10 @@ export default async function SetupPage() {
   );
 }
 
-function ProgressSteps({ current }: { current: 1 | 2 | 3 }) {
+function ProgressSteps({ current }: { current: 1 | 2 | 3 | 4 }) {
   const steps = [
-    { n: 1, label: "התחברות עם Google" },
-    { n: 2, label: "הגדרות העסק" },
+    { n: 1, label: "פרטי העסק" },
+    { n: 2, label: "תשלום" },
     { n: 3, label: "הפעלת WhatsApp" },
   ] as const;
 
