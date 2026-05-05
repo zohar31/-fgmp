@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 const navItems = [
   { href: "/admin", label: "מנויים", icon: Users },
   { href: "/admin/payments", label: "תשלומים", icon: CreditCard },
+  { href: "/admin/billing-test", label: "בדיקת סליקה (1 ₪)", icon: CreditCard },
   { href: "/admin/agent-log", label: "פעולות סוכן", icon: Bot },
   { href: "/admin/analytics", label: "סטטיסטיקה", icon: BarChart3 },
   { href: "/admin/seo", label: "SEO ובריאות אתר", icon: Search },

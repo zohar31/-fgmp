@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { isAdmin } from "@/lib/admin";
 import { SITE } from "@/lib/config";
 import { buildIframeRedirectUrl, TRANZILA_TERMINAL } from "@/lib/tranzila";
 
@@ -38,6 +39,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
   }
 
+  // Custom amount (e.g., 1 ILS test) is allowed only for admins.
+  // Regular subscribers always get the standard monthly price.
+  let amount = parsed.data.amount;
+  if (amount !== SITE.pricing.monthlyILS && !isAdmin(session)) {
+    amount = SITE.pricing.monthlyILS;
+  }
+
   if (!TRANZILA_TERMINAL) {
     return NextResponse.json(
       { ok: false, error: "סליקה לא זמינה כרגע. נסה שוב מאוחר יותר." },
@@ -47,7 +55,7 @@ export async function POST(req: Request) {
 
   const baseUrl = SITE.url.replace(/\/$/, "");
   const redirectUrl = buildIframeRedirectUrl({
-    amount: parsed.data.amount,
+    amount,
     contact: parsed.data.contact,
     email: parsed.data.email,
     phone: parsed.data.phone,
