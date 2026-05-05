@@ -82,7 +82,8 @@ async function run() {
 
     // Admin marked this sub for cancellation at period end (after the 7-day
     // refund window). Don't charge — expire instead. The customer's access
-    // ended at nextChargeAt; we transition them to 'expired' now.
+    // ended at nextChargeAt; we transition them to 'expired' now and push a
+    // suspend signal to the extension so it stops sending leads.
     if (sub.cancelAtPeriodEnd) {
       await db
         .update(schema.subscriptions)
@@ -92,6 +93,11 @@ async function run() {
           updatedAt: now,
         })
         .where(eq(schema.subscriptions.userId, sub.userId));
+
+      await db.insert(schema.extensionPushes).values({
+        userId: sub.userId,
+        actionType: "suspend",
+      });
 
       await db.insert(schema.notifications).values({
         userId: sub.userId,
@@ -104,7 +110,7 @@ async function run() {
         userId: sub.userId,
         ok: true,
         code: "expired_at_period_end",
-        message: "Subscription expired at period end (no charge)",
+        message: "Subscription expired at period end (no charge); suspend pushed to extension",
       });
       continue;
     }
@@ -182,6 +188,14 @@ async function run() {
           ? `חויבנו ${MAX_FAILED_CHARGES} פעמים והעסקה לא עברה (${result.responseMessage || result.responseCode}). המנוי הושעה. עדכן אמצעי תשלום באזור האישי.`
           : `הסליקה החוזרת לא עברה (${result.responseMessage || result.responseCode}). ננסה שוב מחר. אפשר לעדכן אמצעי תשלום באזור האישי.`,
       });
+
+      // After 3 failed charges → suspend in the extension too
+      if (exhausted) {
+        await db.insert(schema.extensionPushes).values({
+          userId: sub.userId,
+          actionType: "suspend",
+        });
+      }
     }
 
     results.push({

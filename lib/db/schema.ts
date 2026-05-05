@@ -199,6 +199,12 @@ export const extensionPushStatus = pgEnum("extension_push_status", [
   "failed",
 ]);
 
+export const extensionPushAction = pgEnum("extension_push_action", [
+  "activate",
+  "suspend",
+  "reactivate",
+]);
+
 export const extensionPushes = pgTable(
   "extension_pushes",
   {
@@ -212,6 +218,7 @@ export const extensionPushes = pgTable(
     pushedAt: timestamp("pushedAt", { mode: "date" }).notNull().defaultNow(),
     ackAt: timestamp("ackAt", { mode: "date" }),
     status: extensionPushStatus("status").notNull().default("pending"),
+    actionType: extensionPushAction("actionType").notNull().default("activate"),
     errorMessage: text("errorMessage"),
   },
   (t) => [

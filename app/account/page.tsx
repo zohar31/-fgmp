@@ -277,7 +277,9 @@ function subscriptionStatusLabel(status?: string | null): string {
     case "pending_setup":
       return "ממתין להגדרות";
     case "pending_activation":
-      return "ממתין להפעלה";
+      // In the new flow this means: settings filled, awaiting payment
+      // (legacy users who already paid show 'active' — see notify/return).
+      return "ממתין לתשלום";
     case "trial_active":
       return "ניסיון פעיל";
     case "active":

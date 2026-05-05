@@ -53,6 +53,7 @@ export async function GET(req: Request) {
     .select({
       pushId: schema.extensionPushes.id,
       pushedAt: schema.extensionPushes.pushedAt,
+      actionType: schema.extensionPushes.actionType,
       userId: schema.users.id,
       activationToken: schema.subscriptions.activationToken,
       userName: schema.users.name,
@@ -76,6 +77,7 @@ export async function GET(req: Request) {
       trialStartedAt: schema.subscriptions.trialStartedAt,
       trialEndsAt: schema.subscriptions.trialEndsAt,
       activatedAt: schema.subscriptions.activatedAt,
+      cancelAtPeriodEnd: schema.subscriptions.cancelAtPeriodEnd,
     })
     .from(schema.extensionPushes)
     .innerJoin(schema.users, eq(schema.extensionPushes.userId, schema.users.id))

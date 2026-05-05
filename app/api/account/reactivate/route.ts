@@ -60,9 +60,19 @@ export async function POST() {
       status: nextStatus,
       cancelledAt: null,
       cancellationReason: null,
+      cancelAtPeriodEnd: false,
       updatedAt: now,
     })
     .where(eq(schema.subscriptions.userId, userId));
+
+  // Push a reactivate signal to the extension — un-suspends the subscriber
+  // so leads start flowing again. Only relevant if they were activated
+  // before (have a previous delivered push); otherwise this is a no-op
+  // on the extension side.
+  await db.insert(schema.extensionPushes).values({
+    userId,
+    actionType: "reactivate",
+  });
 
   await db.insert(schema.notifications).values({
     userId,

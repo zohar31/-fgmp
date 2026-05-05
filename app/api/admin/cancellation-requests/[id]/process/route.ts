@@ -168,6 +168,17 @@ export async function POST(
     })
     .where(eq(schema.subscriptions.userId, request.userId));
 
+  // For immediate cancellation (cancel_and_refund), suspend in the extension
+  // right away so leads stop. For cancel_only (period-end), the cron will
+  // create the suspend push when the period ends — no push needed yet.
+  if (cancelImmediate) {
+    await db.insert(schema.extensionPushes).values({
+      userId: request.userId,
+      pushedByAdminId: adminId,
+      actionType: "suspend",
+    });
+  }
+
   await db
     .update(schema.cancellationRequests)
     .set({
