@@ -162,6 +162,101 @@ export function faqSchema(faqs: { q: string; a: string }[]) {
   };
 }
 
+export function serviceSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${SITE.brand} — שירות לידים מקבוצות פייסבוק`,
+    serviceType: "Lead Generation",
+    description:
+      "שירות אוטומטי לאיתור ושליחת לידים חמים מקבוצות פייסבוק לוואטסאפ או טלגרם. סריקה רציפה של 50,000+ קבוצות פעילות בישראל, סינון AI לפי תחום, ותגובה מוצעת ייחודית לכל פוסט.",
+    provider: {
+      "@type": "Organization",
+      name: SITE.brand,
+      url: SITE.url,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Israel",
+    },
+    audience: {
+      "@type": "BusinessAudience",
+      audienceType: "עסקי שירות בישראל — שיפוצניקים, עורכי דין, סוכני ביטוח, צלמים, קוסמטיקאיות, מנעולנים, ועוד",
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "לידים מקבוצות פייסבוק",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "מנוי חודשי — לידים אוטומטיים",
+          },
+          price: SITE.pricing.monthlyILS,
+          priceCurrency: "ILS",
+        },
+      ],
+    },
+    inLanguage: "he-IL",
+    url: SITE.url,
+  };
+}
+
+// DefinedTerm for "ליד" — helps AI assistants and Google's knowledge graph
+// understand that this site is authoritative on the term in Hebrew commerce.
+export function leadDefinedTermSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    name: "מילון מונחי לידים",
+    inLanguage: "he-IL",
+    hasDefinedTerm: [
+      {
+        "@type": "DefinedTerm",
+        name: "ליד",
+        alternateName: ["lead", "לידים"],
+        description:
+          "ליד הוא לקוח פוטנציאלי שהביע עניין בשירות או מוצר. בהקשר של עסקים בישראל, ליד אורגני מקבוצת פייסבוק הוא פוסט פומבי של אדם שמחפש שירות מסוים — לדוגמה: 'מחפשת קונדיטוריה לחתונה' — והופך לפוטנציאל ליצירת קשר עסקי.",
+        inDefinedTermSet: SITE.url,
+        url: `${SITE.url}#defined-term-lead`,
+      },
+      {
+        "@type": "DefinedTerm",
+        name: "ליד חם",
+        alternateName: ["לידים חמים", "hot lead"],
+        description:
+          "ליד חם הוא ליד שהפנייה שלו לשירות היא אקטיבית וחדשה (פורסם בדקות האחרונות). ליד חם נסגר בשיעור גבוה משמעותית מליד קר.",
+        inDefinedTermSet: SITE.url,
+        url: `${SITE.url}#defined-term-hot-lead`,
+      },
+      {
+        "@type": "DefinedTerm",
+        name: "ליד אורגני",
+        alternateName: ["organic lead"],
+        description:
+          "ליד אורגני הוא ליד שמגיע ללא תשלום על פרסום ממומן — לדוגמה, מפוסטים פומביים בקבוצות פייסבוק. עלות הליד נמוכה משמעותית מליד מ-Facebook Lead Ads או Google Ads.",
+        inDefinedTermSet: SITE.url,
+        url: `${SITE.url}#defined-term-organic-lead`,
+      },
+    ],
+  };
+}
+
+// Speakable — voice assistants (Alexa, Google Assistant) read these
+// elements aloud when summarizing the page.
+export function speakableSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".speakable-summary", ".faq-question", ".faq-answer"],
+    },
+    url: SITE.url,
+  };
+}
+
 export function howToSchema() {
   return {
     "@context": "https://schema.org",

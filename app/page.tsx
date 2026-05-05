@@ -14,7 +14,15 @@ import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
 import { AIAgent } from "@/components/AIAgent";
-import { JsonLd, faqSchema, softwareApplicationSchema, howToSchema } from "@/lib/jsonld";
+import {
+  JsonLd,
+  faqSchema,
+  softwareApplicationSchema,
+  howToSchema,
+  serviceSchema,
+  leadDefinedTermSchema,
+  speakableSchema,
+} from "@/lib/jsonld";
 import { faqs } from "@/lib/faqs";
 import { SITE } from "@/lib/config";
 import { customerReviews } from "@/lib/reviews";
@@ -29,6 +37,9 @@ export default function HomePage() {
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={softwareApplicationSchema(customerReviews)} />
       <JsonLd data={howToSchema()} />
+      <JsonLd data={serviceSchema()} />
+      <JsonLd data={leadDefinedTermSchema()} />
+      <JsonLd data={speakableSchema()} />
       <Nav />
       <main id="main-content">
         <Hero />
