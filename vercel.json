@@ -10,6 +10,15 @@
     },
     "app/api/account/cancel/route.ts": {
       "maxDuration": 15
+    },
+    "app/api/cron/recurring-billing/route.ts": {
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/recurring-billing",
+      "schedule": "0 6 * * *"
+    }
+  ]
 }

@@ -6,15 +6,11 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // /api/billing/return
-// Browser-redirect target from Tranzila after payment. Tranzila uses
-// either GET (with query params) or POST (with form body) depending on
-// the terminal config — we accept both.
+// Browser-redirect target from Tranzila after payment. We accept GET and POST
+// because Tranzila uses either depending on terminal config.
 //
-// This is also our payment finalization endpoint (the formal notify_url
-// is unreliable across Tranzila configurations). On any successful
-// response we update DB; on failure we just record the attempt.
-//
-// After processing → 302 redirect to /billing-success or /billing-fail.
+// This endpoint also acts as a fallback finalizer (in case notify_url didn't
+// fire), then 302-redirects the browser to /billing-success or /billing-fail.
 
 export async function GET(req: Request) {
   return handle(req);
@@ -25,12 +21,6 @@ export async function POST(req: Request) {
 }
 
 async function handle(req: Request) {
-  console.log("[billing/return] hit", {
-    method: req.method,
-    url: req.url,
-    contentType: req.headers.get("content-type"),
-  });
-
   let formData: FormData | URLSearchParams;
   if (req.method === "GET") {
     formData = new URL(req.url).searchParams;
@@ -42,21 +32,12 @@ async function handle(req: Request) {
   }
 
   const payload = parseTranzilaNotify(formData);
-  console.log("[billing/return] payload", {
-    Response: payload.Response,
-    index: payload.index,
-    pdesc: payload.pdesc,
-    sum: payload.sum,
-    rawKeys: Object.keys(payload.raw),
-  });
-
   const userId = payload.pdesc;
   const isSuccess = payload.Response === "000";
-  const baseUrl = `${new URL(req.url).origin}`;
+  const baseUrl = new URL(req.url).origin;
   const targetPath = isSuccess ? "/billing-success" : "/billing-fail";
 
   if (!userId) {
-    console.error("[billing/return] no userId in pdesc — redirecting to fail");
     return Response.redirect(`${baseUrl}/billing-fail`, 302);
   }
 
@@ -64,7 +45,6 @@ async function handle(req: Request) {
     where: eq(schema.subscriptions.userId, userId),
   });
   if (!sub) {
-    console.error("[billing/return] subscription not found for", userId);
     return Response.redirect(`${baseUrl}/billing-fail`, 302);
   }
 
@@ -74,19 +54,12 @@ async function handle(req: Request) {
       where: eq(schema.invoices.tranzilaIndex, payload.index),
     });
     if (existing) {
-      console.log("[billing/return] duplicate notify, skipping insert");
       return Response.redirect(`${baseUrl}${targetPath}`, 302);
     }
   }
 
   const responseMsg = tranzilaResponseMessage(payload.Response);
   const amountInt = parseInt(payload.sum, 10) || 0;
-
-  // Save raw payload as the response message so we can see ALL keys
-  // Tranzila sent — debug helper while we figure out their payload format
-  const rawDump =
-    `Response=${payload.Response} | RawKeys=${Object.keys(payload.raw).join(",")} | ` +
-    `RawSnippet=${JSON.stringify(payload.raw).slice(0, 500)}`;
 
   await db.insert(schema.invoices).values({
     userId,
@@ -96,15 +69,15 @@ async function handle(req: Request) {
     paidAt: isSuccess ? new Date() : null,
     tranzilaIndex: payload.index || null,
     tranzilaConfirmationCode: payload.ConfirmationCode || null,
-    tranzilaResponseCode: payload.Response || "no_response",
-    tranzilaResponseMessage: payload.Response ? responseMsg : rawDump,
+    tranzilaResponseCode: payload.Response || null,
+    tranzilaResponseMessage: payload.Response ? responseMsg : null,
     paymentMethod: payload.paymentMethod || "credit_card",
     isRecurring: false,
   });
 
   if (isSuccess) {
     const now = new Date();
-    const nextCharge = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const nextCharge = addOneMonth(now);
     const updates: Partial<typeof schema.subscriptions.$inferInsert> = {
       status: "active",
       lastPaymentAt: now,
@@ -138,4 +111,10 @@ async function handle(req: Request) {
   }
 
   return Response.redirect(`${baseUrl}${targetPath}`, 302);
+}
+
+function addOneMonth(d: Date): Date {
+  const r = new Date(d);
+  r.setMonth(r.getMonth() + 1);
+  return r;
 }
