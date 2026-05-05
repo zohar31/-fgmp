@@ -47,12 +47,19 @@ export function GuidesPreview() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-center">
           <Link
             href="/guides"
             className="inline-flex items-center gap-2 text-sm font-semibold text-brand-300 hover:text-white"
           >
             כל המדריכים
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/lidim"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-300 hover:text-white"
+          >
+            לידים לפי תחום עיסוק
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </div>
