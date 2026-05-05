@@ -44,7 +44,7 @@ export function Hero() {
                 className="btn-wa w-full sm:w-auto text-base"
               >
                 <MessageCircle className="h-5 w-5" />
-                התחילו {SITE.pricing.trialDays} ימי ניסיון חינם
+                התחילו עכשיו — {SITE.pricing.monthlyILS}₪/חודש
               </a>
               <a
                 href={waLink("היי, אני רוצה לשמוע פרטים על FGMP")}
@@ -59,7 +59,7 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-ink-300 lg:justify-end">
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-wa" />
-                ללא כרטיס אשראי
+                ערבות החזר מלא {SITE.pricing.refundDays} ימים
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-wa" />
@@ -67,7 +67,7 @@ export function Hero() {
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-wa" />
-                ביטול בלחיצה
+                ביטול דרך האזור האישי
               </div>
             </div>
           </div>

@@ -128,8 +128,9 @@ export default function AboutPage() {
             <h2>כמה זה עולה?</h2>
             <p>
               <strong>{SITE.pricing.monthlyILS} ₪ לחודש</strong> כולל מע"מ (18%).
-              {" "}<strong>{SITE.pricing.trialDays} ימי ניסיון חינם</strong> בלי כרטיס
-              אשראי. ללא חוזה, ללא התחייבות, ביטול בלחיצה אחת מהאזור האישי.
+              {" "}<strong>ערבות החזר מלא {SITE.pricing.refundDays} ימים</strong> מיום
+              התשלום הראשון — לא מרוצה? תקבל את הכסף בחזרה. ללא חוזה, ללא התחייבות,
+              ביטול דרך האזור האישי.
             </p>
 
             <h2>איך נרשמים?</h2>
@@ -182,12 +183,12 @@ export default function AboutPage() {
           <div className="mt-14 rounded-3xl bg-gradient-to-br from-brand-500/15 to-wa/15 p-8 ring-1 ring-white/10 md:p-10">
             <h3 className="font-display text-2xl font-bold text-white">מוכן להתחיל?</h3>
             <p className="mt-2 text-ink-200">
-              {SITE.pricing.trialDays} ימי ניסיון חינם, ללא כרטיס אשראי. ביטול בלחיצה.
+              {SITE.pricing.monthlyILS} ₪/חודש · ערבות החזר מלא {SITE.pricing.refundDays} ימים · ביטול דרך האזור האישי.
             </p>
             <div className="mt-6">
               <Link href="/login" className="btn-wa text-base">
                 <CheckCircle2 className="h-5 w-5" />
-                התחל ניסיון חינם
+                התחל עכשיו
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </div>

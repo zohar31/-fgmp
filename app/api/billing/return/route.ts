@@ -78,6 +78,7 @@ async function handle(req: Request) {
   if (isSuccess) {
     const now = new Date();
     const nextCharge = addOneMonth(now);
+    const isFirstPayment = !sub.firstPaymentAt;
     const updates: Partial<typeof schema.subscriptions.$inferInsert> = {
       status: "active",
       lastPaymentAt: now,
@@ -85,6 +86,7 @@ async function handle(req: Request) {
       failedChargeCount: 0,
       updatedAt: now,
     };
+    if (isFirstPayment) updates.firstPaymentAt = now;
     if (payload.TranzilaTK) updates.tranzilaToken = payload.TranzilaTK;
     if (payload.expdate) updates.tranzilaTokenExpiry = payload.expdate;
     if (payload.ccno) updates.tranzilaCardLast4 = payload.ccno.slice(-4);

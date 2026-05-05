@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { eq, desc } from "drizzle-orm";
-import { CreditCard, CheckCircle2, Clock, AlertCircle, ChevronLeft } from "lucide-react";
-import { SITE } from "@/lib/config";
+import { CreditCard, CheckCircle2, Clock, AlertCircle, ChevronLeft, Shield } from "lucide-react";
+import { SITE, isWithinRefundWindow, refundDaysLeft } from "@/lib/config";
 import { CheckoutButton } from "./CheckoutButton";
 
 export const metadata: Metadata = { title: "תשלום ומנוי" };
@@ -40,6 +40,8 @@ export default async function BillingPage() {
   const isPaid = subscription?.status === "active";
   const isTrialing = subscription?.status === "trial_active";
   const isCancelled = subscription?.status === "cancelled";
+  const refundEligible = isWithinRefundWindow(subscription?.firstPaymentAt);
+  const refundDaysRemaining = refundDaysLeft(subscription?.firstPaymentAt);
 
   return (
     <div className="space-y-6">
@@ -76,6 +78,24 @@ export default async function BillingPage() {
                 — {SITE.pricing.monthlyILS} ₪
               </p>
             )}
+          </div>
+        )}
+
+        {isPaid && refundEligible && (
+          <div className="mt-3 rounded-2xl bg-brand-500/10 p-4 ring-1 ring-brand-500/30">
+            <div className="flex items-start gap-2">
+              <Shield className="mt-0.5 h-5 w-5 shrink-0 text-brand-300" />
+              <div className="text-sm">
+                <p className="font-bold text-white">
+                  בתוך 7 ימי הניסיון — {refundDaysRemaining}{" "}
+                  {refundDaysRemaining === 1 ? "יום נותר" : "ימים נותרו"}
+                </p>
+                <p className="mt-1 text-ink-200">
+                  לא מרוצה? בקשת ביטול עכשיו = החזר מלא של {SITE.pricing.monthlyILS} ₪. אחרי שבעת
+                  הימים יתחיל החודש המשולם — אז כבר לא יהיה החזר.
+                </p>
+              </div>
+            </div>
           </div>
         )}
 
@@ -116,7 +136,9 @@ export default async function BillingPage() {
           </h2>
           <p className="mb-5 text-sm text-ink-200">
             {SITE.pricing.monthlyILS} ₪ לחודש (כולל מע"מ). חיוב חודשי אוטומטי.
-            ניתן לבטל בכל רגע — אין התחייבות.
+            <strong className="block mt-2 text-brand-200">
+              ערבות החזר מלא תוך {SITE.pricing.refundDays} ימים — לא מרוצה? תקבל את הכסף בחזרה.
+            </strong>
           </p>
           <CheckoutButton
             userId={userId}
@@ -130,7 +152,7 @@ export default async function BillingPage() {
             <li>✓ סליקה מאובטחת ע"י Tranzila (PCI-DSS Level 1)</li>
             <li>✓ ויזה / מאסטרקארד / ישראכרט / Bit</li>
             <li>✓ פרטי הכרטיס לא נשמרים אצלנו</li>
-            <li>✓ ביטול בלחיצה אחת מהאזור האישי</li>
+            <li>✓ {SITE.pricing.refundDays} ימי החזר מלא — בקשה דרך האזור האישי</li>
           </ul>
         </div>
       )}

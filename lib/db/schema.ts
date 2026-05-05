@@ -91,6 +91,8 @@ export const subscriptions = pgTable("subscriptions", {
   tranzilaTokenExpiry: text("tranzilaTokenExpiry"), // YYMM
   tranzilaCardLast4: text("tranzilaCardLast4"),
   tranzilaCardBrand: text("tranzilaCardBrand"),
+  firstPaymentAt: timestamp("firstPaymentAt", { mode: "date" }),
+  cancelAtPeriodEnd: boolean("cancelAtPeriodEnd").notNull().default(false),
   lastPaymentAt: timestamp("lastPaymentAt", { mode: "date" }),
   nextChargeAt: timestamp("nextChargeAt", { mode: "date" }),
   failedChargeCount: integer("failedChargeCount").notNull().default(0),
@@ -275,6 +277,37 @@ export const agentActions = pgTable(
   (t) => [
     index("agent_actions_user_idx").on(t.userId, t.createdAt),
     index("agent_actions_tool_idx").on(t.toolName, t.createdAt),
+  ]
+);
+
+export const cancellationRequestStatus = pgEnum("cancellation_request_status", [
+  "pending",
+  "cancelled_only",
+  "cancelled_and_refunded",
+  "rejected",
+]);
+
+export const cancellationRequests = pgTable(
+  "cancellation_requests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    reason: text("reason"),
+    requestedAt: timestamp("requestedAt", { mode: "date" }).notNull().defaultNow(),
+    status: cancellationRequestStatus("status").notNull().default("pending"),
+    processedAt: timestamp("processedAt", { mode: "date" }),
+    processedByAdminId: text("processedByAdminId").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    adminNotes: text("adminNotes"),
+    refundedInvoiceId: uuid("refundedInvoiceId"),
+    wasRefundEligible: boolean("wasRefundEligible").notNull().default(false),
+  },
+  (t) => [
+    index("cancellation_requests_status_idx").on(t.status, t.requestedAt),
+    index("cancellation_requests_user_idx").on(t.userId, t.requestedAt),
   ]
 );
 

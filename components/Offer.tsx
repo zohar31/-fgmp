@@ -20,12 +20,13 @@ export function Offer() {
             הצעה לזמן מוגבל
           </div>
           <h2 className="mt-4 font-display text-3xl font-extrabold text-white sm:text-4xl text-balance">
-            <span className="gradient-text">{SITE.pricing.trialDays} ימי ניסיון בחינם</span>{" "}
-            ולאחר מכן רק{" "}
-            <span className="gradient-text">{SITE.pricing.monthlyILS}₪</span>
+            רק{" "}
+            <span className="gradient-text">{SITE.pricing.monthlyILS}₪ לחודש</span>
+            {" — "}
+            <span className="gradient-text">ערבות החזר מלא {SITE.pricing.refundDays} ימים</span>
           </h2>
           <p className="mt-4 text-lg text-ink-200">
-            תוכל לקבל לידים חמים כבר מהיום!
+            לא מרוצה? תקבל את הכסף בחזרה. בלי שאלות, בלי טפסים, בלחיצה אחת מהאזור האישי.
           </p>
         </div>
 
@@ -70,18 +71,18 @@ export function Offer() {
                 href="/login"
                 className="btn-wa mt-8 w-full text-base"
               >
-                התחילו עכשיו — {SITE.pricing.trialDays} ימים חינם
+                התחילו עכשיו — {SITE.pricing.monthlyILS}₪/חודש
               </a>
 
               <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-ink-300">
                 <div className="rounded-xl bg-white/5 px-3 py-2 ring-1 ring-white/10">
-                  ללא כרטיס אשראי
+                  החזר מלא {SITE.pricing.refundDays} ימים
                 </div>
                 <div className="rounded-xl bg-white/5 px-3 py-2 ring-1 ring-white/10">
                   ללא חוזה
                 </div>
                 <div className="rounded-xl bg-white/5 px-3 py-2 ring-1 ring-white/10">
-                  ביטול בלחיצה
+                  ביטול מהאזור האישי
                 </div>
               </div>
             </div>

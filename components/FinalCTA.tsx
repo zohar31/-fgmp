@@ -16,12 +16,12 @@ export function FinalCTA() {
               <span className="gradient-text">המתחרים שלך כבר עונים ללקוח</span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg text-ink-200">
-              {SITE.pricing.trialDays} ימי ניסיון חינם. ללא כרטיס אשראי. ביטול בלחיצה.
+              {SITE.pricing.monthlyILS}₪ לחודש · ערבות החזר מלא {SITE.pricing.refundDays} ימים · ביטול מהאזור האישי.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a href="/login" className="btn-wa text-base">
                 <MessageCircle className="h-5 w-5" />
-                התחילו עכשיו — חינם
+                התחילו עכשיו
               </a>
               <a
                 href={waLink("היי, יש לי שאלות על FGMP")}

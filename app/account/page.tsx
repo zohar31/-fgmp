@@ -34,6 +34,21 @@ export default async function AccountDashboardPage() {
         )
       )
     : null;
+  // Show "trial days" status card only for legacy users who actually have a trial.
+  // New signups (post-2026-05-05 money-back model) have no trial — instead the
+  // card shows refund-window status when relevant.
+  const refundDaysLeft = subscription?.firstPaymentAt
+    ? Math.max(
+        0,
+        Math.ceil(
+          (subscription.firstPaymentAt.getTime() + 7 * 24 * 60 * 60 * 1000 - Date.now()) /
+            (1000 * 60 * 60 * 24)
+        )
+      )
+    : null;
+  const showTrialCard = trialDaysLeft !== null && trialDaysLeft > 0;
+  const showRefundCard =
+    !showTrialCard && refundDaysLeft !== null && refundDaysLeft > 0;
 
   const setupComplete = !!(
     settings?.businessName &&
@@ -60,8 +75,20 @@ export default async function AccountDashboardPage() {
           icon={Clock}
         />
         <StatusCard
-          label={trialDaysLeft !== null ? "ימי ניסיון נותרו" : "תוקף"}
-          value={trialDaysLeft !== null ? `${trialDaysLeft}/7` : "—"}
+          label={
+            showTrialCard
+              ? "ימי ניסיון נותרו"
+              : showRefundCard
+                ? "ימי החזר נותרו"
+                : "תוקף"
+          }
+          value={
+            showTrialCard
+              ? `${trialDaysLeft}/7`
+              : showRefundCard
+                ? `${refundDaysLeft}/7`
+                : "—"
+          }
           accent="brand"
           icon={Clock}
         />

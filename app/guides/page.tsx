@@ -83,7 +83,7 @@ export default function GuidesIndex() {
                 במקום לקרוא — תקבל לידים אוטומטית.
               </h2>
               <p className="mt-2 text-ink-200">
-                {SITE.brand} סורקת קבוצות פייסבוק 24/7 ושולחת לך לידים בוואטסאפ. {SITE.pricing.trialDays} ימי ניסיון חינם.
+                {SITE.brand} סורקת קבוצות פייסבוק 24/7 ושולחת לך לידים בוואטסאפ. {SITE.pricing.monthlyILS}₪/חודש · ערבות החזר {SITE.pricing.refundDays} ימים.
               </p>
             </div>
             <Link href="/login" className="btn-wa text-base whitespace-nowrap">

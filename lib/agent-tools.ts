@@ -321,6 +321,18 @@ export async function executeTool(
         ? Math.max(0, Math.ceil((sub.trialEndsAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
         : null;
 
+      // Refund window — 7 days from first paid charge (new model)
+      const refundDays = 7;
+      const refundDaysLeft = sub.firstPaymentAt
+        ? Math.max(
+            0,
+            Math.ceil(
+              (sub.firstPaymentAt.getTime() + refundDays * 24 * 60 * 60 * 1000 - Date.now()) /
+                (24 * 60 * 60 * 1000)
+            )
+          )
+        : null;
+
       const result = {
         ok: true,
         status: sub.status,
@@ -328,6 +340,9 @@ export async function executeTool(
         activatedAt: sub.activatedAt?.toISOString() ?? null,
         trialEndsAt: sub.trialEndsAt?.toISOString() ?? null,
         trialDaysLeft,
+        firstPaymentAt: sub.firstPaymentAt?.toISOString() ?? null,
+        refundDaysLeft,
+        nextChargeAt: sub.nextChargeAt?.toISOString() ?? null,
         suspended: !!sub.suspendedAt,
         cancelled: !!sub.cancelledAt,
       };

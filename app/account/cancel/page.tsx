@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
-import { eq } from "drizzle-orm";
-import { CheckCircle2 } from "lucide-react";
+import { and, eq } from "drizzle-orm";
+import { CheckCircle2, Clock } from "lucide-react";
 import { CancelForm } from "./CancelForm";
 import { ReactivateButton } from "@/components/ReactivateButton";
+import { isWithinRefundWindow, refundDaysLeft, SITE } from "@/lib/config";
 
 export const metadata: Metadata = { title: "ביטול מנוי" };
 
@@ -13,9 +13,20 @@ export default async function CancelPage() {
   const session = await auth();
   const userId = session!.user.id;
 
-  const subscription = await db.query.subscriptions.findFirst({
-    where: eq(schema.subscriptions.userId, userId),
-  });
+  const [subscription, pendingRequest] = await Promise.all([
+    db.query.subscriptions.findFirst({
+      where: eq(schema.subscriptions.userId, userId),
+    }),
+    db.query.cancellationRequests.findFirst({
+      where: and(
+        eq(schema.cancellationRequests.userId, userId),
+        eq(schema.cancellationRequests.status, "pending")
+      ),
+    }),
+  ]);
+
+  const refundEligible = isWithinRefundWindow(subscription?.firstPaymentAt);
+  const daysLeft = refundDaysLeft(subscription?.firstPaymentAt);
 
   if (subscription?.status === "cancelled") {
     return (
@@ -52,38 +63,81 @@ export default async function CancelPage() {
     );
   }
 
+  if (pendingRequest) {
+    return (
+      <div className="space-y-6">
+        <header>
+          <h1 className="font-display text-3xl font-extrabold text-white">ביטול מנוי</h1>
+        </header>
+        <div className="card border-l-4 border-amber-500 p-6">
+          <div className="flex items-start gap-3">
+            <Clock className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
+            <div>
+              <h3 className="font-display font-bold text-white">
+                הבקשה הועברה למחלקת זיכויים FGMP
+              </h3>
+              <p className="mt-1 text-sm text-ink-300">
+                בקשה הוגשה ב-
+                {new Date(pendingRequest.requestedAt).toLocaleString("he-IL", {
+                  timeZone: "Asia/Jerusalem",
+                })}
+                .{" "}
+                {pendingRequest.wasRefundEligible
+                  ? "הבקשה במצב המתנה — אם תאושר יתבצע גם החזר מלא לכרטיסך."
+                  : "הבקשה במצב המתנה. נחזור אליך בקרוב דרך וואטסאפ או באזור האישי."}
+              </p>
+              <p className="mt-3 text-xs text-ink-400">
+                עד אישור — המנוי עדיין פעיל ויכול להמשיך לקבל לידים.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl font-extrabold text-white">ביטול מנוי</h1>
         <p className="mt-2 text-ink-300">
-          מצטערים שאת/ה עוזב/ת. הביטול יבוצע מיד ולא יבוצעו חיובים נוספים.
+          {refundEligible
+            ? `אתה בתוך 7 ימי הניסיון — נותרו ${daysLeft} ימים. ביטול עכשיו = החזר מלא של 299₪.`
+            : `7 ימי הניסיון הסתיימו והחודש שלך התחיל. ביטול עכשיו עוצר את החיובים העתידיים, אבל לא יבוצע החזר על החודש הנוכחי — תקבל גישה עד סוף החודש המשולם, אחר כך פג תוקף.`}
         </p>
       </header>
 
       <div className="card p-6">
-        <h2 className="font-display text-lg font-bold text-white">מה קורה אחרי ביטול</h2>
+        <h2 className="font-display text-lg font-bold text-white">איך זה עובד</h2>
         <ul className="mt-4 space-y-2 text-sm text-ink-200">
           <li className="flex gap-2">
             <span className="text-wa">✓</span>
-            <span>הגישה לאזור האישי נשמרת — כל הנתונים שלך נשמרים.</span>
+            <span>
+              <strong>תוך 7 הימים הראשונים מהתשלום:</strong> ביטול = החזר מלא של 299₪. הביטול
+              מיידי והגישה נסגרת.
+            </span>
           </li>
           <li className="flex gap-2">
             <span className="text-wa">✓</span>
-            <span>שליחת הלידים נפסקת מיידית.</span>
+            <span>
+              <strong>אחרי 7 ימים:</strong> ביטול עוצר את החיוב הבא. תמשיך לקבל לידים עד סוף
+              החודש המשולם, אחר כך פג תוקף. בלי החזר על החודש הנוכחי.
+            </span>
           </li>
           <li className="flex gap-2">
             <span className="text-wa">✓</span>
-            <span>לא יבוצעו חיובים נוספים.</span>
+            <span>
+              הבקשה עוברת ל"מחלקת זיכויים FGMP" — אדמין בודק ומאשר ידנית, בדרך כלל תוך 24 שעות.
+            </span>
           </li>
           <li className="flex gap-2">
             <span className="text-wa">✓</span>
-            <span>תוכל/י לחדש בכל עת על ידי פנייה אלינו בוואטסאפ.</span>
+            <span>הנתונים שלך נשמרים — תמיד אפשר להפעיל מחדש בלחיצה.</span>
           </li>
         </ul>
       </div>
 
-      <CancelForm />
+      <CancelForm refundEligible={refundEligible} daysLeft={daysLeft} />
     </div>
   );
 }

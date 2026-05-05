@@ -77,7 +77,7 @@ export default async function LoginPage({
         </div>
 
         <p className="mt-6 text-center text-xs text-ink-400">
-          הכניסה היא גם ההרשמה — לחיצה אחת על Google ומקבלים 7 ימי ניסיון חינם
+          הכניסה היא גם ההרשמה — לחיצה אחת על Google. מנוי {SITE.pricing.monthlyILS}₪/חודש עם ערבות החזר מלא {SITE.pricing.refundDays} ימים.
         </p>
       </div>
       <AIAgent />

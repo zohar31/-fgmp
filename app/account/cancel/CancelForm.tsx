@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 
-export function CancelForm() {
-  const router = useRouter();
+export function CancelForm({ refundEligible, daysLeft }: {
+  refundEligible: boolean;
+  daysLeft: number;
+}) {
   const [confirming, setConfirming] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,15 +28,39 @@ export function CancelForm() {
       });
       const json = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || !json.ok) {
-        setError(json.error || "שגיאה בביטול");
+        setError(json.error || "שגיאה בשליחת הבקשה");
         setSubmitting(false);
         return;
       }
-      router.refresh();
+      setSubmitted(true);
+      setSubmitting(false);
     } catch {
       setError("שגיאה ברשת. נסו שוב.");
       setSubmitting(false);
     }
+  }
+
+  if (submitted) {
+    return (
+      <div className="card border-l-4 border-wa p-6">
+        <div className="flex items-start gap-3">
+          <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-wa" />
+          <div>
+            <h3 className="font-display font-bold text-white">
+              הבקשה הועברה למחלקת זיכויים FGMP
+            </h3>
+            <p className="mt-2 text-sm text-ink-200">
+              {refundEligible
+                ? `אתה בתוך חלון ההחזר המלא (${daysLeft} ימים נותרו). אם הבקשה תאושר, יבוצע גם החזר מלא של החיוב הראשון לכרטיסך תוך מספר ימי עסקים.`
+                : "נחזור אליך בהקדם דרך וואטסאפ או באזור האישי."}
+            </p>
+            <p className="mt-3 text-xs text-ink-400">
+              עד לאישור הבקשה — המנוי שלך עדיין פעיל. אם משהו השתנה, אפשר להמשיך להשתמש בשירות.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!confirming) {
@@ -52,10 +78,16 @@ export function CancelForm() {
 
   return (
     <form onSubmit={onSubmit} className="card border-l-4 border-rose-500 p-6">
-      <h3 className="font-display text-lg font-bold text-white">אישור ביטול</h3>
+      <h3 className="font-display text-lg font-bold text-white">בקשת ביטול מנוי</h3>
       <p className="mt-1 text-sm text-ink-300">
-        נשמח לדעת מה הסיבה — זה יעזור לנו להשתפר.
+        הביטול יבוצע ע"י מחלקת הזיכויים שלנו (אדמין) — לא ביטול אוטומטי. נשמח לדעת מה הסיבה.
       </p>
+
+      {refundEligible && (
+        <div className="mt-4 rounded-xl bg-wa/10 p-3 text-sm text-wa ring-1 ring-wa/30">
+          ✓ אתה בתוך חלון ההחזר המלא ({daysLeft} ימים נותרו). אם הבקשה תאושר, נחזיר את הכסף שחויב.
+        </div>
+      )}
 
       <div className="mt-4">
         <label className="block">
@@ -96,10 +128,10 @@ export function CancelForm() {
           {submitting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              מבטל...
+              שולח...
             </>
           ) : (
-            "אישור ביטול סופי"
+            "שלח בקשת ביטול"
           )}
         </button>
       </div>

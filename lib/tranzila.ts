@@ -162,6 +162,110 @@ export async function chargeWithToken(opts: {
 }
 
 // ──────────────────────────────────────────────────────────
+// Refund / void a previously charged transaction
+// ──────────────────────────────────────────────────────────
+//
+// Tranzila distinguishes:
+//   - VOID (cred_type=2): same-day cancellation before settlement → no fee
+//   - REFUND (cred_type=3): post-settlement reversal → may incur a small fee
+// We try void first; if Tranzila rejects (already settled), the caller can
+// retry with refund=true.
+//
+// Auth uses the dedicated refund password (TRANZILA_REFUND_PW), separate
+// from the standard charge password — Tranzila enforces this at the gateway.
+
+const TRANZILA_REFUND_PW = process.env.TRANZILA_REFUND_PW || "";
+
+export type TranzilaRefundResult = {
+  ok: boolean;
+  responseCode: string;
+  responseMessage?: string;
+  index?: string;
+  raw: string;
+  mode: "void" | "refund";
+};
+
+export async function refundOrVoidTranzila(opts: {
+  originalIndex: string; // Tranzila index of the charge to reverse
+  amount: number;
+  forceRefund?: boolean; // skip void attempt, go straight to refund
+}): Promise<TranzilaRefundResult> {
+  if (!TRANZILA_REFUND_PW) {
+    return {
+      ok: false,
+      responseCode: "no_refund_pw",
+      responseMessage: "TRANZILA_REFUND_PW not configured",
+      raw: "",
+      mode: "void",
+    };
+  }
+
+  // First attempt: void (cred_type=2) unless caller asked for refund directly
+  if (!opts.forceRefund) {
+    const voidResult = await callReverse({
+      originalIndex: opts.originalIndex,
+      amount: opts.amount,
+      credType: "2",
+    });
+    if (voidResult.ok) return { ...voidResult, mode: "void" };
+    // Specific failure codes that indicate "already settled, try refund"
+    // 414, 459 = transaction already settled / not voidable
+    const settled = ["414", "459"].includes(voidResult.responseCode);
+    if (!settled) return { ...voidResult, mode: "void" };
+  }
+
+  const refundResult = await callReverse({
+    originalIndex: opts.originalIndex,
+    amount: opts.amount,
+    credType: "3",
+  });
+  return { ...refundResult, mode: "refund" };
+}
+
+async function callReverse(opts: {
+  originalIndex: string;
+  amount: number;
+  credType: "2" | "3";
+}): Promise<Omit<TranzilaRefundResult, "mode">> {
+  const body = new URLSearchParams({
+    supplier: TRANZILA_TERMINAL,
+    TranzilaPW: TRANZILA_REFUND_PW,
+    sum: String(opts.amount),
+    currency: "1",
+    cred_type: opts.credType,
+    tranmode: "C", // C = credit/refund
+    CreditPass: TRANZILA_REFUND_PW,
+    AuthNr: opts.originalIndex,
+    index: opts.originalIndex,
+  });
+
+  try {
+    const res = await fetch(TRANZILA_CHARGE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    });
+    const text = await res.text();
+    const parsed = new URLSearchParams(text);
+    const responseCode = parsed.get("Response") || "unknown";
+    return {
+      ok: responseCode === "000",
+      responseCode,
+      responseMessage: tranzilaResponseMessage(responseCode),
+      index: parsed.get("index") || undefined,
+      raw: text,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      responseCode: "network_error",
+      responseMessage: err instanceof Error ? err.message : String(err),
+      raw: "",
+    };
+  }
+}
+
+// ──────────────────────────────────────────────────────────
 // Parse webhook (notify) payload from Tranzila
 // ──────────────────────────────────────────────────────────
 

@@ -39,16 +39,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async createUser({ user }) {
       if (!user.id || !user.email) return;
 
-      const trialDays = 7;
       const now = new Date();
-      const trialEnds = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000);
 
+      // New money-back-guarantee model: no free trial. Customer creates
+      // account → fills settings → pays 299₪ → gets 7-day full-refund window
+      // anchored on firstPaymentAt. trialStartedAt/trialEndsAt left null;
+      // the columns remain in the schema for backward compatibility with
+      // legacy users who signed up before this change.
       await db.insert(schema.subscriptions).values({
         userId: user.id,
         status: "pending_setup",
         activationToken: generateActivationToken(),
-        trialStartedAt: now,
-        trialEndsAt: trialEnds,
       });
 
       const intent = await db.query.signupIntents.findFirst({
@@ -75,7 +76,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         userId: user.id,
         type: "info",
         title: "ברוכים הבאים ל-FGMP! 🎉",
-        body: `קיבלתם ${trialDays} ימי ניסיון חינם. השלימו את ההגדרות באזור האישי כדי להתחיל לקבל לידים.`,
+        body: "השלימו את הגדרות העסק והתשלום באזור האישי כדי להתחיל לקבל לידים. ערבות החזר מלא 7 ימים — אם לא מרוצים, מקבלים את הכסף בחזרה.",
       });
 
       // Meta CAPI — שולח אירוע Lead לאופטימיזציה של קמפיינים
