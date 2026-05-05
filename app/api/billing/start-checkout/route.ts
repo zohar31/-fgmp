@@ -69,7 +69,10 @@ export async function POST(req: Request) {
     failUrl: `${baseUrl}/api/billing/return`,
     externalRef: parsed.data.userId,
     enableTokenization: true,
-    enableBit: true,
+    // Bit deliberately disabled — it doesn't support standing orders, so a
+    // Bit payment would force us into manual re-charges every month.
+    // Credit card only for the recurring subscription model.
+    enableBit: false,
   });
 
   return NextResponse.json({ ok: true, redirectUrl });

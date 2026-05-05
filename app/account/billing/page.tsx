@@ -150,7 +150,7 @@ export default async function BillingPage() {
           />
           <ul className="mt-5 space-y-1 text-xs text-ink-400">
             <li>✓ סליקה מאובטחת ע"י Tranzila (PCI-DSS Level 1)</li>
-            <li>✓ ויזה / מאסטרקארד / ישראכרט / Bit</li>
+            <li>✓ ויזה / מאסטרקארד / ישראכרט / אמריקן אקספרס</li>
             <li>✓ פרטי הכרטיס לא נשמרים אצלנו</li>
             <li>✓ {SITE.pricing.refundDays} ימי החזר מלא — בקשה דרך האזור האישי</li>
           </ul>
