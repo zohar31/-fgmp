@@ -32,6 +32,22 @@ async function handle(req: Request) {
   }
 
   const payload = parseTranzilaNotify(formData);
+
+  // ── DEBUG: log full payload to investigate why test-mode iframe isn't
+  // returning Response code. Remove after billing pipeline is verified.
+  console.log("[billing/return] DEBUG payload:", {
+    method: req.method,
+    url: req.url,
+    contentType: req.headers.get("content-type"),
+    Response: payload.Response,
+    index: payload.index,
+    ConfirmationCode: payload.ConfirmationCode,
+    pdesc: payload.pdesc,
+    sum: payload.sum,
+    rawKeys: Object.keys(payload.raw),
+    rawSnippet: JSON.stringify(payload.raw).slice(0, 800),
+  });
+
   const userId = payload.pdesc;
   const isSuccess = payload.Response === "000";
   const baseUrl = new URL(req.url).origin;
@@ -61,6 +77,12 @@ async function handle(req: Request) {
   const responseMsg = tranzilaResponseMessage(payload.Response);
   const amountInt = parseInt(payload.sum, 10) || 0;
 
+  // DEBUG: when there's no Response code, capture the raw payload as the
+  // message so we can see in the admin panel what Tranzila actually sent.
+  const debugMessage = payload.Response
+    ? responseMsg
+    : `NO_RESPONSE | keys=${Object.keys(payload.raw).join(",")} | raw=${JSON.stringify(payload.raw).slice(0, 500)}`;
+
   await db.insert(schema.invoices).values({
     userId,
     amount: amountInt,
@@ -69,8 +91,8 @@ async function handle(req: Request) {
     paidAt: isSuccess ? new Date() : null,
     tranzilaIndex: payload.index || null,
     tranzilaConfirmationCode: payload.ConfirmationCode || null,
-    tranzilaResponseCode: payload.Response || null,
-    tranzilaResponseMessage: payload.Response ? responseMsg : null,
+    tranzilaResponseCode: payload.Response || "no_response",
+    tranzilaResponseMessage: debugMessage,
     paymentMethod: payload.paymentMethod || "credit_card",
     isRecurring: false,
   });
