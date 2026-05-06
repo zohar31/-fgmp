@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, CheckCircle2, RotateCcw, XCircle } from "lucide-react";
+import { Loader2, CheckCircle2, RotateCcw, XCircle, Hand } from "lucide-react";
+
+type Action =
+  | "cancel_only"
+  | "cancel_and_refund"
+  | "cancel_refund_manual"
+  | "reject";
 
 export function ProcessCancellationButtons({
   requestId,
@@ -12,11 +18,11 @@ export function ProcessCancellationButtons({
   refundEligible: boolean;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState<null | "cancel_only" | "cancel_and_refund" | "reject">(null);
+  const [loading, setLoading] = useState<null | Action>(null);
   const [error, setError] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
 
-  async function process(action: "cancel_only" | "cancel_and_refund" | "reject") {
+  async function process(action: Action) {
     if (!confirm(actionConfirmText(action))) return;
     setLoading(action);
     setError(null);
@@ -53,18 +59,35 @@ export function ProcessCancellationButtons({
       />
 
       {refundEligible && (
-        <button
-          onClick={() => process("cancel_and_refund")}
-          disabled={loading !== null}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-wa px-4 py-2 text-sm font-bold text-white transition hover:bg-wa/80 disabled:opacity-50"
-        >
-          {loading === "cancel_and_refund" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <RotateCcw className="h-4 w-4" />
-          )}
-          בטל + החזר מלא
-        </button>
+        <>
+          <button
+            onClick={() => process("cancel_and_refund")}
+            disabled={loading !== null}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-wa px-4 py-2 text-sm font-bold text-white transition hover:bg-wa/80 disabled:opacity-50"
+            title="קורא ל-Tranzila API להחזיר אוטומטית. דורש שה-IP של Vercel ב-whitelist של Tranzila."
+          >
+            {loading === "cancel_and_refund" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <RotateCcw className="h-4 w-4" />
+            )}
+            בטל + החזר אוטומטי (Tranzila API)
+          </button>
+
+          <button
+            onClick={() => process("cancel_refund_manual")}
+            disabled={loading !== null}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-600 disabled:opacity-50"
+            title="מסמן את החשבונית כ-refunded ואת המנוי כ-cancelled — ביצוע ההחזר עצמו ידני בפאנל Tranzila."
+          >
+            {loading === "cancel_refund_manual" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Hand className="h-4 w-4" />
+            )}
+            בטל + סימון החזר ידני
+          </button>
+        </>
       )}
 
       <button
@@ -98,10 +121,12 @@ export function ProcessCancellationButtons({
   );
 }
 
-function actionConfirmText(action: "cancel_only" | "cancel_and_refund" | "reject"): string {
+function actionConfirmText(action: Action): string {
   switch (action) {
     case "cancel_and_refund":
-      return "לבטל את המנוי ולבצע החזר מלא דרך Tranzila? הפעולה לא ניתנת לביטול.";
+      return "לבטל את המנוי ולבצע החזר אוטומטי דרך Tranzila API? הפעולה לא ניתנת לביטול.";
+    case "cancel_refund_manual":
+      return "לסמן את המנוי והחשבונית כמבוטלים? ביצוע ההחזר בפועל יהיה צריך להיעשות ידנית בפאנל Tranzila.";
     case "cancel_only":
       return "לבטל את המנוי בלי החזר? אם הלקוח דורש החזר, חזור והשתמש בכפתור 'בטל + החזר'.";
     case "reject":
