@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MessageCircle, Sparkles, Bell, ShieldCheck } from "lucide-react";
+import { ArrowLeft, MessageCircle, Sparkles, Bell, ShieldCheck } from "lucide-react";
 import { SITE, waLink } from "@/lib/config";
 import { TelegramIcon } from "./TelegramIcon";
 
@@ -43,8 +43,8 @@ export function Hero() {
                 href="/login"
                 className="btn-wa w-full sm:w-auto text-base"
               >
-                <MessageCircle className="h-5 w-5" />
                 התחילו עכשיו — {SITE.pricing.monthlyILS}₪/חודש
+                <ArrowLeft className="h-5 w-5" />
               </a>
               <a
                 href={waLink("היי, אני רוצה לשמוע פרטים על FGMP")}
@@ -52,6 +52,7 @@ export function Hero() {
                 rel="noopener noreferrer"
                 className="btn-ghost w-full sm:w-auto text-base"
               >
+                <MessageCircle className="h-5 w-5" />
                 שיחה מהירה בוואטסאפ
               </a>
             </div>

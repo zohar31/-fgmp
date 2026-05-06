@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Activity, Bell, Globe, Zap, MessageCircle, Search } from "lucide-react";
-import { TelegramIcon } from "./TelegramIcon";
+import { Activity, Bell, Globe, Zap, Search } from "lucide-react";
 
 const stats = [
   { icon: Globe, label: "קבוצות פייסבוק נסרקות", value: "50,000+" },
@@ -35,18 +34,6 @@ export function TrustBar() {
           >
             איך מודדים את המספרים האלה? — מתודולוגיה
           </Link>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 border-t border-white/5 pt-6">
-          <span className="text-sm text-ink-300">לידים מגיעים אליך אל:</span>
-          <span className="inline-flex items-center gap-2 rounded-full bg-wa/10 px-4 py-2 font-semibold text-wa ring-1 ring-wa/30">
-            <MessageCircle className="h-5 w-5" />
-            WhatsApp
-          </span>
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#229ED9]/10 px-4 py-2 font-semibold text-[#5BBDE7] ring-1 ring-[#229ED9]/30">
-            <TelegramIcon className="h-5 w-5" />
-            Telegram
-          </span>
         </div>
       </div>
     </section>

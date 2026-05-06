@@ -1,4 +1,4 @@
-import { MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle } from "lucide-react";
 import { SITE, waLink } from "@/lib/config";
 
 export function FinalCTA() {
@@ -20,8 +20,8 @@ export function FinalCTA() {
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a href="/login" className="btn-wa text-base">
-                <MessageCircle className="h-5 w-5" />
                 התחילו עכשיו
+                <ArrowLeft className="h-5 w-5" />
               </a>
               <a
                 href={waLink("היי, יש לי שאלות על FGMP")}
@@ -29,6 +29,7 @@ export function FinalCTA() {
                 rel="noopener noreferrer"
                 className="btn-ghost text-base"
               >
+                <MessageCircle className="h-5 w-5" />
                 שיחה מהירה בוואטסאפ
               </a>
             </div>
