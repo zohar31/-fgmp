@@ -113,9 +113,13 @@ export async function POST(
       .orderBy(desc(schema.invoices.paidAt))
       .limit(1);
 
-    if (!paidInvoice.length || !paidInvoice[0].tranzilaIndex) {
+    if (
+      !paidInvoice.length ||
+      !paidInvoice[0].tranzilaIndex ||
+      !paidInvoice[0].tranzilaConfirmationCode
+    ) {
       return NextResponse.json(
-        { error: "לא נמצאה חשבונית עם index של Tranzila להחזר." },
+        { error: "לא נמצאה חשבונית עם index ו-ConfirmationCode להחזר." },
         { status: 400 }
       );
     }
@@ -123,6 +127,7 @@ export async function POST(
     const inv = paidInvoice[0];
     const refund = await refundOrVoidTranzila({
       originalIndex: inv.tranzilaIndex!,
+      authNr: inv.tranzilaConfirmationCode!,
       amount: inv.amount,
     });
 

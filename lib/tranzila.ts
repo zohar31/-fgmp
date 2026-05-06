@@ -182,7 +182,8 @@ export type TranzilaRefundResult = {
 };
 
 export async function refundOrVoidTranzila(opts: {
-  originalIndex: string; // Tranzila index of the charge to reverse
+  originalIndex: string; // Tranzila transaction index (the `index` field from charge response)
+  authNr: string; // Tranzila confirmation/authorization number (the `ConfirmationCode` field)
   amount: number;
   forceRefund?: boolean; // skip void attempt, go straight to refund
 }): Promise<TranzilaRefundResult> {
@@ -200,6 +201,7 @@ export async function refundOrVoidTranzila(opts: {
   if (!opts.forceRefund) {
     const voidResult = await callReverse({
       originalIndex: opts.originalIndex,
+      authNr: opts.authNr,
       amount: opts.amount,
       credType: "2",
     });
@@ -212,6 +214,7 @@ export async function refundOrVoidTranzila(opts: {
 
   const refundResult = await callReverse({
     originalIndex: opts.originalIndex,
+    authNr: opts.authNr,
     amount: opts.amount,
     credType: "3",
   });
@@ -220,6 +223,7 @@ export async function refundOrVoidTranzila(opts: {
 
 async function callReverse(opts: {
   originalIndex: string;
+  authNr: string;
   amount: number;
   credType: "2" | "3";
 }): Promise<Omit<TranzilaRefundResult, "mode">> {
@@ -231,7 +235,7 @@ async function callReverse(opts: {
     cred_type: opts.credType,
     tranmode: "C", // C = credit/refund
     CreditPass: TRANZILA_REFUND_PW,
-    AuthNr: opts.originalIndex,
+    AuthNr: opts.authNr, // ← the confirmation code, NOT the index
     index: opts.originalIndex,
   });
 
@@ -242,6 +246,19 @@ async function callReverse(opts: {
       body: body.toString(),
     });
     const text = await res.text();
+
+    // DEBUG: log the full Tranzila refund response so we can see what they returned
+    console.log("[tranzila/refund] DEBUG response:", {
+      credType: opts.credType,
+      originalIndex: opts.originalIndex,
+      authNr: opts.authNr,
+      amount: opts.amount,
+      httpStatus: res.status,
+      contentType: res.headers.get("content-type"),
+      rawLength: text.length,
+      rawSnippet: text.slice(0, 800),
+    });
+
     const parsed = new URLSearchParams(text);
     const responseCode = parsed.get("Response") || "unknown";
     return {
