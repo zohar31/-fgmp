@@ -34,8 +34,41 @@ async function handle(req: Request) {
   }
 
   const payload = parseTranzilaNotify(formData);
+
+  // ── DEBUG: log every notify call so we can verify Tranzila is actually
+  // hitting this endpoint with the real result params.
+  console.log("[billing/notify] DEBUG payload:", {
+    method: req.method,
+    url: req.url,
+    contentType: req.headers.get("content-type"),
+    Response: payload.Response,
+    index: payload.index,
+    ConfirmationCode: payload.ConfirmationCode,
+    pdesc: payload.pdesc,
+    sum: payload.sum,
+    rawKeys: Object.keys(payload.raw),
+    rawSnippet: JSON.stringify(payload.raw).slice(0, 800),
+  });
+
   const userId = payload.pdesc;
   if (!userId) {
+    // Even without pdesc — record the call so /admin/payments shows it
+    try {
+      await db.insert(schema.invoices).values({
+        userId: "00000000-0000-0000-0000-000000000000",
+        amount: parseInt(payload.sum, 10) || 0,
+        currency: "ILS",
+        status: "failed",
+        tranzilaResponseCode: payload.Response || "no_response_notify",
+        tranzilaResponseMessage:
+          `NOTIFY_NO_PDESC | keys=${Object.keys(payload.raw).join(",")} | ` +
+          `raw=${JSON.stringify(payload.raw).slice(0, 500)}`,
+        paymentMethod: "credit_card",
+        isRecurring: false,
+      });
+    } catch {
+      // Sentinel UUID FK error — fine, we still have the console.log
+    }
     return new NextResponse("missing pdesc", { status: 400 });
   }
 

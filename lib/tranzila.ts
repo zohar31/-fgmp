@@ -42,24 +42,20 @@ export function buildIframeParams(opts: {
   enableTokenization?: boolean; // store card for recurring (default true)
   enableBit?: boolean; // show Bit option
 }): Record<string, string> {
+  // Stripped-down param set after debugging revealed Tranzila was returning
+  // the customer to success_url WITHOUT result params. Suspected culprit:
+  // json=1 (forces JSON-only callback to notify_url, no redirect params)
+  // and u71=1 (alters callback behavior). Removing both. Also dropped the
+  // duplicated URL aliases (notify_url, NotifyURL etc.) — _address suffix
+  // is the documented form.
   const params: Record<string, string> = {
     sum: String(opts.amount),
     currency: "1", // 1 = ILS
     cred_type: "1", // 1 = normal credit
     tranmode: "A", // A = charge
-    // ── send notify URL with multiple parameter names — different Tranzila
-    // setups expect different names. Sending all variants is safe.
     notify_url_address: opts.notifyUrl,
     success_url_address: opts.successUrl,
     fail_url_address: opts.failUrl,
-    notify_url: opts.notifyUrl,
-    success_url: opts.successUrl,
-    fail_url: opts.failUrl,
-    NotifyURL: opts.notifyUrl,
-    SuccessURL: opts.successUrl,
-    FailURL: opts.failUrl,
-    u71: "1", // explicit notify enabled (some integrations need this)
-    json: "1", // request JSON callback
     // Custom field for tracking — Tranzila echoes this back in notify
     pdesc: opts.externalRef.slice(0, 100),
     // Customer info (pre-filled on hosted page)
