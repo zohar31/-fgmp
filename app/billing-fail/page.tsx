@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AlertCircle, ArrowLeft } from "lucide-react";
+import { AlertCircle, ArrowLeft, Home, MessageCircle } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { waLink } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "התשלום נכשל · FGMP",
@@ -30,14 +31,22 @@ export default function BillingFailPage() {
               <ArrowLeft className="h-4 w-4" />
             </Link>
             <a
-              href="https://wa.me/972585222227?text=היי, יש לי בעיה בתשלום"
+              href={waLink("היי, יש לי בעיה בתשלום באתר")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost"
             >
+              <MessageCircle className="h-4 w-4" />
               דבר איתנו בוואטסאפ
             </a>
           </div>
+          <Link
+            href="/"
+            className="mt-2 inline-flex items-center gap-1 text-sm text-ink-300 hover:text-white"
+          >
+            <Home className="h-3.5 w-3.5" />
+            חזרה לעמוד הבית
+          </Link>
         </div>
       </div>
     </main>
