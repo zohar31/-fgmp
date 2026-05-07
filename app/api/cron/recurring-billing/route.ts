@@ -1,22 +1,23 @@
 import { NextResponse } from "next/server";
 import { db, schema } from "@/lib/db";
-import { and, eq, isNotNull, lte } from "drizzle-orm";
-import { chargeWithToken } from "@/lib/tranzila";
-import { SITE } from "@/lib/config";
+import { and, eq, isNotNull } from "drizzle-orm";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 // /api/cron/recurring-billing
-// Runs daily (Vercel cron). For each active subscription whose nextChargeAt
-// has passed, charge 299 ₪ via the saved Tranzila token. After 3 consecutive
-// failures the subscription is moved to 'expired' and the customer is notified.
+// Runs daily (Vercel cron) — DOES NOT CHARGE. Tranzila's My-Billing module
+// charges customers monthly on its own from the Standing Orders we create
+// after each first payment (see /api/billing/return).
 //
-// Auth: Vercel cron sends `Authorization: Bearer ${CRON_SECRET}`. The same
-// header can be used for manual triggering during testing.
-
-const MAX_FAILED_CHARGES = 3;
+// This endpoint is now a verifier: it checks for stale subscriptions
+// (active subs without an STO id, or with cancelAtPeriodEnd that have passed
+// nextChargeAt without a renewal) and surfaces them for admin review. No
+// API charges from Vercel — Tranzila is the source of truth for renewals.
+//
+// Auth: Vercel cron sends `Authorization: Bearer ${CRON_SECRET}`. Same header
+// works for manual triggering during testing.
 
 function unauthorized() {
   return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });

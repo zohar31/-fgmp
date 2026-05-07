@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { and, desc, eq } from "drizzle-orm";
-import { refundOrVoidTranzila } from "@/lib/tranzila";
+import { cancelStandingOrderV2, refundOrVoidTranzila } from "@/lib/tranzila";
 import { isWithinRefundWindow } from "@/lib/config";
 
 export const runtime = "nodejs";
@@ -190,8 +190,22 @@ export async function POST(
   //     immediate cancel + refund (auto via API or manual in Tranzila panel).
   //   - cancel_only (outside window): cancel-at-period-end. Service stays
   //     active until nextChargeAt (the end of the month they paid for),
-  //     and the recurring cron will not renew them — it'll expire instead.
+  //     and Tranzila's STO will not renew them — STO is cancelled now.
   const cancelImmediate = isRefundAction;
+
+  // Cancel the Tranzila Standing Order in BOTH flavors — Tranzila must stop
+  // billing this customer regardless of whether we refund the last charge.
+  if (sub.tranzilaStoId) {
+    const stoCancel = await cancelStandingOrderV2({ stoId: sub.tranzilaStoId });
+    if (!stoCancel.ok) {
+      console.error(
+        "[admin/cancel] STO cancel failed (continuing):",
+        sub.tranzilaStoId,
+        stoCancel.raw.slice(0, 300)
+      );
+    }
+  }
+
   await db
     .update(schema.subscriptions)
     .set({
