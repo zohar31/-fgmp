@@ -599,6 +599,201 @@ export async function voidV2(opts: {
   return parseV2Response(result);
 }
 
+// ──────────────────────────────────────────────────────────
+// Standing Order (My-Billing) — recurring subscriptions
+// ──────────────────────────────────────────────────────────
+//
+// POST /v2/sto/create — Tranzila's recurring billing module. Once you create
+// an STO with a token, Tranzila itself bills the customer every cycle on the
+// chosen day-of-month — we don't need a cron to charge.
+//
+// Note: My-Billing also auto-creates an STO at 1₪ from the iframe's
+// `tranmode=AK` flow. Our explicit /v2/sto/create call is what sets the
+// real subscription amount (299₪/month). The 1₪ shadow STOs need to be
+// disabled in the panel until we figure out how to suppress them.
+
+export type StandingOrderResult = {
+  ok: boolean;
+  stoId?: string;
+  errorCode?: number;
+  message?: string;
+  raw: string;
+};
+
+const TRANZILA_API_V2_BASE = "https://api.tranzila.com/v2";
+
+async function tranzilaApiV2Path(
+  path: string,
+  body: Record<string, unknown>
+): Promise<{
+  ok: boolean;
+  httpStatus: number;
+  data: Record<string, unknown> | null;
+  rawText: string;
+}> {
+  const appKey = process.env.TRANZILA_API_APP_KEY || "";
+  const secret = process.env.TRANZILA_API_SECRET || "";
+  if (!appKey || !secret) {
+    return {
+      ok: false,
+      httpStatus: 0,
+      data: null,
+      rawText: "TRANZILA_API_APP_KEY or TRANZILA_API_SECRET not configured",
+    };
+  }
+  const { createHmac, randomBytes } = await import("node:crypto");
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const nonce = randomBytes(32).toString("hex");
+  const accessToken = createHmac("sha256", secret + timestamp + nonce)
+    .update(appKey)
+    .digest("hex");
+  const res = await fetch(`${TRANZILA_API_V2_BASE}${path}`, {
+    method: "POST",
+    headers: {
+      "X-tranzila-api-app-key": appKey,
+      "X-tranzila-api-request-time": timestamp,
+      "X-tranzila-api-nonce": nonce,
+      "X-tranzila-api-access-token": accessToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  const rawText = await res.text();
+  let data: Record<string, unknown> | null = null;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    /* non-JSON */
+  }
+  return { ok: res.ok, httpStatus: res.status, data, rawText };
+}
+
+// Create a recurring monthly standing order
+export async function createStandingOrderV2(opts: {
+  token: string;
+  expiry: string; // YYMM
+  amount: number;
+  dayOfMonth?: number; // 1-31, default = today
+  firstChargeDate?: string; // YYYY-MM-DD, default = +30 days
+  paymentsCount?: number; // default 9999 = unlimited
+  description?: string;
+  client: {
+    name?: string;
+    id?: string; // Israeli ID / VAT
+    email?: string;
+    phone?: string; // local format e.g. "0545911111"
+  };
+}): Promise<StandingOrderResult> {
+  const yy = opts.expiry.slice(0, 2);
+  const mm = opts.expiry.slice(2, 4);
+  const expireYear = 2000 + parseInt(yy, 10);
+  const expireMonth = parseInt(mm, 10);
+
+  const today = new Date();
+  const firstCharge = opts.firstChargeDate
+    ? new Date(opts.firstChargeDate)
+    : new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+  const firstChargeStr = firstCharge.toISOString().slice(0, 10);
+  const dom = opts.dayOfMonth ?? firstCharge.getDate();
+
+  // Phone parsing: "0545911111" → countryCode=972, area=054, number=5911111
+  let phoneCountryCode = "972";
+  let phoneAreaCode = "";
+  let phoneNumber = "";
+  if (opts.client.phone) {
+    const digits = opts.client.phone.replace(/\D/g, "");
+    if (digits.startsWith("972")) {
+      phoneCountryCode = "972";
+      phoneAreaCode = digits.slice(3, 6);
+      phoneNumber = digits.slice(6);
+    } else if (digits.startsWith("0")) {
+      phoneAreaCode = digits.slice(0, 3);
+      phoneNumber = digits.slice(3);
+    } else {
+      phoneNumber = digits;
+    }
+  }
+
+  const body: Record<string, unknown> = {
+    terminal_name: TRANZILA_TOKEN_TERMINAL,
+    sto_payments_number: opts.paymentsCount ?? 9999,
+    charge_frequency: "monthly",
+    first_charge_date: firstChargeStr,
+    charge_dom: dom,
+    response_language: "english",
+    items: [
+      {
+        name: opts.description || "FGMP subscription",
+        unit_price: opts.amount,
+        units_number: 1,
+        price_currency: "ILS",
+        price_type: "G",
+      },
+    ],
+    client: {
+      name: opts.client.name || "",
+      id: opts.client.id || "",
+      email: opts.client.email || "",
+      phone_country_code: phoneCountryCode,
+      phone_area_code: phoneAreaCode,
+      phone_number: phoneNumber,
+    },
+    card: {
+      token: opts.token,
+      expire_month: expireMonth,
+      expire_year: expireYear,
+      card_holder_id: opts.client.id || "",
+      card_holder_name: opts.client.name || "",
+    },
+  };
+
+  const result = await tranzilaApiV2Path("/sto/create", body);
+
+  console.log("[tranzila/sto/create] DEBUG:", {
+    httpStatus: result.httpStatus,
+    rawLength: result.rawText.length,
+    rawSnippet: result.rawText.slice(0, 600),
+  });
+
+  const data = result.data as
+    | { error_code?: number; message?: string; sto_id?: string | number; data?: Record<string, unknown> }
+    | null;
+  const errorCode = data?.error_code;
+  const ok = result.ok && errorCode === 0;
+  const stoId = data?.sto_id !== undefined
+    ? String(data.sto_id)
+    : (data?.data && typeof (data.data as { sto_id?: unknown }).sto_id !== "undefined")
+      ? String((data.data as { sto_id: unknown }).sto_id)
+      : undefined;
+
+  return {
+    ok,
+    stoId,
+    errorCode,
+    message: data?.message,
+    raw: result.rawText,
+  };
+}
+
+// Cancel an active standing order by ID
+export async function cancelStandingOrderV2(opts: {
+  stoId: string;
+}): Promise<{ ok: boolean; raw: string; httpStatus: number }> {
+  const result = await tranzilaApiV2Path(`/sto/${opts.stoId}/cancel`, {
+    terminal_name: TRANZILA_TOKEN_TERMINAL,
+  });
+  console.log("[tranzila/sto/cancel] DEBUG:", {
+    stoId: opts.stoId,
+    httpStatus: result.httpStatus,
+    rawSnippet: result.rawText.slice(0, 400),
+  });
+  return {
+    ok: result.ok,
+    raw: result.rawText,
+    httpStatus: result.httpStatus,
+  };
+}
+
 function parseV2Response(r: {
   ok: boolean;
   httpStatus: number;

@@ -1,6 +1,11 @@
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { parseTranzilaNotify, tranzilaResponseMessage } from "@/lib/tranzila";
+import {
+  createStandingOrderV2,
+  parseTranzilaNotify,
+  tranzilaResponseMessage,
+} from "@/lib/tranzila";
+import { SITE } from "@/lib/config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -118,6 +123,36 @@ async function handle(req: Request) {
       .update(schema.subscriptions)
       .set(updates)
       .where(eq(schema.subscriptions.userId, userId));
+
+    // First payment? Register a Standing Order (My-Billing) so Tranzila bills
+    // monthly on its own. We don't need a charging cron — Tranzila handles it.
+    // The settings record has the customer's name, ID and phone for the STO.
+    if (isFirstPayment && payload.TranzilaTK && payload.expdate && !sub.tranzilaStoId) {
+      const settings = await db.query.businessSettings.findFirst({
+        where: eq(schema.businessSettings.userId, userId),
+      });
+      const sto = await createStandingOrderV2({
+        token: payload.TranzilaTK,
+        expiry: payload.expdate,
+        amount: SITE.pricing.monthlyILS,
+        description: `מנוי חודשי FGMP — ${SITE.pricing.monthlyILS}₪`,
+        client: {
+          name: settings?.contactName || payload.contact || "",
+          id: settings?.vatId || payload.myid || "",
+          email: settings?.contactEmail || payload.email || "",
+          phone: settings?.leadPhone || payload.phone || "",
+        },
+      });
+      if (sto.ok && sto.stoId) {
+        await db
+          .update(schema.subscriptions)
+          .set({ tranzilaStoId: sto.stoId, updatedAt: new Date() })
+          .where(eq(schema.subscriptions.userId, userId));
+        console.log("[billing/return] STO created:", sto.stoId);
+      } else {
+        console.error("[billing/return] STO creation FAILED:", sto.message, sto.raw.slice(0, 400));
+      }
+    }
 
     await db.insert(schema.notifications).values({
       userId,

@@ -91,6 +91,8 @@ export const subscriptions = pgTable("subscriptions", {
   tranzilaTokenExpiry: text("tranzilaTokenExpiry"), // YYMM
   tranzilaCardLast4: text("tranzilaCardLast4"),
   tranzilaCardBrand: text("tranzilaCardBrand"),
+  // Standing Order id from Tranzila My-Billing — Tranzila bills monthly on its own
+  tranzilaStoId: text("tranzilaStoId"),
   firstPaymentAt: timestamp("firstPaymentAt", { mode: "date" }),
   cancelAtPeriodEnd: boolean("cancelAtPeriodEnd").notNull().default(false),
   lastPaymentAt: timestamp("lastPaymentAt", { mode: "date" }),

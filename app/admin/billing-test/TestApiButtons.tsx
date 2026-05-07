@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, RotateCw, Undo2, Wrench } from "lucide-react";
+import { Loader2, RotateCw, Undo2, Wrench, CalendarClock } from "lucide-react";
 
 type ApiResult = {
   ok?: boolean;
@@ -24,6 +24,8 @@ export function TestApiButtons() {
   const [refundResult, setRefundResult] = useState<ApiResult | null>(null);
   const [diagLoading, setDiagLoading] = useState(false);
   const [diagResult, setDiagResult] = useState<unknown>(null);
+  const [stoLoading, setStoLoading] = useState(false);
+  const [stoResult, setStoResult] = useState<unknown>(null);
 
   async function testRecurring() {
     setRecurringLoading(true);
@@ -53,6 +55,21 @@ export function TestApiButtons() {
       setRefundResult({ error: "שגיאת רשת" });
     }
     setRefundLoading(false);
+  }
+
+  async function createSto() {
+    setStoLoading(true);
+    setStoResult(null);
+    try {
+      const res = await fetch("/api/admin/billing-test/create-sto", {
+        method: "POST",
+      });
+      const json = await res.json();
+      setStoResult(json);
+    } catch {
+      setStoResult({ error: "שגיאת רשת" });
+    }
+    setStoLoading(false);
   }
 
   async function runDiagnose() {
@@ -101,6 +118,39 @@ export function TestApiButtons() {
         {diagResult !== null && (
           <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap break-all rounded bg-black/40 p-3 text-xs text-ink-200">
             {JSON.stringify(diagResult, null, 2)}
+          </pre>
+        )}
+      </div>
+
+      <div className="card border-l-4 border-fuchsia-500 p-6">
+        <h2 className="mb-2 font-display font-bold text-white">
+          יצירת Standing Order (My-Billing) — 5₪/חודש
+        </h2>
+        <p className="mb-5 text-sm leading-7 text-ink-200">
+          זו <strong>הדרך הנכונה</strong> לחיובים חוזרים. רושם הוראת חיוב חודשית של 5₪
+          ב-Tranzila עם הטוקן השמור — אם זה עובר, Tranzila יחייבו כל חודש לבד בלי
+          שנצטרך cron. אחרי הצלחה — צריך לבטל ב-My-Billing (זה רישום אמיתי!).
+        </p>
+        <button
+          onClick={createSto}
+          disabled={stoLoading}
+          className="inline-flex items-center gap-2 rounded-xl bg-fuchsia-500 px-6 py-3 font-bold text-white transition hover:bg-fuchsia-600 disabled:opacity-50"
+        >
+          {stoLoading ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              יוצר STO...
+            </>
+          ) : (
+            <>
+              <CalendarClock className="h-5 w-5" />
+              צור STO 5₪/חודש
+            </>
+          )}
+        </button>
+        {stoResult !== null && (
+          <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap break-all rounded bg-black/40 p-3 text-xs text-ink-200">
+            {JSON.stringify(stoResult, null, 2)}
           </pre>
         )}
       </div>
