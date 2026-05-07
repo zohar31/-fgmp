@@ -536,6 +536,7 @@ export async function chargeWithTokenV2(opts: {
     expire_month: expireMonth,
     expire_year: expireYear,
     response_language: "english",
+    sto: "Y", // Standing Order — flags this as recurring so issuer doesn't apply card-not-present-fresh rules
     items: [
       {
         name: opts.description || "FGMP subscription",
