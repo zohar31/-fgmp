@@ -516,6 +516,7 @@ export async function chargeWithTokenV2(opts: {
   amount: number;
   description?: string;
   currency?: "ILS" | "USD" | "EUR";
+  ownerId?: string; // Israeli ID / VAT — issuer often requires for token charges
 }): Promise<TranzilaV2Result> {
   // expiry comes as YYMM (e.g. "2809" for Sept 2028). Split into 2-digit fields.
   const yy = opts.expiry.slice(0, 2);
@@ -528,7 +529,7 @@ export async function chargeWithTokenV2(opts: {
   // For Israeli token charges, the token itself is the credential and CVV
   // validation should be skipped. The Tranzila API accepts the body without
   // a `cvv` field for stored-token transactions.
-  const body = {
+  const body: Record<string, unknown> = {
     terminal_name: TRANZILA_TERMINAL,
     txn_type: "debit",
     card_number: opts.token,
@@ -545,6 +546,7 @@ export async function chargeWithTokenV2(opts: {
       },
     ],
   };
+  if (opts.ownerId) body.credit_card_owner_id = opts.ownerId;
 
   const result = await tranzilaApiV2("/transaction/credit_card/create", body);
   return parseV2Response(result);

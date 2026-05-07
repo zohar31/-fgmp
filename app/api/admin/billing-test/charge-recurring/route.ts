@@ -33,11 +33,16 @@ export async function POST() {
     );
   }
 
+  const settings = await db.query.businessSettings.findFirst({
+    where: eq(schema.businessSettings.userId, userId),
+  });
+
   const result = await chargeWithTokenV2({
     token: sub.tranzilaToken,
     expiry: sub.tranzilaTokenExpiry,
     amount: 5,
     description: "TEST recurring charge",
+    ownerId: settings?.vatId || undefined,
   });
 
   // Record the test charge in invoices so we can refund it later
