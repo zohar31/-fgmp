@@ -55,21 +55,30 @@ export function buildIframeParams(opts: {
   enableTokenization?: boolean; // store card for recurring (default true)
   enableBit?: boolean; // show Bit option
 }): Record<string, string> {
-  // Stripped-down param set after debugging revealed Tranzila was returning
-  // the customer to success_url WITHOUT result params. Suspected culprit:
-  // json=1 (forces JSON-only callback to notify_url, no redirect params)
-  // and u71=1 (alters callback behavior). Removing both. Also dropped the
-  // duplicated URL aliases (notify_url, NotifyURL etc.) — _address suffix
-  // is the documented form.
+  // tranmode values (per Tranzila official docs):
+  //   A  = Authorize / charge only (no token)
+  //   K  = Keep only (save token, no charge)
+  //   VK = Verify + Keep (5₪ verification charge + token)
+  //   AK = Authorize + Keep (real charge + token, one transaction) ← we use
+  //
+  // We use AK so the customer pays once and the token is saved in the same
+  // transaction. Token is then valid for recurring charges via API on the
+  // fgmpviptok terminal (per Tranzila support clarification 2026-05-07).
+  //
+  // CRITICAL: do NOT send `TranzilaTK=1` in the request. That was a bug —
+  // sending "1" makes Tranzila echo it back as "1" instead of a real token.
+  // The actual tokenization flag is `tranmode=AK` itself.
+  const tranmode = opts.enableTokenization === false ? "A" : "AK";
+
   const params: Record<string, string> = {
     sum: String(opts.amount),
     currency: "1", // 1 = ILS
-    cred_type: "1", // 1 = normal credit
-    tranmode: "A", // A = charge
+    cred_type: "1", // 1 = regular credit
+    tranmode,
     notify_url_address: opts.notifyUrl,
     success_url_address: opts.successUrl,
     fail_url_address: opts.failUrl,
-    // Custom field for tracking — Tranzila echoes this back in notify
+    // Custom field — Tranzila echoes this back in the response
     pdesc: opts.externalRef.slice(0, 100),
     // Customer info (pre-filled on hosted page)
     contact: opts.contact || "",
@@ -78,11 +87,6 @@ export function buildIframeParams(opts: {
   };
 
   if (opts.myid) params.myid = opts.myid;
-
-  // Tokenization — request a token for future recurring charges
-  if (opts.enableTokenization !== false) {
-    params.TranzilaTK = "1";
-  }
 
   // Bit support — adds a Bit button on the hosted page (terminal must support it)
   if (opts.enableBit) {
