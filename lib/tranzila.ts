@@ -325,12 +325,23 @@ export function parseTranzilaNotify(formData: FormData | URLSearchParams): Tranz
   formData.forEach((v, k) => {
     raw[k] = String(v);
   });
+
+  // Tranzila returns expiry either as combined `expdate=YYMM` (server-to-server
+  // API) or split into `expyear`+`expmonth` (iframe). chargeWithToken needs the
+  // combined YYMM, so combine the split form when expdate isn't directly there.
+  let expdate = raw.expdate || undefined;
+  if (!expdate && raw.expyear && raw.expmonth) {
+    const yy = raw.expyear.padStart(2, "0").slice(-2);
+    const mm = raw.expmonth.padStart(2, "0");
+    expdate = yy + mm;
+  }
+
   return {
     Response: raw.Response || "",
     index: raw.index || "",
     ConfirmationCode: raw.ConfirmationCode || "",
     TranzilaTK: raw.TranzilaTK || undefined,
-    expdate: raw.expdate || undefined,
+    expdate,
     ccno: raw.ccno || undefined,
     cardtype: raw.cardtype || undefined,
     sum: raw.sum || "",
