@@ -26,7 +26,7 @@ export function TestChargeButton({
       const res = await fetch("/api/billing/start-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, email, contact, phone, myid, amount: 1 }),
+        body: JSON.stringify({ userId, email, contact, phone, myid, amount: 5 }),
       });
       const json = (await res.json()) as { ok?: boolean; redirectUrl?: string; error?: string };
       if (!res.ok || !json.ok || !json.redirectUrl) {
@@ -43,9 +43,9 @@ export function TestChargeButton({
 
   return (
     <div className="card border-l-4 border-rose-500 p-6">
-      <h2 className="mb-2 font-display font-bold text-white">⚠️ בדיקת חיוב אמיתי — 1 ₪</h2>
+      <h2 className="mb-2 font-display font-bold text-white">⚠️ בדיקת חיוב אמיתי — 5 ₪</h2>
       <p className="mb-5 text-sm leading-7 text-ink-200">
-        לחיצה על הכפתור תוביל לדף Tranzila עם סכום של 1 ₪. הזן כרטיס אמיתי שלך —
+        לחיצה על הכפתור תוביל לדף Tranzila עם סכום של 5 ₪. הזן כרטיס אמיתי שלך —
         החיוב יבוצע בפועל. אחרי שתאמת שהכל עובד, תוכל להחזיר ב-Tranzila.
       </p>
       <button
@@ -61,7 +61,7 @@ export function TestChargeButton({
         ) : (
           <>
             <CreditCard className="h-5 w-5" />
-            חייב 1 ₪ — בדיקה אמיתית
+            חייב 5 ₪ — בדיקה אמיתית
           </>
         )}
       </button>

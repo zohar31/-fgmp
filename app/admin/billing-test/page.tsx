@@ -26,11 +26,11 @@ export default async function AdminBillingTestPage() {
     <div className="space-y-6">
       <header>
         <h1 className="font-display text-3xl font-extrabold text-white">
-          בדיקת סליקה — חיוב אמיתי 1 ₪
+          בדיקת סליקה — חיוב אמיתי 5 ₪
         </h1>
         <p className="mt-2 text-ink-300">
           מצב TEST של Tranzila לא תומך בכרטיסי בדיקה. כדי לוודא שהסליקה עובדת
-          end-to-end — נחייב 1 ₪ אמיתי על הכרטיס שלך, ובהמשך נבטל/נחזיר אם תרצה.
+          end-to-end — נחייב 5 ₪ אמיתי על הכרטיס שלך, ובהמשך נבטל/נחזיר אם תרצה.
         </p>
       </header>
 
@@ -39,7 +39,7 @@ export default async function AdminBillingTestPage() {
           <AlertCircle className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
           <div className="text-sm leading-7 text-ink-200">
             <strong className="text-amber-300">חיוב אמיתי!</strong>
-            {" "}לחיצה על הכפתור תיצור עסקה ב-Tranzila שתחייב את הכרטיס באמת ב-1 ₪.
+            {" "}לחיצה על הכפתור תיצור עסקה ב-Tranzila שתחייב את הכרטיס באמת ב-5 ₪.
             אחרי שווידאת שהכל עובד, תוכל להחזיר את הסכום דרך פאנל Tranzila או דרך
             מסוף הזיכויים (סיסמה: <code className="text-ink-300">tnqRWM3F</code>).
           </div>
@@ -98,7 +98,7 @@ export default async function AdminBillingTestPage() {
       <div className="card p-5">
         <h2 className="mb-3 font-display font-bold text-white">אחרי הבדיקה</h2>
         <ul className="list-inside list-disc space-y-1 text-sm text-ink-300">
-          <li>ב-/admin/payments — תראה את ה-invoice החדש (1 ₪, paid)</li>
+          <li>ב-/admin/payments — תראה את ה-invoice החדש (5 ₪, paid)</li>
           <li>ב-/admin/users/[שלך] — סטטוס מנוי = active, יש token שמור</li>
           <li>החיוב הבא — בעוד 30 ימים אוטומטית (cron עוד לא מוגדר — Commit 2)</li>
         </ul>
