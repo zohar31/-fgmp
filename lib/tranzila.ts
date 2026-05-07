@@ -546,7 +546,7 @@ export async function chargeWithTokenV2(opts: {
       },
     ],
   };
-  if (opts.ownerId) body.credit_card_owner_id = opts.ownerId;
+  if (opts.ownerId) body.card_holder_id = opts.ownerId;
 
   const result = await tranzilaApiV2("/transaction/credit_card/create", body);
   return parseV2Response(result);
