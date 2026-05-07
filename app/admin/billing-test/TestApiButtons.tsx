@@ -13,6 +13,7 @@ type ApiResult = {
   invoiceIndex?: string;
   invoiceConf?: string;
   rawSnippet?: string;
+  rawLength?: number;
   error?: string;
 };
 
@@ -147,7 +148,12 @@ function ResultBox({ label, result }: { label: string; result: ApiResult }) {
           Conf: {result.confirmationCode || result.invoiceConf}
         </div>
       )}
-      {result.rawSnippet && (
+      {typeof result.rawLength === "number" && (
+        <div className="mt-1 opacity-70" dir="ltr">
+          rawLength: {result.rawLength}
+        </div>
+      )}
+      {result.rawSnippet ? (
         <details className="mt-2">
           <summary className="cursor-pointer text-xs opacity-70">
             Raw response
@@ -156,6 +162,12 @@ function ResultBox({ label, result }: { label: string; result: ApiResult }) {
             {result.rawSnippet}
           </pre>
         </details>
+      ) : (
+        result.rawLength === 0 && (
+          <div className="mt-1 text-xs opacity-70">
+            (Tranzila returned empty body — typical IP whitelist block)
+          </div>
+        )
       )}
     </div>
   );

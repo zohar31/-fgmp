@@ -67,6 +67,7 @@ export async function POST() {
     message: result.responseMessage,
     index: result.index,
     confirmationCode: result.confirmationCode,
+    rawLength: result.raw.length,
     rawSnippet: result.raw.slice(0, 400),
   });
 }

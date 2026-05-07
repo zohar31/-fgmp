@@ -66,6 +66,7 @@ export async function POST() {
     invoiceId: inv.id,
     invoiceIndex: inv.tranzilaIndex,
     invoiceConf: inv.tranzilaConfirmationCode,
+    rawLength: refund.raw.length,
     rawSnippet: refund.raw.slice(0, 400),
   });
 }

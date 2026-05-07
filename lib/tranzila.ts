@@ -154,6 +154,18 @@ export async function chargeWithToken(opts: {
     });
     const text = await res.text();
 
+    // DEBUG: log the full Tranzila charge response so we can see what they returned
+    console.log("[tranzila/chargeWithToken] DEBUG response:", {
+      terminal: TRANZILA_TOKEN_TERMINAL,
+      amount: opts.amount,
+      tokenPrefix: opts.token.slice(0, 6) + "...",
+      expdate: opts.expiry,
+      httpStatus: res.status,
+      contentType: res.headers.get("content-type"),
+      rawLength: text.length,
+      rawSnippet: text.slice(0, 800),
+    });
+
     // Tranzila returns URL-encoded form (key=val&key=val)
     const parsed = new URLSearchParams(text);
     const responseCode = parsed.get("Response") || "unknown";
