@@ -406,3 +406,219 @@ export function tranzilaResponseMessage(code: string): string {
 export function isTestMode(): boolean {
   return process.env.TRANZILA_TEST_MODE === "1";
 }
+
+// ──────────────────────────────────────────────────────────
+// Tranzila API v2 (JSON REST) — replaces legacy tranzila71u.cgi
+// ──────────────────────────────────────────────────────────
+//
+// The legacy CGI on secure5.tranzila.com is fronted by Incapsula and blocks
+// Vercel's serverless IPs. The new JSON API on api.tranzila.com uses HMAC
+// auth and is not behind that filter.
+//
+// Auth flow:
+//   key   = secret + timestamp + nonce
+//   token = HMAC_SHA256(key, app_key)   ← message is app_key, not the body
+//
+// Headers on every call:
+//   X-tranzila-api-app-key:      app_key
+//   X-tranzila-api-request-time: unix epoch seconds (string)
+//   X-tranzila-api-nonce:        32 random bytes hex-encoded (64 chars)
+//   X-tranzila-api-access-token: hex digest from HMAC above
+//   Content-Type:                application/json
+//
+// Env:
+//   TRANZILA_API_APP_KEY  — public app key (long string)
+//   TRANZILA_API_SECRET   — private secret (short string)
+
+const TRANZILA_API_BASE = "https://api.tranzila.com/v1";
+
+async function tranzilaApiV2(
+  path: string,
+  body: Record<string, unknown>
+): Promise<{
+  ok: boolean;
+  httpStatus: number;
+  data: Record<string, unknown> | null;
+  rawText: string;
+}> {
+  const appKey = process.env.TRANZILA_API_APP_KEY || "";
+  const secret = process.env.TRANZILA_API_SECRET || "";
+
+  if (!appKey || !secret) {
+    return {
+      ok: false,
+      httpStatus: 0,
+      data: null,
+      rawText: "TRANZILA_API_APP_KEY or TRANZILA_API_SECRET not configured",
+    };
+  }
+
+  const { createHmac, randomBytes } = await import("node:crypto");
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const nonce = randomBytes(32).toString("hex");
+  const accessToken = createHmac("sha256", secret + timestamp + nonce)
+    .update(appKey)
+    .digest("hex");
+
+  const res = await fetch(`${TRANZILA_API_BASE}${path}`, {
+    method: "POST",
+    headers: {
+      "X-tranzila-api-app-key": appKey,
+      "X-tranzila-api-request-time": timestamp,
+      "X-tranzila-api-nonce": nonce,
+      "X-tranzila-api-access-token": accessToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  const rawText = await res.text();
+  let data: Record<string, unknown> | null = null;
+  try {
+    data = JSON.parse(rawText);
+  } catch {
+    /* non-JSON response (probably an error/HTML page) */
+  }
+  return {
+    ok: res.ok,
+    httpStatus: res.status,
+    data,
+    rawText,
+  };
+}
+
+type V2TransactionResult = {
+  transaction_id?: number;
+  auth_number?: string;
+  processor_response_code?: string;
+  token?: string;
+};
+
+type V2Response = {
+  error_code?: number;
+  message?: string;
+  transaction_result?: V2TransactionResult;
+};
+
+export type TranzilaV2Result = {
+  ok: boolean;
+  responseCode: string;
+  responseMessage?: string;
+  transactionId?: string;
+  authNumber?: string;
+  newToken?: string;
+  raw: string;
+};
+
+// Charge a saved token via API v2 (recurring billing)
+export async function chargeWithTokenV2(opts: {
+  token: string;
+  expiry: string; // YYMM (we'll split it)
+  amount: number;
+  description?: string;
+  currency?: "ILS" | "USD" | "EUR";
+}): Promise<TranzilaV2Result> {
+  // expiry comes as YYMM (e.g. "2809" for Sept 2028). Split into 2-digit fields.
+  const yy = opts.expiry.slice(0, 2);
+  const mm = opts.expiry.slice(2, 4);
+  const expireYear = 2000 + parseInt(yy, 10);
+  const expireMonth = parseInt(mm, 10);
+
+  const body = {
+    terminal_name: TRANZILA_TERMINAL,
+    txn_type: "debit",
+    card_number: opts.token,
+    expire_month: expireMonth,
+    expire_year: expireYear,
+    cvv: "000", // not validated for token charges
+    response_language: "english",
+    items: [
+      {
+        name: opts.description || "FGMP subscription",
+        type: "I",
+        unit_price: opts.amount,
+        currency_code: opts.currency || "ILS",
+        units_number: 1,
+      },
+    ],
+  };
+
+  const result = await tranzilaApiV2("/transaction/credit_card/create", body);
+  return parseV2Response(result);
+}
+
+// Refund a previous transaction via API v2 (uses txn_type=credit)
+export async function refundV2(opts: {
+  referenceTxnId: number;
+  authorizationNumber: string;
+  amount: number;
+  currency?: "ILS" | "USD" | "EUR";
+}): Promise<TranzilaV2Result> {
+  const body = {
+    terminal_name: TRANZILA_TERMINAL,
+    txn_type: "credit",
+    reference_txn_id: opts.referenceTxnId,
+    authorization_number: opts.authorizationNumber,
+    response_language: "english",
+    items: [
+      {
+        name: "Refund",
+        type: "I",
+        unit_price: opts.amount,
+        currency_code: opts.currency || "ILS",
+        units_number: 1,
+      },
+    ],
+  };
+  const result = await tranzilaApiV2("/transaction/credit_card/create", body);
+  return parseV2Response(result);
+}
+
+// Void/cancel a same-day transaction via API v2 (txn_type=cancel)
+export async function voidV2(opts: {
+  referenceTxnId: number;
+  authorizationNumber: string;
+}): Promise<TranzilaV2Result> {
+  const body = {
+    terminal_name: TRANZILA_TERMINAL,
+    txn_type: "cancel",
+    reference_txn_id: opts.referenceTxnId,
+    authorization_number: opts.authorizationNumber,
+    response_language: "english",
+  };
+  const result = await tranzilaApiV2("/transaction/credit_card/create", body);
+  return parseV2Response(result);
+}
+
+function parseV2Response(r: {
+  ok: boolean;
+  httpStatus: number;
+  data: Record<string, unknown> | null;
+  rawText: string;
+}): TranzilaV2Result {
+  // DEBUG: dump full v2 call info
+  console.log("[tranzila/v2] DEBUG response:", {
+    httpStatus: r.httpStatus,
+    httpOk: r.ok,
+    rawLength: r.rawText.length,
+    rawSnippet: r.rawText.slice(0, 800),
+  });
+
+  const data = r.data as V2Response | null;
+  const txn = data?.transaction_result;
+  const errorCode = data?.error_code;
+  const procCode = txn?.processor_response_code;
+  const ok =
+    r.ok &&
+    errorCode === 0 &&
+    (procCode === "000" || procCode === undefined);
+
+  return {
+    ok,
+    responseCode: procCode || (typeof errorCode === "number" ? String(errorCode) : "unknown"),
+    responseMessage: data?.message,
+    transactionId: txn?.transaction_id !== undefined ? String(txn.transaction_id) : undefined,
+    authNumber: txn?.auth_number,
+    newToken: txn?.token,
+    raw: r.rawText,
+  };
+}

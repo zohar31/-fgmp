@@ -3,13 +3,14 @@ import { auth } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { and, desc, eq } from "drizzle-orm";
-import { refundOrVoidTranzila } from "@/lib/tranzila";
+import { refundV2, voidV2 } from "@/lib/tranzila";
 
 export const runtime = "nodejs";
 
 // Admin-only: refund the admin's own most-recent paid 5₪ test invoice via
-// Tranzila API. Used to verify the refund API path works from Vercel
-// (i.e. that the Tranzila IP whitelist is open).
+// Tranzila API v2 (api.tranzila.com). Tries void first (same-day, no fee),
+// then refund if void is rejected. Verifies the refund path works from
+// Vercel.
 
 export async function POST() {
   const session = await auth();
@@ -42,31 +43,48 @@ export async function POST() {
     );
   }
 
-  const refund = await refundOrVoidTranzila({
-    originalIndex: inv.tranzilaIndex!,
-    authNr: inv.tranzilaConfirmationCode!,
-    amount: inv.amount,
-  });
+  const txnId = parseInt(inv.tranzilaIndex!, 10);
+  if (isNaN(txnId)) {
+    return NextResponse.json(
+      { error: `transaction id לא מספרי: ${inv.tranzilaIndex}` },
+      { status: 400 }
+    );
+  }
 
-  if (refund.ok) {
+  // Try void first (same-day, no fee). If void is rejected, fall back to refund.
+  let result = await voidV2({
+    referenceTxnId: txnId,
+    authorizationNumber: inv.tranzilaConfirmationCode!,
+  });
+  let mode: "void" | "refund" = "void";
+  if (!result.ok) {
+    result = await refundV2({
+      referenceTxnId: txnId,
+      authorizationNumber: inv.tranzilaConfirmationCode!,
+      amount: inv.amount,
+    });
+    mode = "refund";
+  }
+
+  if (result.ok) {
     await db
       .update(schema.invoices)
       .set({
         status: "refunded",
-        tranzilaResponseMessage: `TEST refund: ${refund.mode} ✓ (Tranzila ${refund.responseCode})`,
+        tranzilaResponseMessage: `TEST v2 ${mode}: ✓ (${result.responseCode})`,
       })
       .where(eq(schema.invoices.id, inv.id));
   }
 
   return NextResponse.json({
-    ok: refund.ok,
-    mode: refund.mode,
-    code: refund.responseCode,
-    message: refund.responseMessage,
+    ok: result.ok,
+    mode,
+    code: result.responseCode,
+    message: result.responseMessage,
     invoiceId: inv.id,
     invoiceIndex: inv.tranzilaIndex,
     invoiceConf: inv.tranzilaConfirmationCode,
-    rawLength: refund.raw.length,
-    rawSnippet: refund.raw.slice(0, 400),
+    rawLength: result.raw.length,
+    rawSnippet: result.raw.slice(0, 800),
   });
 }

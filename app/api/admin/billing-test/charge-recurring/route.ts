@@ -3,14 +3,14 @@ import { auth } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { chargeWithToken } from "@/lib/tranzila";
+import { chargeWithTokenV2 } from "@/lib/tranzila";
 
 export const runtime = "nodejs";
 
-// Admin-only: trigger a single 5₪ charge via the saved Tranzila token.
-// Used to verify the recurring-billing API path works from Vercel BEFORE the
-// real monthly cron tries to charge 299₪. If this returns ok:true the
-// monthly recurring charge will succeed.
+// Admin-only: trigger a single 5₪ charge via the saved Tranzila token using
+// API v2 (api.tranzila.com — bypasses Incapsula on the legacy CGI). Used to
+// verify the recurring-billing path works from Vercel BEFORE the real
+// monthly cron tries to charge 299₪.
 
 export async function POST() {
   const session = await auth();
@@ -33,15 +33,11 @@ export async function POST() {
     );
   }
 
-  const settings = await db.query.businessSettings.findFirst({
-    where: eq(schema.businessSettings.userId, userId),
-  });
-
-  const result = await chargeWithToken({
+  const result = await chargeWithTokenV2({
     token: sub.tranzilaToken,
     expiry: sub.tranzilaTokenExpiry,
     amount: 5,
-    myid: settings?.vatId || undefined,
+    description: "TEST recurring charge",
   });
 
   // Record the test charge in invoices so we can refund it later
@@ -52,10 +48,10 @@ export async function POST() {
       currency: "ILS",
       status: "paid",
       paidAt: new Date(),
-      tranzilaIndex: result.index ?? null,
-      tranzilaConfirmationCode: result.confirmationCode ?? null,
+      tranzilaIndex: result.transactionId ?? null,
+      tranzilaConfirmationCode: result.authNumber ?? null,
       tranzilaResponseCode: result.responseCode,
-      tranzilaResponseMessage: `TEST recurring charge — ${result.responseMessage ?? ""}`,
+      tranzilaResponseMessage: `TEST v2 charge — ${result.responseMessage ?? ""}`,
       paymentMethod: "credit_card",
       isRecurring: true,
     });
@@ -65,9 +61,9 @@ export async function POST() {
     ok: result.ok,
     code: result.responseCode,
     message: result.responseMessage,
-    index: result.index,
-    confirmationCode: result.confirmationCode,
+    index: result.transactionId,
+    confirmationCode: result.authNumber,
     rawLength: result.raw.length,
-    rawSnippet: result.raw.slice(0, 400),
+    rawSnippet: result.raw.slice(0, 800),
   });
 }
