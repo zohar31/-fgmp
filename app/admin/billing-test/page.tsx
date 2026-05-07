@@ -7,6 +7,7 @@ import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { ChevronLeft, AlertCircle } from "lucide-react";
 import { TestChargeButton } from "./TestChargeButton";
+import { TestApiButtons } from "./TestApiButtons";
 
 export const metadata: Metadata = {
   title: "בדיקת סליקה (אדמין)",
@@ -94,6 +95,8 @@ export default async function AdminBillingTestPage() {
         phone={settings?.leadPhone || ""}
         myid={settings?.vatId || ""}
       />
+
+      <TestApiButtons />
 
       <div className="card p-5">
         <h2 className="mb-3 font-display font-bold text-white">אחרי הבדיקה</h2>
