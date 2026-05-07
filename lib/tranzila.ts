@@ -523,13 +523,17 @@ export async function chargeWithTokenV2(opts: {
   const expireYear = 2000 + parseInt(yy, 10);
   const expireMonth = parseInt(mm, 10);
 
+  // CVV omitted intentionally for token charges. Sending a placeholder ("000")
+  // causes the issuer to fail CVV verification (Responsecvv=2 → Response=004).
+  // For Israeli token charges, the token itself is the credential and CVV
+  // validation should be skipped. The Tranzila API accepts the body without
+  // a `cvv` field for stored-token transactions.
   const body = {
     terminal_name: TRANZILA_TERMINAL,
     txn_type: "debit",
     card_number: opts.token,
     expire_month: expireMonth,
     expire_year: expireYear,
-    cvv: "000", // not validated for token charges
     response_language: "english",
     items: [
       {
