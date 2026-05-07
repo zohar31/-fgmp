@@ -259,9 +259,13 @@ async function callReverse(opts: {
   amount: number;
   credType: "2" | "3";
 }): Promise<Omit<TranzilaRefundResult, "mode">> {
+  // Tranzila refund auth uses TWO different passwords:
+  //   - TranzilaPW  → general API password (TRANZILA_API_PW = srK*)
+  //   - CreditPass  → refund-specific extra password (TRANZILA_REFUND_PW = tnq*)
+  // Sending the refund password as TranzilaPW returns "Not Authorized".
   const body = new URLSearchParams({
     supplier: TRANZILA_TERMINAL,
-    TranzilaPW: TRANZILA_REFUND_PW,
+    TranzilaPW: TRANZILA_API_PW,
     sum: String(opts.amount),
     currency: "1",
     cred_type: opts.credType,
