@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, RotateCw, Undo2 } from "lucide-react";
+import { Loader2, RotateCw, Undo2, Wrench } from "lucide-react";
 
 type ApiResult = {
   ok?: boolean;
@@ -22,6 +22,8 @@ export function TestApiButtons() {
   const [recurringResult, setRecurringResult] = useState<ApiResult | null>(null);
   const [refundLoading, setRefundLoading] = useState(false);
   const [refundResult, setRefundResult] = useState<ApiResult | null>(null);
+  const [diagLoading, setDiagLoading] = useState(false);
+  const [diagResult, setDiagResult] = useState<unknown>(null);
 
   async function testRecurring() {
     setRecurringLoading(true);
@@ -53,8 +55,56 @@ export function TestApiButtons() {
     setRefundLoading(false);
   }
 
+  async function runDiagnose() {
+    setDiagLoading(true);
+    setDiagResult(null);
+    try {
+      const res = await fetch("/api/admin/billing-test/diagnose-v2", {
+        method: "POST",
+      });
+      const json = await res.json();
+      setDiagResult(json);
+    } catch {
+      setDiagResult({ error: "שגיאת רשת" });
+    }
+    setDiagLoading(false);
+  }
+
   return (
     <div className="space-y-4">
+      <div className="card border-l-4 border-sky-500 p-6">
+        <h2 className="mb-2 font-display font-bold text-white">
+          אבחון API v2 — בדיקת זוג מפתחות
+        </h2>
+        <p className="mb-5 text-sm leading-7 text-ink-200">
+          מנסה את שתי האוריינטציות (long=appKey, short=secret <em>וגם</em>
+          short=appKey, long=secret) ומחזיר את התשובה של Tranzila לכל אחד.
+          אם אחד מהם <em>לא</em> 401 — מצאנו את ההרכב הנכון.
+        </p>
+        <button
+          onClick={runDiagnose}
+          disabled={diagLoading}
+          className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-6 py-3 font-bold text-white transition hover:bg-sky-600 disabled:opacity-50"
+        >
+          {diagLoading ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              מאבחן...
+            </>
+          ) : (
+            <>
+              <Wrench className="h-5 w-5" />
+              אבחן מפתחות API v2
+            </>
+          )}
+        </button>
+        {diagResult !== null && (
+          <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap break-all rounded bg-black/40 p-3 text-xs text-ink-200">
+            {JSON.stringify(diagResult, null, 2)}
+          </pre>
+        )}
+      </div>
+
       <div className="card border-l-4 border-amber-500 p-6">
         <h2 className="mb-2 font-display font-bold text-white">
           בדיקת חיוב חוזר (API → fgmpviptok)
