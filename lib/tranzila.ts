@@ -529,8 +529,11 @@ export async function chargeWithTokenV2(opts: {
   // For Israeli token charges, the token itself is the credential and CVV
   // validation should be skipped. The Tranzila API accepts the body without
   // a `cvv` field for stored-token transactions.
+  // Recurring/token charges go through the TOKEN terminal (fgmpviptok), per
+  // Tranzila support: "the recurring billing module is configured on the
+  // tokens terminal — fgmpviptok". The main terminal (fgmpvip) is iframe + refunds.
   const body: Record<string, unknown> = {
-    terminal_name: TRANZILA_TERMINAL,
+    terminal_name: TRANZILA_TOKEN_TERMINAL,
     txn_type: "debit",
     card_number: opts.token,
     expire_month: expireMonth,
