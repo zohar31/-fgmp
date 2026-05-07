@@ -1,23 +1,36 @@
-// Tranzila integration — Hosted iframe + token-based recurring billing
+// Tranzila integration — dual-terminal architecture (per Tranzila support, 2026-05-07):
 //
-// Architecture:
-// - First payment: customer redirected to Tranzila Hosted Page (iframe).
-//   Customer enters card details (or chooses Bit) on Tranzila's PCI-compliant
-//   page. Tranzila stores the card and returns a token via webhook.
-// - Recurring (monthly): server-to-server POST with the saved token.
+// - IFRAME (initial customer payment) → MAIN terminal `fgmpvip`
+//   Customer enters card on Tranzila's hosted iframe. With TranzilaTK=1 in
+//   the request, Tranzila generates a token and stores it in the token
+//   service tied to the secondary terminal (fgmpviptok).
 //
-// Credentials live in env vars (set on Vercel):
-//   TRANZILA_TERMINAL — supplier name (e.g., "fgmpvip")
-//   TRANZILA_API_PW   — TranzilaPW for the terminal (used for token charges)
-//   TRANZILA_TEST_MODE — '1' for test mode (disabled in prod once verified)
+// - RECURRING CHARGES (monthly) → TOKEN terminal `fgmpviptok` via API
+//   The recurring billing module is configured on fgmpviptok, NOT on fgmpvip.
+//   The token from the iframe transaction is valid for charges on this terminal.
+//
+// - REFUNDS / VOIDS → MAIN terminal `fgmpvip` (where the original charge lives)
+//
+// Env vars (set on Vercel):
+//   TRANZILA_TERMINAL         — main terminal name ("fgmpvip"). Iframe + refunds.
+//   TRANZILA_API_PW           — TranzilaPW for the main terminal (legacy, kept for compat).
+//   TRANZILA_REFUND_PW        — refund/void password for the main terminal.
+//   TRANZILA_TOKEN_TERMINAL   — token terminal name ("fgmpviptok"). Recurring API.
+//   TRANZILA_TOKEN_API_PW     — TranzilaPW for the token terminal.
 
 export const TRANZILA_TERMINAL = process.env.TRANZILA_TERMINAL || "fgmpvip";
 const TRANZILA_API_PW = process.env.TRANZILA_API_PW || "";
 
-// Hosted iframe base URL (same for test and live — terminal mode determines behavior)
+// Token terminal — separate supplier for recurring charges via saved token
+const TRANZILA_TOKEN_TERMINAL =
+  process.env.TRANZILA_TOKEN_TERMINAL || TRANZILA_TERMINAL;
+const TRANZILA_TOKEN_API_PW =
+  process.env.TRANZILA_TOKEN_API_PW || TRANZILA_API_PW;
+
+// Hosted iframe base URL — always on the MAIN terminal
 export const TRANZILA_IFRAME_URL = `https://direct.tranzila.com/${TRANZILA_TERMINAL}/iframenew.php`;
 
-// Server-to-server token charge endpoint
+// Server-to-server endpoint (used for both terminals — supplier param differs)
 const TRANZILA_CHARGE_URL = "https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi";
 
 // ──────────────────────────────────────────────────────────
@@ -105,18 +118,21 @@ export async function chargeWithToken(opts: {
   amount: number;
   myid?: string;
 }): Promise<TranzilaChargeResult> {
-  if (!TRANZILA_API_PW) {
+  // Recurring charges go through the TOKEN terminal (fgmpviptok), per Tranzila
+  // support (2026-05-07): "the recurring billing module is configured on the
+  // tokens terminal — fgmpviptok".
+  if (!TRANZILA_TOKEN_API_PW) {
     return {
       ok: false,
       responseCode: "no_api_pw",
-      responseMessage: "TRANZILA_API_PW not configured",
+      responseMessage: "TRANZILA_TOKEN_API_PW not configured",
       raw: "",
     };
   }
 
   const body = new URLSearchParams({
-    supplier: TRANZILA_TERMINAL,
-    TranzilaPW: TRANZILA_API_PW,
+    supplier: TRANZILA_TOKEN_TERMINAL,
+    TranzilaPW: TRANZILA_TOKEN_API_PW,
     TranzilaTK: opts.token,
     sum: String(opts.amount),
     currency: "1",
