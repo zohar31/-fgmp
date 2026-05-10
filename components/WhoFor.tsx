@@ -6,20 +6,20 @@ import Link from "next/link";
 const niches: { icon: string; label: string; slug: string }[] = [
   { icon: "🏡", label: "וילות להשכרה",      slug: "lidim-letzimer" },
   { icon: "🛏️", label: "צימרים",            slug: "lidim-letzimer" },
-  { icon: "🏙️", label: "לופטים לאירועים",   slug: "" }, // אין דף ייעודי → /lidim
+  { icon: "🏙️", label: "לופטים לאירועים",   slug: "lidim-leloft-eruim" },
   { icon: "💇‍♀️", label: "קוסמטיקאיות",      slug: "lidim-lakosmetikait" },
   { icon: "💄", label: "מאפרות",             slug: "lidim-lemaeperet" },
   { icon: "🔧", label: "שיפוצניקים",         slug: "lidim-leshipuznik" },
   { icon: "🛠️", label: "הנדימנים",           slug: "lidim-lehandimen" },
   { icon: "📸", label: "צלמים",              slug: "lidim-letzalam" },
   { icon: "🎂", label: "קונדיטוריות",        slug: "lidim-lekonditor" },
-  { icon: "🚗", label: "מוסכים",             slug: "" }, // אין דף ייעודי → /lidim
+  { icon: "🚗", label: "מוסכים",             slug: "lidim-lemoosach" },
   { icon: "🐕", label: "מאלפי כלבים",        slug: "lidim-lemaalef-klavim" },
   { icon: "🧹", label: "ניקיון",             slug: "lidim-leozeret-bayit" },
   { icon: "👨‍🏫", label: "מורים פרטיים",     slug: "lidim-lemore-prati" },
   { icon: "💼", label: "יועצים",             slug: "lidim-leyoetz-isky" },
   { icon: "🌿", label: "גננים",              slug: "lidim-leganan" },
-  { icon: "📦", label: "הובלות",             slug: "" }, // אין דף ייעודי → /lidim
+  { icon: "📦", label: "הובלות",             slug: "lidim-lehovalot" },
 ];
 
 export function WhoFor() {
