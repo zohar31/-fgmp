@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, CheckCircle2 } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { RelatedGuides } from "@/components/RelatedGuides";
 import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 import { getGuide } from "@/lib/guides";
 import { SITE } from "@/lib/config";
@@ -189,6 +190,8 @@ export default function WhatsAppVsPhoneGuide() {
               </Link>
             </div>
           </div>
+
+          <RelatedGuides currentSlug={SLUG} />
 
           <div className="mt-12 border-t border-white/5 pt-8">
             <Link href="/guides" className="inline-flex items-center gap-2 text-sm text-ink-300 hover:text-white">
