@@ -22,3 +22,9 @@ yarn-error.log*
 .claude/
 
 .vercel
+
+# scratch / temp working files (root-level, underscore-prefixed)
+/_*
+
+# TypeScript incremental build artifact
+tsconfig.tsbuildinfo
