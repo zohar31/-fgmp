@@ -33,14 +33,23 @@ function genCode(): string {
 }
 
 export async function POST(req: Request) {
-  const expected = process.env.EXTENSION_API_TOKEN;
-  if (!expected) {
+  // Accept a dedicated, low-privilege SHORTEN_API_TOKEN (preferred for the
+  // extension) or the full EXTENSION_API_TOKEN. The dedicated token only grants
+  // short-link creation — never customer data — so it's safe to embed in the
+  // extension running on collector machines.
+  const tokens = [
+    process.env.SHORTEN_API_TOKEN,
+    process.env.EXTENSION_API_TOKEN,
+  ].filter((t): t is string => !!t);
+
+  if (tokens.length === 0) {
     return NextResponse.json({ ok: false, error: "API not configured" }, { status: 503 });
   }
 
   const auth = req.headers.get("authorization") || "";
   const m = auth.match(/^Bearer\s+(.+)$/);
-  if (!m || !constantTimeEqual(m[1], expected)) {
+  const provided = m?.[1] || "";
+  if (!provided || !tokens.some((t) => constantTimeEqual(provided, t))) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 
