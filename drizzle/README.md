@@ -17,4 +17,5 @@ All migrations in this project use `IF NOT EXISTS` so they're idempotent and saf
 
 ## Pending
 
+- `0008_short_links.sql` — creates `short_links` (URL shortener for fgmp.net/p/<code>)
 - `0001_ai_filter_columns.sql` — adds `aiFilterEnabled`, `aiPositiveExamples`, `aiNegativeExamples` to `business_settings`

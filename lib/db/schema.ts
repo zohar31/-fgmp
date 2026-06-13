@@ -343,3 +343,15 @@ export const pageViews = pgTable(
     index("page_views_fingerprint_idx").on(t.fingerprint, t.createdAt),
   ]
 );
+
+// Short links — self-hosted URL shortener for fgmp.net/p/<code>.
+// Resolver: app/p/[code]/route.ts looks up the code and redirects to target_url.
+// Columns are snake_case to mirror the grouppostv2 short_links table, so existing
+// codes can be migrated 1:1 from the VPS-local Postgres into Neon.
+export const shortLinks = pgTable("short_links", {
+  code: text("code").primaryKey(),
+  targetUrl: text("target_url").notNull(),
+  clickCount: integer("click_count").notNull().default(0),
+  lastClickAt: timestamp("last_click_at", { mode: "date" }),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+});
