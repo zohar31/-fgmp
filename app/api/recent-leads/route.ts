@@ -66,7 +66,9 @@ export async function GET() {
         .map((p) => String(p.postUrl ?? ""))
         .filter((u) => u.length > 0);
 
-      // Look up the exact short link that was sent for each post.
+      // Resolve the fgmp.net short link for each post: reuse the exact one that
+      // was sent (from short_links), and mint one for any older lead that was
+      // sent before the fgmp.net shortener (so every displayed lead has a link).
       const codeByUrl = new Map<string, string>();
       if (urls.length) {
         const rows = await db
@@ -77,6 +79,24 @@ export async function GET() {
           .from(schema.shortLinks)
           .where(inArray(schema.shortLinks.targetUrl, urls));
         for (const r of rows) codeByUrl.set(r.targetUrl, r.code);
+
+        const missing = [...new Set(urls)].filter((u) => !codeByUrl.has(u));
+        if (missing.length) {
+          const gen = () => {
+            const a = "abcdefghijklmnopqrstuvwxyz0123456789";
+            const b = crypto.getRandomValues(new Uint8Array(6));
+            let s = "";
+            for (let i = 0; i < 6; i++) s += a[b[i] % a.length];
+            return s;
+          };
+          const toInsert = missing.map((u) => ({ code: gen(), targetUrl: u }));
+          try {
+            await db.insert(schema.shortLinks).values(toInsert).onConflictDoNothing();
+            for (const row of toInsert) codeByUrl.set(row.targetUrl, row.code);
+          } catch {
+            /* if minting fails, those leads just show without a link */
+          }
+        }
       }
 
       const leads: PublicLead[] = sent
