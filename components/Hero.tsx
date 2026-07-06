@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { ArrowLeft, MessageCircle, Sparkles, Bell, ShieldCheck } from "lucide-react";
+import { ArrowLeft, MessageCircle, Sparkles, ShieldCheck } from "lucide-react";
 import { SITE, waLink } from "@/lib/config";
 import { TelegramIcon } from "./TelegramIcon";
+import { LiveLeadPhone } from "./LiveLeadPhone";
 
 export function Hero() {
   return (
@@ -74,7 +74,7 @@ export function Hero() {
           </div>
 
           <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-            <PhoneMockup />
+            <LiveLeadPhone />
           </div>
         </div>
       </div>
@@ -82,27 +82,3 @@ export function Hero() {
   );
 }
 
-function PhoneMockup() {
-  return (
-    <div className="relative animate-float">
-      <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-brand-500/30 via-transparent to-wa/20 blur-3xl" />
-      <div className="mx-auto aspect-[9/19] max-w-xs rounded-[2.5rem] bg-gradient-to-br from-bg-card to-bg-soft p-3 shadow-2xl ring-1 ring-white/10">
-        <div className="relative h-full w-full overflow-hidden rounded-[2rem] bg-[#0b141a]">
-          <Image
-            src="/screenshots/lead-bakery.jpg"
-            alt="צילום מסך של ליד אמיתי שהתקבל בוואטסאפ דרך FGMP"
-            fill
-            sizes="(max-width:1024px) 320px, 360px"
-            priority
-            className="object-cover object-top"
-          />
-        </div>
-      </div>
-
-      <div className="pointer-events-none absolute -right-4 top-12 hidden rotate-3 rounded-2xl bg-wa px-4 py-2 text-sm font-bold text-white shadow-glow-wa md:block">
-        <Bell className="inline h-4 w-4 ms-1" />
-        ליד חדש!
-      </div>
-    </div>
-  );
-}

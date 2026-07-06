@@ -4,7 +4,6 @@ import { Hero } from "@/components/Hero";
 import { TrustBar } from "@/components/TrustBar";
 import { Problem } from "@/components/Problem";
 import { HowItWorks } from "@/components/HowItWorks";
-import { LiveLeads } from "@/components/LiveLeads";
 import { Solution } from "@/components/Solution";
 import { WhoFor } from "@/components/WhoFor";
 import { Demo } from "@/components/Demo";
@@ -47,7 +46,6 @@ export default function HomePage() {
         <TrustBar />
         <Problem />
         <HowItWorks />
-        <LiveLeads />
         <Solution />
         <WhoFor />
         <Demo />
