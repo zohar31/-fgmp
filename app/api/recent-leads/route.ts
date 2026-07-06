@@ -1,30 +1,30 @@
 import { NextResponse } from "next/server";
+import { db, schema } from "@/lib/db";
+import { inArray } from "drizzle-orm";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-// The WA server's /posts returns the full feed (several MB), so give the
-// upstream fetch room and cache the parsed result in-instance.
 export const maxDuration = 20;
 
 const WA_SERVER = (
   process.env.WA_SERVER_URL || "http://85.130.174.200:3030"
 ).replace(/\/$/, "");
-
+const BASE = (process.env.NEXT_PUBLIC_SITE_URL || "https://fgmp.net").replace(/\/$/, "");
 const TTL_MS = 30_000;
 
 type PublicLead = {
+  subscriber: string; // the business (category) the lead was actually sent to
   group: string;
   text: string;
   keywords: string[];
   time: string;
+  link: string | null; // the exact fgmp.net/p short link that was sent
 };
 
-// Last-good cache (per warm serverless instance). Ensures a transient upstream
-// timeout never blanks the homepage demo — we keep serving the previous leads.
+// Last-good cache (per warm serverless instance) so a transient upstream
+// timeout never blanks the homepage demo.
 let CACHE: { leads: PublicLead[]; at: number } = { leads: [], at: 0 };
 
-// Redact Israeli-phone-like digit runs so real contact numbers never surface
-// on the public marketing page.
 function redactPhones(s: string): string {
   return s
     .replace(/0\d[\d\-\s.]{7,}\d/g, "•••")
@@ -32,9 +32,10 @@ function redactPhones(s: string): string {
 }
 
 // GET /api/recent-leads
-// Server-side proxy to the WA server's /posts feed, sanitized for public
-// display. Server-to-server avoids the browser's HTTP→HTTPS mixed-content block.
-// Never throws and never blanks: returns the last-good leads on failure.
+// Real leads exactly as delivered to subscribers: only posts that were actually
+// sent (waNotifications), enriched with the subscriber/business name and the
+// exact short link that was sent (looked up from short_links by post URL).
+// Server-to-server (avoids HTTP→HTTPS mixed content). Never throws / never blanks.
 export async function GET() {
   const now = Date.now();
   if (CACHE.leads.length && now - CACHE.at < TTL_MS) {
@@ -49,21 +50,58 @@ export async function GET() {
     if (res.ok) {
       const data = (await res.json()) as { posts?: unknown };
       const posts = Array.isArray(data?.posts) ? data.posts : [];
-      const leads: PublicLead[] = posts
-        .slice(0, 8)
+
+      // Only leads that were actually delivered to a subscriber.
+      const sent = posts
+        .filter(
+          (p) =>
+            p &&
+            typeof p === "object" &&
+            Array.isArray((p as Record<string, unknown>).waNotifications) &&
+            ((p as Record<string, unknown>).waNotifications as unknown[]).length > 0
+        )
+        .slice(0, 8) as Record<string, unknown>[];
+
+      const urls = sent
+        .map((p) => String(p.postUrl ?? ""))
+        .filter((u) => u.length > 0);
+
+      // Look up the exact short link that was sent for each post.
+      const codeByUrl = new Map<string, string>();
+      if (urls.length) {
+        const rows = await db
+          .select({
+            code: schema.shortLinks.code,
+            targetUrl: schema.shortLinks.targetUrl,
+          })
+          .from(schema.shortLinks)
+          .where(inArray(schema.shortLinks.targetUrl, urls));
+        for (const r of rows) codeByUrl.set(r.targetUrl, r.code);
+      }
+
+      const leads: PublicLead[] = sent
         .map((p): PublicLead => {
-          const post = p as Record<string, unknown>;
-          const rawText = String(post.text ?? "").replace(/\s+/g, " ").trim();
+          const notif =
+            ((p.waNotifications as Record<string, unknown>[])[0] ?? {}) as Record<
+              string,
+              unknown
+            >;
+          const url = String(p.postUrl ?? "");
+          const code = codeByUrl.get(url);
+          const rawText = String(p.text ?? "").replace(/\s+/g, " ").trim();
           return {
-            group: String(post.groupName ?? "").slice(0, 60),
+            subscriber: String(notif.catName ?? "").slice(0, 50),
+            group: String(p.groupName ?? "").slice(0, 60),
             text: redactPhones(rawText).slice(0, 170),
-            keywords: Array.isArray(post.matchedKeywords)
-              ? (post.matchedKeywords as unknown[]).slice(0, 4).map((k) => String(k))
+            keywords: Array.isArray(p.matchedKeywords)
+              ? (p.matchedKeywords as unknown[]).slice(0, 4).map((k) => String(k))
               : [],
-            time: String(post.postTime ?? "").slice(0, 20),
+            time: String(p.postTime ?? "").slice(0, 20),
+            link: code ? `${BASE}/p/${code}` : null,
           };
         })
         .filter((l) => l.text.length > 0);
+
       if (leads.length) CACHE = { leads, at: now };
     }
   } catch {

@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 
-type Lead = { group: string; text: string; keywords: string[]; time: string };
+type Lead = {
+  subscriber: string;
+  group: string;
+  text: string;
+  keywords: string[];
+  time: string;
+  link: string | null;
+};
 
 // The Hero phone mockup, live. Pulls real recent leads and shows them in a
 // WhatsApp-style chat inside the phone frame. Until data arrives it shows a
@@ -66,13 +73,16 @@ export function LiveLeadPhone() {
                   <Bell className="h-3 w-3 text-wa" />
                   ליד חדש · {lead.time || "עכשיו"}
                 </div>
-                <div className="max-w-[92%] rounded-2xl rounded-tr-sm bg-[#005c4b] p-3 shadow">
+                <div className="max-w-[95%] rounded-2xl rounded-tr-sm bg-[#005c4b] p-3 shadow">
+                  <div className="mb-1 text-[12px] font-extrabold text-white">
+                    🎯 ליד חדש עבור {lead.subscriber || "המנוי"}
+                  </div>
                   {lead.group && (
-                    <div className="mb-1 text-[11px] font-bold text-emerald-200">
+                    <div className="text-[11px] font-semibold text-emerald-200">
                       📌 {lead.group}
                     </div>
                   )}
-                  <p className="text-[13px] leading-5 text-white/95">{lead.text}…</p>
+                  <p className="mt-1 text-[13px] leading-5 text-white/95">{lead.text}…</p>
                   {lead.keywords.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1">
                       {lead.keywords.map((k) => (
@@ -83,6 +93,11 @@ export function LiveLeadPhone() {
                           #{k}
                         </span>
                       ))}
+                    </div>
+                  )}
+                  {lead.link && (
+                    <div className="mt-2 truncate text-[11px] font-semibold text-emerald-100">
+                      🔗 {lead.link.replace(/^https?:\/\//, "")}
                     </div>
                   )}
                   <div className="mt-1 text-left text-[9px] text-emerald-200/70">✓✓</div>
