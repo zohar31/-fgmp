@@ -83,11 +83,22 @@ export async function POST(req: Request) {
     });
   }
 
+  // Pay-first model (no free trial): refuse activation until the first payment
+  // is recorded. Without this gate, anyone who sends the WhatsApp activation
+  // message got flipped to trial_active + a 7-day trial window (in the ack
+  // route) and received leads for free.
+  if (!sub.firstPaymentAt) {
+    return NextResponse.json(
+      { ok: false, error: "Payment required before activation" },
+      { status: 402 }
+    );
+  }
+
   const now = new Date();
   await db
     .update(schema.subscriptions)
     .set({
-      status: "trial_active",
+      status: "active",
       activatedAt: now,
       activatedFromPhone: phone,
       updatedAt: now,
