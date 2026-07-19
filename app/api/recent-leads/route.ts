@@ -9,7 +9,7 @@ export const maxDuration = 20;
 const WA_SERVER = (
   process.env.WA_SERVER_URL || "http://85.130.174.200:3030"
 ).replace(/\/$/, "");
-const BASE = (process.env.NEXT_PUBLIC_SITE_URL || "https://fgmp.net").replace(/\/$/, "");
+const BASE = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.fgmp.net").replace(/\/$/, "");
 const TTL_MS = 30_000;
 
 type PublicLead = {

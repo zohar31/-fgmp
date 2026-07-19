@@ -8,7 +8,8 @@ export const dynamic = "force-dynamic";
 
 // POST /api/extension/activate
 // נקרא ע"י wa-server ב-VPS אחרי שהלקוח שולח את הודעת FGMP-ACTIVATE-XXXX
-// מסמן את המנוי כמופעל ומעביר ל-trial_active עם activatedAt + activatedFromPhone
+// מסמן את המנוי כמופעל (status=active) עם activatedAt + activatedFromPhone.
+// דורש תשלום קודם (firstPaymentAt) — אחרת מוחזר 402. אין תקופת ניסיון.
 //
 // Auth: Bearer EXTENSION_API_TOKEN
 

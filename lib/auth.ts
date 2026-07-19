@@ -89,7 +89,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           firstName: firstName || null,
           lastName: rest.join(" ") || null,
           externalId: user.id,
-          eventSourceUrl: "https://fgmp.net/login",
+          eventSourceUrl: "https://www.fgmp.net/login",
           eventId: `signup_${user.id}_${now.getTime()}`,
         })
           .then((r) => {

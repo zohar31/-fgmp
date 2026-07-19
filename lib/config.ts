@@ -3,7 +3,10 @@ export const SITE = {
   legalName: "FGMP · צח אור",
   vatId: "036898054",
   domain: "fgmp.net",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://fgmp.net",
+  // Canonical host = the domain that actually serves 200 (fgmp.net → 307 → www).
+  // Must match the served host, otherwise canonicals point to a redirecting URL
+  // and Google reports "Alternate page with proper canonical tag" and won't index.
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.fgmp.net",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972585222227",
   pricing: {
     monthlyILS: 299,

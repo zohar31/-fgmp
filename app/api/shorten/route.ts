@@ -68,7 +68,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://fgmp.net").replace(/\/$/, "");
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.fgmp.net").replace(/\/$/, "");
 
   // Insert with a fresh code, retrying on the (rare) primary-key collision.
   for (let attempt = 0; attempt < 5; attempt++) {
