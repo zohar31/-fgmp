@@ -51,30 +51,38 @@ export default function GuidesIndex() {
           </p>
         </header>
 
-        <section className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {guides.map((g) => (
-            <article
-              key={g.slug}
-              className="group card flex h-full flex-col p-6 ring-1 ring-white/10 transition hover:ring-brand-500/40 hover:-translate-y-0.5"
-            >
-              <div className="text-xs font-bold text-brand-300">{g.category}</div>
-              <h2 className="mt-2 font-display text-xl font-bold leading-snug text-white group-hover:text-brand-200">
-                <Link href={`/guides/${g.slug}`} className="after:absolute after:inset-0">
-                  {g.title}
-                </Link>
-              </h2>
-              <p className="mt-3 flex-1 text-sm leading-7 text-ink-300">{g.excerpt}</p>
-              <div className="mt-5 flex items-center gap-3 text-xs text-ink-400">
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {g.readTime} דק׳ קריאה
-                </span>
-                <span>·</span>
-                <time dateTime={g.updatedAt}>עודכן {formatDate(g.updatedAt)}</time>
-              </div>
-            </article>
-          ))}
-        </section>
+        {Array.from(new Set(guides.map((g) => g.category))).map((category) => (
+          <section key={category} className="mt-14">
+            <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+              {category}
+            </h2>
+            <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {guides
+                .filter((g) => g.category === category)
+                .map((g) => (
+                  <article
+                    key={g.slug}
+                    className="group card flex h-full flex-col p-6 ring-1 ring-white/10 transition hover:ring-brand-500/40 hover:-translate-y-0.5"
+                  >
+                    <h3 className="font-display text-xl font-bold leading-snug text-white group-hover:text-brand-200">
+                      <Link href={`/guides/${g.slug}`} className="after:absolute after:inset-0">
+                        {g.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-3 flex-1 text-sm leading-7 text-ink-300">{g.excerpt}</p>
+                    <div className="mt-5 flex items-center gap-3 text-xs text-ink-400">
+                      <span className="inline-flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {g.readTime} דק׳ קריאה
+                      </span>
+                      <span>·</span>
+                      <time dateTime={g.updatedAt}>עודכן {formatDate(g.updatedAt)}</time>
+                    </div>
+                  </article>
+                ))}
+            </div>
+          </section>
+        ))}
 
         <section className="mt-16 rounded-3xl bg-gradient-to-br from-brand-500/10 to-wa/10 p-8 ring-1 ring-white/10 md:p-12">
           <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
