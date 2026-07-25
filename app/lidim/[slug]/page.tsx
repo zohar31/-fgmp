@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema, faqSchema } from "@/lib/jsonld";
 import { SITE, waLink } from "@/lib/config";
 import { getLandingPage, landingPages } from "@/lib/landing-pages";
+import { getGeoProfession, cities } from "@/lib/geo";
 
 export function generateStaticParams() {
   return landingPages.map((p) => ({ slug: p.slug }));
@@ -47,6 +48,10 @@ export default async function LandingPageRoute({
   const { slug } = await params;
   const page = getLandingPage(slug);
   if (!page) notFound();
+
+  // Does this profession have city-level geo pages? If so, surface them for
+  // internal linking + local-intent capture.
+  const geo = getGeoProfession(slug);
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -191,6 +196,49 @@ export default async function LandingPageRoute({
               </div>
             </div>
           </div>
+
+          <div className="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+            <h3 className="text-sm font-bold text-ink-100">מדריכים שכדאי לקרוא</h3>
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+              {[
+                { href: "/guides/lead-price-list", label: "מחירון לידים 2026 — כמה עולה ליד" },
+                { href: "/guides/leads-from-facebook-groups", label: "איך משיגים לידים מקבוצות פייסבוק" },
+                { href: "/guides/speed-to-lead", label: "מהירות תגובה לליד — למה זה קובע" },
+                { href: "/guides/calculate-cost-per-lead", label: "איך מחשבים עלות לליד (CPL)" },
+              ].map((g) => (
+                <li key={g.href}>
+                  <Link
+                    href={g.href}
+                    className="text-sm text-brand-300 underline underline-offset-2 hover:text-brand-200"
+                  >
+                    {g.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {geo && (
+            <div className="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+              <h3 className="text-sm font-bold text-ink-100">
+                לידים {geo.nounGenitive} לפי עיר
+              </h3>
+              <p className="mt-1 text-sm text-ink-400">
+                דף ייעודי לכל אזור — עם הקבוצות המקומיות של אותה עיר.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {cities.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/lidim/${slug}/${c.slug}`}
+                    className="rounded-full bg-white/5 px-3 py-1.5 text-sm text-ink-200 ring-1 ring-white/10 transition hover:text-white hover:ring-brand-500/40"
+                  >
+                    {c.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {page.relatedTerms.length > 0 && (
             <div className="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-5">

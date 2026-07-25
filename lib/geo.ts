@@ -1,0 +1,187 @@
+// ─────────────────────────────────────────────────────────────────────────
+// Local-SEO geo matrix: profession × city.
+// Each combination becomes a unique static page under
+// /lidim/<professionSlug>/<citySlug> with its own H1, LocalBusiness/Service
+// schema (areaServed = the city), and city-specific body copy.
+//
+// Content is templated but *varied*: sentence banks are keyed by a stable
+// hash of (profession, city) so no two pages read identically — this is
+// programmatic SEO done responsibly (real local intent, no doorway spam).
+// ─────────────────────────────────────────────────────────────────────────
+
+export type City = {
+  slug: string; // URL segment (transliterated)
+  name: string; // Hebrew display name
+  region: "מרכז" | "שרון" | "דרום" | "צפון" | "ירושלים" | "שפלה";
+  nearby: string[]; // neighboring cities/areas — used to enrich copy
+};
+
+export const cities: City[] = [
+  { slug: "tel-aviv", name: "תל אביב", region: "מרכז", nearby: ["רמת גן", "גבעתיים", "בת ים", "חולון"] },
+  { slug: "jerusalem", name: "ירושלים", region: "ירושלים", nearby: ["מבשרת ציון", "מעלה אדומים", "בית שמש"] },
+  { slug: "haifa", name: "חיפה", region: "צפון", nearby: ["קריות", "נשר", "טירת כרמל"] },
+  { slug: "rishon-lezion", name: "ראשון לציון", region: "מרכז", nearby: ["נס ציונה", "רחובות", "באר יעקב"] },
+  { slug: "petah-tikva", name: "פתח תקווה", region: "מרכז", nearby: ["ראש העין", "אלעד", "גבעת שמואל", "קרית אונו"] },
+  { slug: "netanya", name: "נתניה", region: "שרון", nearby: ["חדרה", "כפר יונה", "אבן יהודה"] },
+  { slug: "ashdod", name: "אשדוד", region: "דרום", nearby: ["אשקלון", "יבנה", "גן יבנה"] },
+  { slug: "beer-sheva", name: "באר שבע", region: "דרום", nearby: ["עומר", "להבים", "אופקים", "דימונה"] },
+  { slug: "holon", name: "חולון", region: "מרכז", nearby: ["בת ים", "אזור", "ראשון לציון"] },
+  { slug: "ramat-gan", name: "רמת גן", region: "מרכז", nearby: ["גבעתיים", "בני ברק", "תל אביב"] },
+  { slug: "rehovot", name: "רחובות", region: "שפלה", nearby: ["נס ציונה", "יבנה", "מזכרת בתיה"] },
+  { slug: "kfar-saba", name: "כפר סבא", region: "שרון", nearby: ["רעננה", "הוד השרון", "הרצליה"] },
+  { slug: "herzliya", name: "הרצליה", region: "שרון", nearby: ["רמת השרון", "הוד השרון", "כפר שמריהו"] },
+  { slug: "raanana", name: "רעננה", region: "שרון", nearby: ["כפר סבא", "הוד השרון", "הרצליה"] },
+  { slug: "modiin", name: "מודיעין", region: "מרכז", nearby: ["רעות", "מכבים", "שוהם", "לוד"] },
+  { slug: "ashkelon", name: "אשקלון", region: "דרום", nearby: ["אשדוד", "קרית גת", "שדרות"] },
+];
+
+// professionSlug MUST match an existing entry in landing-pages.ts so the geo
+// page can link "up" to the profession pillar page.
+export type GeoProfession = {
+  professionSlug: string; // e.g. "lidim-leshipuznik"
+  noun: string; // "שיפוצניק"
+  nounGenitive: string; // form after ל: "לשיפוצניק"
+  service: string; // "שיפוצים"
+  searchExamples: string[]; // realistic group-post phrasings (no city — city injected)
+};
+
+export const geoProfessions: GeoProfession[] = [
+  { professionSlug: "lidim-leshipuznik", noun: "שיפוצניק", nounGenitive: "לשיפוצניק", service: "שיפוצים", searchExamples: ["מחפש שיפוצניק אמין", "המלצות על שיפוצניק", "מי עושה שיפוץ אמבטיה"] },
+  { professionSlug: "lidim-leinstalator", noun: "אינסטלטור", nounGenitive: "לאינסטלטור", service: "אינסטלציה", searchExamples: ["צריך אינסטלטור דחוף", "יש נזילה מי ממליץ על אינסטלטור", "מחפשת שרברב"] },
+  { professionSlug: "lidim-lehashmalai", noun: "חשמלאי", nounGenitive: "לחשמלאי", service: "עבודות חשמל", searchExamples: ["מחפש חשמלאי מוסמך", "מי ממליץ על חשמלאי", "צריך חשמלאי לתיקון"] },
+  { professionSlug: "lidim-lehandimen", noun: "הנדימן", nounGenitive: "להנדימן", service: "עבודות תחזוקה", searchExamples: ["מחפשת הנדימן לתיקונים קטנים", "מי עושה עבודות הנדימן", "צריך בעל מקצוע לתיקונים בבית"] },
+  { professionSlug: "lidim-laman-ulan", noun: "מנעולן", nounGenitive: "למנעולן", service: "פריצת מנעולים", searchExamples: ["ננעלתי בחוץ צריך מנעולן דחוף", "מי ממליץ על מנעולן", "מחפש מנעולן"] },
+  { professionSlug: "lidim-lehovalot", noun: "מוביל", nounGenitive: "למוביל", service: "הובלות", searchExamples: ["מחפש חברת הובלות", "מי ממליץ על מובילים", "צריך הובלה לדירה"] },
+  { professionSlug: "lidim-leganan", noun: "גנן", nounGenitive: "לגנן", service: "גינון", searchExamples: ["מחפשת גנן קבוע", "מי ממליץ על גנן", "צריך גנן לתחזוקת גינה"] },
+  { professionSlug: "lidim-lemadbir", noun: "מדביר", nounGenitive: "למדביר", service: "הדברה", searchExamples: ["צריך מדביר דחוף", "מי ממליץ על הדברה", "מחפש חברת הדברה"] },
+  { professionSlug: "lidim-letechnai-mazganim", noun: "טכנאי מזגנים", nounGenitive: "לטכנאי מזגנים", service: "תיקון מזגנים", searchExamples: ["המזגן לא מקרר צריך טכנאי", "מי ממליץ על טכנאי מזגנים", "מחפש טכנאי למיזוג"] },
+  { professionSlug: "lidim-letzabai", noun: "צבעי", nounGenitive: "לצבעי", service: "צביעת דירות", searchExamples: ["מחפש צבעי לדירה", "מי ממליץ על צבעי", "צריך לצבוע דירה"] },
+  { professionSlug: "lidim-lekablan", noun: "קבלן שיפוצים", nounGenitive: "לקבלן", service: "עבודות קבלנות", searchExamples: ["מחפש קבלן שיפוצים", "מי ממליץ על קבלן אמין", "צריך הצעת מחיר לשיפוץ כללי"] },
+  { professionSlug: "lidim-lenagar", noun: "נגר", nounGenitive: "לנגר", service: "נגרות", searchExamples: ["מחפש נגר לארונות", "מי ממליץ על נגר", "צריך נגר לרהיטים בהזמנה"] },
+  { professionSlug: "lidim-leitum", noun: "איטום גגות", nounGenitive: "לאיטום", service: "איטום", searchExamples: ["יש רטיבות מי עושה איטום", "מחפש חברת איטום", "צריך איטום גג דחוף"] },
+  { professionSlug: "lidim-lealuminium", noun: "מסגר אלומיניום", nounGenitive: "לאלומיניום", service: "עבודות אלומיניום", searchExamples: ["מחפש בעל מקצוע לאלומיניום", "מי עושה חלונות אלומיניום", "צריך פרגולת אלומיניום"] },
+  { professionSlug: "lidim-leparket", noun: "מתקין פרקט", nounGenitive: "להתקנת פרקט", service: "התקנת פרקט", searchExamples: ["מחפש מתקין פרקט", "מי ממליץ על פרקטן", "צריך הצעה להתקנת פרקט"] },
+  { professionSlug: "lidim-letzalam", noun: "צלם", nounGenitive: "לצלם", service: "צילום אירועים", searchExamples: ["מחפשת צלם לאירוע", "מי ממליץ על צלם", "צריך צלם לחתונה"] },
+  { professionSlug: "lidim-lemaeperet", noun: "מאפרת", nounGenitive: "למאפרת", service: "איפור", searchExamples: ["מחפשת מאפרת לאירוע", "מי ממליצה על מאפרת", "צריך איפור כלה"] },
+  { professionSlug: "lidim-lekonditor", noun: "קונדיטור", nounGenitive: "לקונדיטור", service: "עוגות מעוצבות", searchExamples: ["מחפשת עוגת יום הולדת", "מי ממליץ על קונדיטוריה", "צריך עוגה מעוצבת לאירוע"] },
+  { professionSlug: "lidim-lekietering", noun: "קייטרינג", nounGenitive: "לקייטרינג", service: "קייטרינג", searchExamples: ["מחפשת קייטרינג לאירוע", "מי ממליץ על קייטרינג", "צריך הצעת מחיר לקייטרינג"] },
+  { professionSlug: "lidim-ledj", noun: "תקליטן", nounGenitive: "לתקליטן", service: "תקליטנות", searchExamples: ["מחפשת DJ לאירוע", "מי ממליץ על תקליטן", "צריך תקליטן לחתונה"] },
+  { professionSlug: "lidim-leorech-din", noun: "עורך דין", nounGenitive: "לעורך דין", service: "ייעוץ משפטי", searchExamples: ["מחפש עורך דין", "מי ממליץ על עו\"ד", "צריך ייעוץ משפטי"] },
+  { professionSlug: "lidim-lesochen-bituach", noun: "סוכן ביטוח", nounGenitive: "לסוכן ביטוח", service: "ביטוח", searchExamples: ["מחפש סוכן ביטוח טוב", "מי ממליץ על סוכן ביטוח", "צריך לעשות סדר בביטוחים"] },
+  { professionSlug: "lidim-lekosmetikait", noun: "קוסמטיקאית", nounGenitive: "לקוסמטיקאית", service: "טיפולי קוסמטיקה", searchExamples: ["מחפשת קוסמטיקאית טובה", "מי ממליצה על קוסמטיקאית", "צריך טיפול פנים"] },
+  { professionSlug: "lidim-lesapar", noun: "מספרה", nounGenitive: "לספר", service: "עיצוב שיער", searchExamples: ["מחפשת מספרה טובה", "מי ממליץ על ספר", "צריך תספורת"] },
+  { professionSlug: "lidim-lemanikuristit", noun: "מניקוריסטית", nounGenitive: "למניקוריסטית", service: "מניקור פדיקור", searchExamples: ["מחפשת מניקוריסטית", "מי ממליצה על לק ג'ל", "צריך מניקור פדיקור"] },
+];
+
+// ── lookups ────────────────────────────────────────────────────────────────
+export function getCity(slug: string): City | undefined {
+  return cities.find((c) => c.slug === slug);
+}
+export function getGeoProfession(slug: string): GeoProfession | undefined {
+  return geoProfessions.find((p) => p.professionSlug === slug);
+}
+
+// All static params — every profession × every city.
+export function allGeoParams(): { slug: string; city: string }[] {
+  const out: { slug: string; city: string }[] = [];
+  for (const p of geoProfessions) {
+    for (const c of cities) {
+      out.push({ slug: p.professionSlug, city: c.slug });
+    }
+  }
+  return out;
+}
+
+// Stable, deterministic hash (no Math.random — must be reproducible per build).
+function hash(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    h = (h * 31 + s.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
+}
+
+// pick one variant from a bank, deterministically per (profession, city)
+function pick<T>(bank: T[], seed: string): T {
+  return bank[hash(seed) % bank.length];
+}
+
+export type GeoContent = {
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  kicker: string;
+  subheading: string;
+  intro: string[];
+  benefits: string[];
+  faq: { q: string; a: string }[];
+  nearbyLine: string;
+};
+
+// Build the full page content for a profession × city combination.
+export function buildGeoContent(
+  p: GeoProfession,
+  c: City,
+  monthly: number,
+  refundDays: number
+): GeoContent {
+  const seed = `${p.professionSlug}|${c.slug}`;
+  const ex = p.searchExamples;
+  const example = pick(ex, seed);
+
+  const kickerBank = [`לידים ${c.name} 2026`, `לידים באזור ${c.name}`, `${p.noun} · ${c.name}`];
+  const kicker = pick(kickerBank, seed + "k");
+
+  const h1 = `לידים ${p.nounGenitive} ב${c.name} — מקבוצות פייסבוק, ישר לוואטסאפ`;
+
+  const metaTitle = `לידים ${p.nounGenitive} ב${c.name} | ${p.service} — FGMP`;
+
+  const metaDescription = `מחפש לידים ${p.nounGenitive} ב${c.name}? FGMP סורקת את קבוצות הפייסבוק של ${c.name} והאזור 24/7 ושולחת כל פנייה ל${p.service} ישר לוואטסאפ שלך. ${monthly}₪/חודש · ערבות החזר ${refundDays} ימים.`;
+
+  const subheading = `בכל יום מתפרסמים בקבוצות של ${c.name} והסביבה פוסטים כמו "${example} ב${c.name}". FGMP מאתרת אותם בזמן אמת ושולחת לך את הליד לוואטסאפ — לפני שהמתחרים בכלל ראו.`;
+
+  const introBank1 = [
+    `אם אתה ${p.noun} שעובד ב${c.name} ובאזור ${c.region}, הלקוחות הבאים שלך כבר מחפשים אותך — בקבוצות הפייסבוק המקומיות. תושבי ${c.name} שואלים כל יום "${example}" ומקבלים עשרות תגובות. הבעיה: אי אפשר לשבת כל היום ולסרוק את כל הקבוצות של ${c.name}, ${c.nearby.slice(0, 2).join(" ו")} והסביבה.`,
+    `${c.name} היא אחת הערים שבהן הביקוש ל${p.service} גבוה במיוחד — ודווקא שם התחרות על כל פנייה חדה. עשרות פוסטים בשבוע של אנשים שכותבים "${example}" מתפרסמים בקבוצות המקומיות של ${c.name} ושל ${c.nearby[0]}, ורובם נסגרים עם מי שהגיב ראשון.`,
+    `בעל מקצוע ב${c.name} לא צריך עוד מודעה ממומנת יקרה — הוא צריך להגיע ראשון לפניות ה${p.service} שכבר מתפרסמות בקבוצות הפייסבוק של העיר. אנשים ב${c.name} מחפשים "${example}" מדי יום, וכל פוסט כזה הוא לקוח פוטנציאלי חם.`,
+  ];
+
+  const introBank2 = [
+    `FGMP סורקת ברקע יותר מ-50,000 קבוצות פייסבוק פעילות בישראל — כולל כל הקבוצות המקומיות של ${c.name} ו${c.region}. ברגע שמתפרסם פוסט שמחפש ${p.service} באזור שלך, המערכת מזהה אותו תוך פחות מדקה, כותבת תגובה מוצעת ב-AI, ושולחת לך התראה לוואטסאפ עם קישור ישיר לפוסט.`,
+    `המערכת של FGMP עוקבת אחרי הקבוצות של ${c.name}, ${c.nearby.join(", ")} וכל אזור ${c.region} — 24 שעות ביממה. כשמישהו מבקש המלצה על ${p.noun}, אתה מקבל את הפוסט לוואטסאפ תוך שניות, עם תגובה מוכנה שנכתבה במיוחד לאותה פנייה.`,
+  ];
+
+  const introBank3 = [
+    `במקום לשלם 50-200 ₪ על כל ליד בודד מחברת לידים (שממילא מוכרת אותו גם ל-3 מתחרים ב${c.name}), אתה משלם ${monthly} ₪ קבוע בחודש ומקבל את כל הפניות ל${p.service} באזור שלך — בלי הגבלה. עסקה אחת מכסה את המנוי לחודשים.`,
+    `העלות: ${monthly} ₪ לחודש, בלי תשלום פר ליד ובלי התחייבות. בתחום פעיל כמו ${p.service} ב${c.name} זה יוצא בפועל כמה שקלים בודדים לליד — פי כמה זול מקניית לידים או ממודעות ממומנות. ואם תוך ${refundDays} ימים לא ראית פניות אמיתיות — מקבלים את הכסף בחזרה.`,
+  ];
+
+  const intro = [pick(introBank1, seed + "1"), pick(introBank2, seed + "2"), pick(introBank3, seed + "3")];
+
+  const benefits = [
+    `**כיסוי מלא של ${c.name} והאזור** — כל הקבוצות המקומיות של ${c.name}, ${c.nearby.slice(0, 3).join(", ")} וסביבתן נסרקות ברצף.`,
+    `**אתה הראשון שמגיב** — הפוסט מגיע לוואטסאפ שלך תוך פחות מדקה. ב${p.service}, מי שעונה ראשון סוגר.`,
+    `**תגובה מוצעת ע"י AI לכל פנייה** — מותאמת לפוסט המסוים ולעסק שלך ב${c.name}, לא תבנית קבועה.`,
+    `**עלות קבועה — ${monthly} ₪/חודש** — בלי תשלום פר ליד, בלי תקציב מדיה, בלי הפתעות.`,
+    `**לידים בלעדיים בפועל** — הפנייה המקורית מהקבוצה, לא ליד משומש שנמכר לחצי מבעלי המקצוע ב${c.name}.`,
+  ];
+
+  const faq = [
+    {
+      q: `כמה לידים ${p.nounGenitive} אפשר לקבל ב${c.name}?`,
+      a: `זה תלוי בעונה ובהיקף הקבוצות המקומיות, אבל ${c.name} היא אזור פעיל — בעלי מקצוע בתחום ${p.service} מקבלים בממוצע עשרות פניות בחודש מהקבוצות של העיר והסביבה. בזכות ערבות ההחזר ל-${refundDays} ימים אפשר פשוט לבדוק בלי סיכון.`,
+    },
+    {
+      q: `אני עובד גם מחוץ ל${c.name} — זה מתאים לי?`,
+      a: `בהחלט. אפשר להגדיר כמה אזורי שירות — למשל ${c.name} יחד עם ${c.nearby.slice(0, 2).join(" ו")} וכל ${c.region}. המערכת תשלח לך פניות ל${p.service} מכל האזורים שבחרת.`,
+    },
+    {
+      q: `כמה זה עולה?`,
+      a: `${monthly} ₪ לחודש כולל מע"מ, בלי תשלום פר ליד ובלי התחייבות. ערבות החזר מלא ${refundDays} ימים — אם לא קיבלת פניות אמיתיות ${p.nounGenitive} ב${c.name}, מקבלים את הכסף בחזרה.`,
+    },
+  ];
+
+  const nearbyLine = `לידים ${p.nounGenitive} גם ב: ${c.nearby.join(" · ")}`;
+
+  return { metaTitle, metaDescription, h1, kicker, subheading, intro, benefits, faq, nearbyLine };
+}

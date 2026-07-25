@@ -5,7 +5,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { RelatedGuides } from "@/components/RelatedGuides";
-import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
+import { JsonLd, breadcrumbSchema, howToSchema } from "@/lib/jsonld";
 import { getGuide } from "@/lib/guides";
 import { SITE, waLink } from "@/lib/config";
 
@@ -67,6 +67,7 @@ export default function GuidePage() {
   return (
     <>
       <JsonLd data={articleSchema} />
+      <JsonLd data={howToSchema()} />
       <JsonLd
         data={breadcrumbSchema([
           { name: "דף הבית", url: SITE.url },

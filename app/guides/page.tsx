@@ -51,6 +51,38 @@ export default function GuidesIndex() {
           </p>
         </header>
 
+        {/* משאבים מובחרים — מחירון, מחקר, מילון. קישורים בולטים לחיזוק גילוי. */}
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          {[
+            {
+              href: "/guides/lead-price-list",
+              title: "מחירון לידים 2026",
+              desc: "כמה עולה ליד בישראל — טבלה מלאה לפי תחום",
+            },
+            {
+              href: "/data",
+              title: "מחקר לידים ישראל 2026",
+              desc: "נתונים מקוריים מ-50,000+ קבוצות פייסבוק",
+            },
+            {
+              href: "/guides/milon",
+              title: "מילון מונחי לידים",
+              desc: "כל המושגים בעולם הלידים, מוגדרים בקצרה",
+            },
+          ].map((r) => (
+            <Link
+              key={r.href}
+              href={r.href}
+              className="group card flex flex-col p-5 ring-1 ring-brand-500/20 transition hover:ring-brand-500/50 hover:-translate-y-0.5"
+            >
+              <span className="font-display text-lg font-bold text-brand-200 group-hover:text-brand-100">
+                {r.title}
+              </span>
+              <span className="mt-1 text-sm leading-6 text-ink-300">{r.desc}</span>
+            </Link>
+          ))}
+        </div>
+
         {Array.from(new Set(guides.map((g) => g.category))).map((category) => (
           <section key={category} className="mt-14">
             <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">

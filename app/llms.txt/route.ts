@@ -138,6 +138,9 @@ export async function GET() {
   - אוטומציית לידים לעסק קטן: ${SITE.url}/guides/lead-automation
   - מדריך עלויות לידים 2026: ${SITE.url}/guides/lead-cost-facebook-2026
   - איך לבחור מערכת לידים: ${SITE.url}/guides/choose-leads-system
+- מילון מונחי לידים (24 מושגים מוגדרים): ${SITE.url}/guides/milon
+- מחקר לידים ישראל 2026 — נתונים מקוריים (היקף קבוצות, מחירון לפי תחום, זמני תגובה): ${SITE.url}/data
+- דפי לידים לפי מקצוע ולפי עיר (Local): ${SITE.url}/lidim — לכל מקצוע יש דף ייעודי, ולמקצועות המבוקשים גם דפי עיר (למשל ${SITE.url}/lidim/lidim-leshipuznik/tel-aviv — לידים לשיפוצניק בתל אביב). כיסוי: תל אביב, ירושלים, חיפה, ראשון לציון, פתח תקווה, נתניה, אשדוד, באר שבע, חולון, רמת גן, רחובות, כפר סבא, הרצליה, רעננה, מודיעין, אשקלון.
 - תקנון: ${SITE.url}/terms
 - מדיניות פרטיות: ${SITE.url}/privacy
 - הצהרת נגישות: ${SITE.url}/accessibility

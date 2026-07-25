@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { guides } from "@/lib/guides";
 import { landingPages } from "@/lib/landing-pages";
+import { allGeoParams } from "@/lib/geo";
 
 // תאריכי lastModified אמיתיים פר-תוכן — לא new Date() בכל deploy.
 // גוגל מתעלם מ"טריות מזויפת" (כל הדפים מתעדכנים בכל בנייה); תאריך אמיתי
@@ -35,13 +36,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
+  // מטריצת מקצוע × עיר (Local SEO) — תאריך שינוי מהותי אחרון: יולי 2026.
+  const GEO_LASTMOD = new Date("2026-07-25");
+  const geoUrls: MetadataRoute.Sitemap = allGeoParams().map(({ slug, city }) => ({
+    url: `${SITE.url}/lidim/${slug}/${city}`,
+    lastModified: GEO_LASTMOD,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
+
   return [
     { url: `${SITE.url}/`, lastModified: NEWEST, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE.url}/about`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE.url}/lidim`, lastModified: LANDING_LASTMOD, changeFrequency: "weekly", priority: 0.9 },
     ...landingUrls,
+    ...geoUrls,
+    { url: `${SITE.url}/data`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE.url}/methodology`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE.url}/guides`, lastModified: NEWEST, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE.url}/guides/milon`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.6 },
     ...guideUrls,
     { url: `${SITE.url}/terms`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.3 },
     { url: `${SITE.url}/privacy`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.3 },
