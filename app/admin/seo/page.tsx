@@ -1,5 +1,17 @@
 import Link from "next/link";
 import { SITE } from "@/lib/config";
+import { runSiteChecks } from "@/lib/seo-checks";
+import {
+  inventory,
+  coreMeta,
+  geoMeta,
+  geoStats,
+  findDuplicates,
+  freshness,
+} from "@/lib/seo-audit";
+import { isGscConfigured, getGscData, type GscSummary } from "@/lib/gsc";
+import { IndexNowButton } from "./IndexNowButton";
+import { UrlChecker } from "./UrlChecker";
 import {
   Gauge,
   ShieldCheck,
@@ -10,13 +22,14 @@ import {
   CheckCircle2,
   XCircle,
   AlertTriangle,
+  Boxes,
+  BarChart3,
+  Send,
+  Copy,
+  CalendarClock,
 } from "lucide-react";
 
-type CheckResult = {
-  name: string;
-  status: "ok" | "warn" | "error";
-  detail?: string;
-};
+export const dynamic = "force-dynamic";
 
 type PsiCategory = { score?: number; title?: string };
 type PsiResult = {
@@ -42,121 +55,39 @@ async function fetchPSI(url: string, strategy: "mobile" | "desktop"): Promise<Ps
   }
 }
 
-async function runLiveChecks(siteUrl: string): Promise<CheckResult[]> {
-  const checks: CheckResult[] = [];
-
-  try {
-    const homeRes = await fetch(siteUrl, { next: { revalidate: 600 } });
-    const html = await homeRes.text();
-
-    checks.push({
-      name: "אתר עולה (HTTP 200)",
-      status: homeRes.ok ? "ok" : "error",
-      detail: `סטטוס: ${homeRes.status}`,
-    });
-
-    checks.push({
-      name: "HTTPS פעיל",
-      status: siteUrl.startsWith("https://") ? "ok" : "error",
-    });
-
-    const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
-    const titleLen = titleMatch?.[1]?.length || 0;
-    checks.push({
-      name: "Page title",
-      status: titleLen > 10 && titleLen <= 60 ? "ok" : titleLen > 60 ? "warn" : "error",
-      detail: `${titleLen} תווים${titleLen > 60 ? " (ארוך מדי, מומלץ עד 60)" : titleLen < 10 ? " (קצר מדי)" : ""}`,
-    });
-
-    const descMatch = html.match(/<meta name="description" content="([^"]+)"/i);
-    const descLen = descMatch?.[1]?.length || 0;
-    checks.push({
-      name: "Meta description",
-      status: descLen > 50 && descLen <= 160 ? "ok" : descLen > 160 ? "warn" : "error",
-      detail: `${descLen} תווים${descLen > 160 ? " (ארוך, מומלץ עד 160)" : descLen < 50 ? " (קצר מדי)" : ""}`,
-    });
-
-    checks.push({
-      name: "Open Graph image",
-      status: /<meta property="og:image"/i.test(html) ? "ok" : "error",
-    });
-    checks.push({
-      name: "Open Graph title + description",
-      status:
-        /<meta property="og:title"/i.test(html) && /<meta property="og:description"/i.test(html)
-          ? "ok"
-          : "warn",
-    });
-    checks.push({
-      name: "Twitter Card",
-      status: /<meta name="twitter:card"/i.test(html) ? "ok" : "warn",
-    });
-    checks.push({
-      name: "Canonical URL",
-      status: /<link rel="canonical"/i.test(html) ? "ok" : "warn",
-    });
-    checks.push({
-      name: "Hebrew language declared",
-      status: /<html[^>]+lang="he"/i.test(html) ? "ok" : "error",
-    });
-    checks.push({
-      name: "RTL direction",
-      status: /<html[^>]+dir="rtl"/i.test(html) ? "ok" : "error",
-    });
-
-    const jsonLdCount = (html.match(/<script[^>]+application\/ld\+json/gi) || []).length;
-    checks.push({
-      name: "Structured Data (JSON-LD)",
-      status: jsonLdCount >= 3 ? "ok" : jsonLdCount > 0 ? "warn" : "error",
-      detail: `${jsonLdCount} schemas מוטמעים`,
-    });
-
-    const faviconOk = /<link[^>]+rel="icon"/i.test(html) || /<link[^>]+rel="shortcut icon"/i.test(html);
-    checks.push({
-      name: "Favicon",
-      status: faviconOk ? "ok" : "warn",
-    });
-  } catch (err) {
-    console.error("[seo] live check failed:", err);
-    checks.push({ name: "אתר נגיש", status: "error", detail: "שגיאה בחיבור" });
-  }
-
-  try {
-    const sm = await fetch(`${siteUrl}/sitemap.xml`, { next: { revalidate: 3600 } });
-    const smText = await sm.text();
-    const urlCount = (smText.match(/<url>/g) || []).length;
-    checks.push({
-      name: "Sitemap.xml",
-      status: sm.ok && urlCount > 0 ? "ok" : "warn",
-      detail: sm.ok ? `${urlCount} דפים` : `סטטוס ${sm.status}`,
-    });
-  } catch {
-    checks.push({ name: "Sitemap.xml", status: "error" });
-  }
-
-  try {
-    const r = await fetch(`${siteUrl}/robots.txt`, { next: { revalidate: 3600 } });
-    checks.push({
-      name: "Robots.txt",
-      status: r.ok ? "ok" : "warn",
-    });
-  } catch {
-    checks.push({ name: "Robots.txt", status: "error" });
-  }
-
-  return checks;
-}
-
 export default async function SeoPage() {
   const [mobile, desktop, checks] = await Promise.all([
     fetchPSI(SITE.url, "mobile"),
     fetchPSI(SITE.url, "desktop"),
-    runLiveChecks(SITE.url),
+    runSiteChecks(SITE.url),
   ]);
 
   const okCount = checks.filter((c) => c.status === "ok").length;
   const warnCount = checks.filter((c) => c.status === "warn").length;
   const errCount = checks.filter((c) => c.status === "error").length;
+
+  // ── אינוונטר + אודיט מטא ────────────────────────────────────────────
+  const inv = inventory();
+  const core = coreMeta();
+  const geo = geoMeta();
+  const allRows = [...core, ...geo];
+  const dupes = findDuplicates(allRows);
+  const gstats = geoStats(geo);
+  const coreIssues = core.filter((r) => r.issues.length > 0);
+  const fresh = freshness();
+  const staleCount = fresh.filter((f) => f.stale).length;
+
+  // ── Google Search Console ───────────────────────────────────────────
+  const gscOn = isGscConfigured();
+  let gsc: GscSummary | null = null;
+  let gscError: string | null = null;
+  if (gscOn) {
+    try {
+      gsc = await getGscData();
+    } catch (e) {
+      gscError = e instanceof Error ? e.message : String(e);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -164,7 +95,7 @@ export default async function SeoPage() {
         <div>
           <h1 className="font-display text-3xl font-extrabold text-white">SEO ובריאות האתר</h1>
           <p className="mt-2 text-ink-300">
-            ציוני PageSpeed, בדיקות on-page, סטטוס אינדקס, וקישורים לכלי SEO חיצוניים.
+            אינוונטר תוכן, אודיט מטא, נתוני אינדוקס, PageSpeed, בדיקות on-page והגשה למנועים.
           </p>
         </div>
       </header>
@@ -175,6 +106,72 @@ export default async function SeoPage() {
         <Kpi label="✗ נכשל" value={errCount} color="rose" />
       </div>
 
+      {/* ── אינוונטר תוכן ─────────────────────────────────────── */}
+      <section className="card p-6">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
+          <Boxes className="h-5 w-5 text-brand-300" />
+          אינוונטר תוכן
+        </h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat label="סה״כ דפים" value={inv.total} highlight />
+          <Stat label="מדריכים" value={inv.guides} />
+          <Stat label="דפי מקצוע" value={inv.landing} />
+          <Stat label="דפי גאו (מקצוע×עיר)" value={inv.geo} />
+          <Stat label="מונחי מילון" value={inv.glossary} />
+          <Stat label="ערים" value={inv.cities} />
+          <Stat label="מקצועות (גאו)" value={inv.professions} />
+          <Stat label="עמודים סטטיים" value={inv.staticPages} />
+        </div>
+      </section>
+
+      {/* ── Google Search Console ─────────────────────────────── */}
+      <section className="card p-6">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
+          <BarChart3 className="h-5 w-5 text-brand-300" />
+          Google Search Console
+        </h2>
+
+        {!gscOn ? (
+          <div className="rounded-2xl bg-white/[0.03] p-5 ring-1 ring-white/5 text-sm text-ink-300">
+            <p className="font-bold text-white">לא מחובר עדיין.</p>
+            <p className="mt-2">כדי להציג נתוני חיפוש אמיתיים (queries, clicks, impressions, מיקום ממוצע):</p>
+            <ol className="mt-3 list-decimal space-y-1 pr-5 text-ink-300 marker:text-brand-300">
+              <li>צור Service Account ב-Google Cloud והורד מפתח JSON.</li>
+              <li>הפעל את <span className="font-mono text-ink-200">Search Console API</span> בפרויקט.</li>
+              <li>ב-Search Console → Settings → Users → הוסף את מייל ה-Service Account (הרשאת Full).</li>
+              <li>
+                הגדר ב-Vercel:{" "}
+                <span className="font-mono text-ink-200">GSC_SA_KEY</span> (תוכן ה-JSON) ו-
+                <span className="font-mono text-ink-200">GSC_PROPERTY</span> (למשל{" "}
+                <span className="font-mono text-ink-200">sc-domain:fgmp.net</span>).
+              </li>
+            </ol>
+          </div>
+        ) : gscError ? (
+          <div className="rounded-2xl bg-rose-500/5 p-5 text-sm text-rose-300 ring-1 ring-rose-500/20">
+            <p className="font-bold">שגיאה בחיבור ל-GSC</p>
+            <p className="mt-1 font-mono text-xs" dir="ltr">{gscError}</p>
+          </div>
+        ) : gsc ? (
+          <div className="space-y-5">
+            <div className="text-xs text-ink-400">
+              28 הימים האחרונים · {gsc.range.start} — {gsc.range.end}
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <Stat label="קליקים" value={gsc.totals.clicks} highlight />
+              <Stat label="חשיפות" value={gsc.totals.impressions} />
+              <Stat label="CTR" value={`${(gsc.totals.ctr * 100).toFixed(1)}%`} />
+              <Stat label="מיקום ממוצע" value={gsc.totals.position.toFixed(1)} />
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+              <GscTable title="שאילתות מובילות" rows={gsc.topQueries} />
+              <GscTable title="דפים מובילים" rows={gsc.topPages} isPage />
+            </div>
+          </div>
+        ) : null}
+      </section>
+
+      {/* ── PageSpeed ─────────────────────────────────────────── */}
       <section className="card p-6">
         <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
           <Gauge className="h-5 w-5 text-brand-300" />
@@ -189,10 +186,11 @@ export default async function SeoPage() {
         </p>
       </section>
 
+      {/* ── On-page (דף הבית) ─────────────────────────────────── */}
       <section className="card p-6">
         <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
           <ShieldCheck className="h-5 w-5 text-brand-300" />
-          On-Page SEO Checks
+          On-Page Checks — דף הבית
         </h2>
         <ul className="space-y-2">
           {checks.map((c, i) => (
@@ -218,23 +216,154 @@ export default async function SeoPage() {
         </ul>
       </section>
 
+      {/* ── בודק URL בודד ─────────────────────────────────────── */}
+      <section className="card p-6">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
+          <Search className="h-5 w-5 text-brand-300" />
+          בדיקת URL בודד
+        </h2>
+        <p className="mb-4 text-sm text-ink-400">
+          הזן נתיב כלשהו (מדריך, דף מקצוע, דף עיר) לבדיקת on-page מלאה.
+        </p>
+        <UrlChecker />
+      </section>
+
+      {/* ── אודיט מטא ──────────────────────────────────────────── */}
+      <section className="card p-6">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
+          <Copy className="h-5 w-5 text-brand-300" />
+          אודיט מטא-תגיות
+        </h2>
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat label="בעיות במדריכים/נחיתה" value={coreIssues.length} tone={coreIssues.length ? "warn" : "ok"} />
+          <Stat label="כפילויות מטא" value={dupes.length} tone={dupes.length ? "error" : "ok"} />
+          <Stat label="גאו · כותרת ארוכה" value={gstats.longTitle} tone={gstats.longTitle ? "warn" : "ok"} />
+          <Stat label="גאו · תיאור בעייתי" value={gstats.longDesc + gstats.shortDesc} tone="ok" />
+        </div>
+
+        {coreIssues.length > 0 && (
+          <div className="mt-5 overflow-x-auto">
+            <table className="w-full min-w-[520px] text-right text-sm">
+              <thead>
+                <tr className="text-ink-400">
+                  <th className="pb-2 font-medium">דף</th>
+                  <th className="pb-2 font-medium">סוג</th>
+                  <th className="pb-2 font-medium">בעיות</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {coreIssues.map((r) => (
+                  <tr key={r.path}>
+                    <td className="py-2 pl-3">
+                      <Link href={r.path} target="_blank" className="text-brand-300 hover:underline" dir="ltr">
+                        {r.path}
+                      </Link>
+                    </td>
+                    <td className="py-2 pl-3 text-ink-300">{r.kind}</td>
+                    <td className="py-2 text-amber-300">{r.issues.join(" · ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {dupes.length > 0 && (
+          <div className="mt-6">
+            <h3 className="mb-2 text-sm font-bold text-rose-300">כפילויות מטא ({dupes.length})</h3>
+            <ul className="space-y-2 text-sm">
+              {dupes.slice(0, 10).map((d, i) => (
+                <li key={i} className="rounded-xl bg-rose-500/5 p-3 ring-1 ring-rose-500/15">
+                  <span className="text-rose-300">{d.field} זהה</span> ב-{d.paths.length} דפים:{" "}
+                  <span className="text-ink-300">{d.paths.slice(0, 3).join(", ")}</span>
+                  {d.paths.length > 3 && ` +${d.paths.length - 3}`}
+                </li>
+              ))}
+            </ul>
+            {dupes.length > 10 && (
+              <p className="mt-2 text-xs text-ink-400">מוצגות 10 מתוך {dupes.length}.</p>
+            )}
+          </div>
+        )}
+
+        {coreIssues.length === 0 && dupes.length === 0 && (
+          <p className="mt-5 text-sm text-wa">אין בעיות מטא במדריכים ובדפי הנחיתה — וכל המטא ייחודי. ✓</p>
+        )}
+      </section>
+
+      {/* ── רעננות תוכן ───────────────────────────────────────── */}
+      <section className="card p-6">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
+          <CalendarClock className="h-5 w-5 text-brand-300" />
+          רעננות מדריכים
+          {staleCount > 0 && (
+            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs text-amber-300 ring-1 ring-amber-500/30">
+              {staleCount} לרענון
+            </span>
+          )}
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[480px] text-right text-sm">
+            <thead>
+              <tr className="text-ink-400">
+                <th className="pb-2 font-medium">מדריך</th>
+                <th className="pb-2 font-medium">עודכן</th>
+                <th className="pb-2 font-medium">גיל</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {fresh.slice(0, 8).map((f) => (
+                <tr key={f.slug}>
+                  <td className="py-2 pl-3">
+                    <Link href={`/guides/${f.slug}`} target="_blank" className="text-brand-300 hover:underline">
+                      {f.title.length > 42 ? f.title.slice(0, 42) + "…" : f.title}
+                    </Link>
+                  </td>
+                  <td className="py-2 pl-3 text-ink-300" dir="ltr">{f.updatedAt}</td>
+                  <td className={`py-2 ${f.stale ? "text-amber-300" : "text-ink-300"}`}>
+                    {f.ageDays} ימים{f.stale ? " ⚠" : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-xs text-ink-400">מוצגים 8 הישנים ביותר. דגל = לא עודכן מעל 180 יום.</p>
+      </section>
+
+      {/* ── IndexNow ──────────────────────────────────────────── */}
+      <section className="card p-6">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
+          <Send className="h-5 w-5 text-brand-300" />
+          IndexNow — הגשה מיידית למנועים
+        </h2>
+        <p className="mb-4 text-sm text-ink-400">
+          שולח את כל {inv.total} הכתובות ל-Bing ו-Yandex בבת אחת (חינם, מיידי). מומלץ אחרי הוספת
+          דפים חדשים. Google לא תומך ב-IndexNow — עבורו השתמש ב-Search Console.
+        </p>
+        <IndexNowButton />
+      </section>
+
+      {/* ── Structured Data ───────────────────────────────────── */}
       <section className="card p-6">
         <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
           <FileCode className="h-5 w-5 text-brand-300" />
-          Structured Data Schemas
+          Structured Data — כיסוי סכמות
         </h2>
         <div className="grid gap-2 sm:grid-cols-2">
           {[
-            { name: "Organization", scope: "פרטי הארגון, יצירת קשר, לוגו" },
-            { name: "WebSite", scope: "מטא על האתר עצמו" },
-            { name: "Service", scope: "תיאור השירות + מחיר 299₪/חודש" },
-            { name: "FAQPage", scope: "9 שאלות נפוצות (rich result)" },
-            { name: "BreadcrumbList", scope: "ניווט בעמודי /terms ו-/privacy" },
+            { name: "Organization + WebSite", scope: "פרטי הארגון, לוגו, יצירת קשר" },
+            { name: "SoftwareApplication", scope: "מוצר + AggregateRating + ביקורות" },
+            { name: "Service (+ LocalBusiness)", scope: "כל דפי הגאו — areaServed לפי עיר" },
+            { name: "Article", scope: "כל המדריכים ודפי הנחיתה" },
+            { name: "FAQPage", scope: "מדריכים + דפי מקצוע + דפי עיר" },
+            { name: "HowTo", scope: "מדריך 'איך משיגים לידים מקבוצות'" },
+            { name: "DefinedTermSet", scope: "מילון המונחים /guides/milon" },
+            { name: "Dataset", scope: "עמוד המחקר /data" },
+            { name: "ItemList + BreadcrumbList", scope: "אשכול המחירון + ניווט בכל הדפים" },
           ].map((s) => (
-            <div
-              key={s.name}
-              className="flex items-center gap-3 rounded-xl bg-wa/5 p-3 ring-1 ring-wa/20"
-            >
+            <div key={s.name} className="flex items-center gap-3 rounded-xl bg-wa/5 p-3 ring-1 ring-wa/20">
               <CheckCircle2 className="h-4 w-4 shrink-0 text-wa" />
               <div>
                 <div className="text-sm font-bold text-white">{s.name}</div>
@@ -244,7 +373,7 @@ export default async function SeoPage() {
           ))}
         </div>
         <p className="mt-4 text-xs text-ink-400">
-          לאימות חי של ה-schemas:{" "}
+          לאימות חי:{" "}
           <Link
             href={`https://search.google.com/test/rich-results?url=${encodeURIComponent(SITE.url)}`}
             target="_blank"
@@ -256,57 +385,26 @@ export default async function SeoPage() {
         </p>
       </section>
 
+      {/* ── כלים חיצוניים ─────────────────────────────────────── */}
       <section className="card p-6">
         <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-white">
           <Search className="h-5 w-5 text-brand-300" />
           כלים חיצוניים
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          <ExternalCard
-            title="Google Search Console"
-            desc="נתוני אינדקס, queries, impressions, clicks"
-            url="https://search.google.com/search-console"
-          />
-          <ExternalCard
-            title="PageSpeed Insights"
-            desc="בדיקה מעמיקה של ביצועים + המלצות לשיפור"
-            url={`https://pagespeed.web.dev/analysis?url=${encodeURIComponent(SITE.url)}`}
-          />
-          <ExternalCard
-            title="Rich Results Test"
-            desc="אימות JSON-LD schemas"
-            url={`https://search.google.com/test/rich-results?url=${encodeURIComponent(SITE.url)}`}
-          />
-          <ExternalCard
-            title="Schema Markup Validator"
-            desc="בדיקת תקינות structured data"
-            url={`https://validator.schema.org/?url=${encodeURIComponent(SITE.url)}`}
-          />
-          <ExternalCard
-            title="Google site:fgmp.net"
-            desc="בדיקה אם האתר באינדקס"
-            url={`https://www.google.com/search?q=site:${SITE.domain}`}
-          />
-          <ExternalCard
-            title="Microsoft Clarity (חינם)"
-            desc="Heatmaps + Session replay"
-            url="https://clarity.microsoft.com/"
-          />
+          <ExternalCard title="Google Search Console" desc="נתוני אינדקס, queries, clicks" url="https://search.google.com/search-console" />
+          <ExternalCard title="Bing Webmaster Tools" desc="אינדוקס + IndexNow ב-Bing" url="https://www.bing.com/webmasters" />
+          <ExternalCard title="PageSpeed Insights" desc="ביצועים + המלצות" url={`https://pagespeed.web.dev/analysis?url=${encodeURIComponent(SITE.url)}`} />
+          <ExternalCard title="Rich Results Test" desc="אימות JSON-LD schemas" url={`https://search.google.com/test/rich-results?url=${encodeURIComponent(SITE.url)}`} />
+          <ExternalCard title="Schema Validator" desc="בדיקת תקינות structured data" url={`https://validator.schema.org/?url=${encodeURIComponent(SITE.url)}`} />
+          <ExternalCard title="site:fgmp.net" desc="בדיקת אינדוקס בגוגל" url={`https://www.google.com/search?q=site:${SITE.domain}`} />
         </div>
       </section>
     </div>
   );
 }
 
-function Kpi({
-  label,
-  value,
-  color,
-}: {
-  label: string;
-  value: number;
-  color: "wa" | "amber" | "rose";
-}) {
+function Kpi({ label, value, color }: { label: string; value: number; color: "wa" | "amber" | "rose" }) {
   const colors = {
     wa: "bg-wa/10 text-wa ring-wa/30",
     amber: "bg-amber-500/10 text-amber-300 ring-amber-500/30",
@@ -316,6 +414,73 @@ function Kpi({
     <div className={`card p-4 ring-1 ${colors[color]}`}>
       <div className="text-xs text-ink-400">{label}</div>
       <div className="mt-1 font-display text-3xl font-extrabold">{value}</div>
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  highlight,
+  tone,
+}: {
+  label: string;
+  value: number | string;
+  highlight?: boolean;
+  tone?: "ok" | "warn" | "error";
+}) {
+  const toneColor =
+    tone === "error"
+      ? "text-rose-300"
+      : tone === "warn"
+        ? "text-amber-300"
+        : tone === "ok"
+          ? "text-wa"
+          : highlight
+            ? "text-brand-300"
+            : "text-white";
+  return (
+    <div className="rounded-2xl bg-white/[0.03] p-4 ring-1 ring-white/5">
+      <div className={`font-display text-2xl font-extrabold ${toneColor}`}>{value}</div>
+      <div className="mt-1 text-xs leading-5 text-ink-400">{label}</div>
+    </div>
+  );
+}
+
+function GscTable({ title, rows, isPage }: { title: string; rows: GscSummary["topQueries"]; isPage?: boolean }) {
+  return (
+    <div className="rounded-2xl bg-white/[0.03] p-4 ring-1 ring-white/5">
+      <div className="mb-3 text-sm font-bold text-white">{title}</div>
+      {rows.length === 0 ? (
+        <p className="text-xs text-ink-400">אין נתונים עדיין.</p>
+      ) : (
+        <table className="w-full text-right text-xs">
+          <thead>
+            <tr className="text-ink-500">
+              <th className="pb-1 font-medium">{isPage ? "דף" : "שאילתה"}</th>
+              <th className="pb-1 font-medium">קליקים</th>
+              <th className="pb-1 font-medium">חשיפות</th>
+              <th className="pb-1 font-medium">מיקום</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {rows.slice(0, 10).map((r, i) => {
+              const key = r.keys?.[0] || "";
+              const label = isPage ? key.replace(SITE.url, "") || "/" : key;
+              return (
+                <tr key={i}>
+                  <td className="max-w-[160px] truncate py-1.5 pl-2 text-ink-200" dir={isPage ? "ltr" : "rtl"} title={label}>
+                    {label}
+                  </td>
+                  <td className="py-1.5 pl-2 text-white">{r.clicks}</td>
+                  <td className="py-1.5 pl-2 text-ink-300">{r.impressions}</td>
+                  <td className="py-1.5 text-ink-300">{r.position.toFixed(1)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
@@ -351,28 +516,19 @@ function PsiPanel({ label, data }: { label: string; data: PsiResult | null }) {
           const c = cats[it.key];
           const score = c?.score != null ? Math.round(c.score * 100) : null;
           const color =
-            score === null
-              ? "text-ink-400"
-              : score >= 90
-                ? "text-wa"
-                : score >= 50
-                  ? "text-amber-300"
-                  : "text-rose-400";
+            score === null ? "text-ink-400" : score >= 90 ? "text-wa" : score >= 50 ? "text-amber-300" : "text-rose-400";
           return (
             <div key={it.key} className="text-center">
-              <div className={`font-display text-2xl font-extrabold ${color}`}>
-                {score ?? "—"}
-              </div>
+              <div className={`font-display text-2xl font-extrabold ${color}`}>{score ?? "—"}</div>
               <div className="mt-1 text-[10px] text-ink-400">{it.label}</div>
             </div>
           );
         })}
       </div>
-
       <div className="mt-4 space-y-1 border-t border-white/5 pt-3 text-xs">
         <Vital label="LCP" value={audits["largest-contentful-paint"]?.displayValue} />
         <Vital label="CLS" value={audits["cumulative-layout-shift"]?.displayValue} />
-        <Vital label="INP/TBT" value={audits["total-blocking-time"]?.displayValue} />
+        <Vital label="TBT" value={audits["total-blocking-time"]?.displayValue} />
       </div>
     </div>
   );
@@ -382,22 +538,12 @@ function Vital({ label, value }: { label: string; value?: string }) {
   return (
     <div className="flex justify-between">
       <span className="text-ink-400">{label}</span>
-      <span className="font-mono text-ink-200" dir="ltr">
-        {value || "—"}
-      </span>
+      <span className="font-mono text-ink-200" dir="ltr">{value || "—"}</span>
     </div>
   );
 }
 
-function ExternalCard({
-  title,
-  desc,
-  url,
-}: {
-  title: string;
-  desc: string;
-  url: string;
-}) {
+function ExternalCard({ title, desc, url }: { title: string; desc: string; url: string }) {
   return (
     <Link
       href={url}
