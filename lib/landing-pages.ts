@@ -4,6 +4,10 @@
 //
 // All pages share the same template (`app/lidim/[slug]/page.tsx`); content
 // lives here so adding a new keyword target is a one-entry edit.
+//
+// דפי הקטגוריות הוורטיקליות (פיננסים, אשראי, מימוש זכויות ועוד) חיים בקובץ
+// נפרד (landing-verticals.ts) ומאוחדים כאן למערך אחד.
+import { verticalPages } from "./landing-verticals";
 
 export interface LandingPage {
   slug: string;
@@ -29,7 +33,7 @@ export interface LandingPage {
   relatedTerms: string[];
 }
 
-export const landingPages: LandingPage[] = [
+const basePages: LandingPage[] = [
   // ─────────────────────────────────────────────────────────
   // BROAD INFORMATIONAL KEYWORDS
   // ─────────────────────────────────────────────────────────
@@ -2522,6 +2526,9 @@ export const landingPages: LandingPage[] = [
     ],
   },
 ];
+
+// המערך המאוחד — דפי המקצוע הבסיסיים + דפי הקטגוריות הוורטיקליות.
+export const landingPages: LandingPage[] = [...basePages, ...verticalPages];
 
 export function getLandingPage(slug: string): LandingPage | undefined {
   return landingPages.find((p) => p.slug === slug);

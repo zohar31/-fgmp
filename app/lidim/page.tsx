@@ -7,17 +7,24 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 import { SITE } from "@/lib/config";
 import { landingPages } from "@/lib/landing-pages";
+import { verticalPages } from "@/lib/landing-verticals";
 
 export const metadata: Metadata = {
-  title: "כל מה שצריך לדעת על לידים — אינדקס מדריכים | FGMP",
+  title: "בחרו את סוג הלידים שלכם — לפי תחום ומקצוע | FGMP",
   description:
-    "מדריכים מעמיקים על לידים אורגניים, לידים בוואטסאפ, ולידים לפי מקצוע — שיפוצניק, קוסמטיקאית, עורך דין, סוכן ביטוח, צלם. כיצד FGMP מספקת לידים בזמן אמת.",
+    "בעלי עסקים: בחרו את סוג הלידים — ביטוח, הלוואות, משכנתאות, נדל\"ן, החזרי מס, אסתטיקה, ועשרות מקצועות. FGMP מספקת לידים חמים מקבוצות פייסבוק בזמן אמת.",
   alternates: { canonical: `${SITE.url}/lidim` },
 };
 
 export default function LidimIndexPage() {
-  const broad = landingPages.filter((p) => !p.keyword.startsWith("לידים ל"));
-  const niche = landingPages.filter((p) => p.keyword.startsWith("לידים ל"));
+  const verticalSlugs = new Set(verticalPages.map((p) => p.slug));
+  const broad = landingPages.filter(
+    (p) => !p.keyword.startsWith("לידים ל") && !verticalSlugs.has(p.slug)
+  );
+  // מקצועות = "לידים ל..." שאינם קטגוריות ורטיקליות (אלה מוצגות בבורר נפרד).
+  const niche = landingPages.filter(
+    (p) => p.keyword.startsWith("לידים ל") && !verticalSlugs.has(p.slug)
+  );
 
   return (
     <>
@@ -39,15 +46,39 @@ export default function LidimIndexPage() {
         <article className="mx-auto mt-8 max-w-4xl">
           <header>
             <h1 className="font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl">
-              כל המדריכים על לידים
+              בעלי עסקים? בחרו את סוג הלידים שלכם
             </h1>
             <p className="mt-4 text-xl leading-9 text-ink-200">
-              מדריכים מעמיקים בעברית: מה זה ליד אורגני? איך משיגים לידים בוואטסאפ?
-              מה מקבל שיפוצניק / קוסמטיקאית / עורך דין? כל התשובות במקום אחד.
+              FGMP סורקת 50,000+ קבוצות פייסבוק ושולחת לכם כל פנייה רלוונטית לוואטסאפ, בזמן אמת.
+              בחרו את התחום שלכם — פיננסים, אשראי, נדל"ן, יופי, או אחד מעשרות המקצועות.
             </p>
           </header>
 
           <section className="mt-12">
+            <h2 className="font-display text-2xl font-bold text-white">
+              לידים לפי סוג — לבעלי עסקים
+            </h2>
+            <p className="mt-2 text-ink-300">
+              קטגוריות הלידים המבוקשות ביותר: פיננסים, אשראי, ביטוח, נדל"ן, מימוש זכויות ויופי.
+            </p>
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {verticalPages.map((p) => (
+                <li key={p.slug}>
+                  <Link
+                    href={`/lidim/${p.slug}`}
+                    className="group flex items-center justify-between gap-2 rounded-2xl bg-white/[0.03] px-4 py-3 ring-1 ring-white/10 transition hover:bg-white/[0.06] hover:ring-brand-500/40"
+                  >
+                    <span className="font-medium text-white group-hover:text-brand-200">
+                      {p.keyword}
+                    </span>
+                    <ChevronLeft className="h-4 w-4 shrink-0 text-brand-300" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="mt-16">
             <h2 className="font-display text-2xl font-bold text-white">
               מושגי יסוד
             </h2>
