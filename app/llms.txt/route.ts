@@ -118,8 +118,18 @@ export async function GET() {
 
 - דף ראשי: ${SITE.url}/
 - אודות והסבר מלא: ${SITE.url}/about
-- מדריכי לידים מעמיקים (29 מדריכים): ${SITE.url}/guides
+- כלים חינמיים (מחשבונים): ${SITE.url}/tools
+  - מחשבון עלות לליד (CPL): ${SITE.url}/tools/cpl-calculator
+  - מחשבון ROI לשיווק: ${SITE.url}/tools/roi-calculator
+  - מחשבון כמה לידים צריך: ${SITE.url}/tools/leads-target-calculator
+- מדריכי לידים מעמיקים (47 מדריכים): ${SITE.url}/guides
   - מחירון לידים 2026 — כמה עולה ליד בישראל: ${SITE.url}/guides/lead-price-list
+  - תסריט שיחת מכירה לליד: ${SITE.url}/guides/sales-call-script
+  - התמודדות עם התנגדות מחיר ('יקר לי'): ${SITE.url}/guides/price-objection
+  - 20 תבניות הודעות וואטסאפ ללקוחות: ${SITE.url}/guides/whatsapp-templates
+  - פרסום בקבוצות פייסבוק — מה מותר ומה נחסם: ${SITE.url}/guides/posting-in-facebook-groups
+  - Google עסקי (GBP) — מדריך מלא: ${SITE.url}/guides/google-business-profile-guide
+  - לידים מגוגל מול פייסבוק: ${SITE.url}/guides/google-vs-facebook-leads
   - מחיר ליד לבעלי מקצוע: ${SITE.url}/guides/lead-prices-professionals
   - מחיר ליד בפיננסים וביטוח: ${SITE.url}/guides/lead-prices-finance
   - קניית לידים בישראל — האם משתלם: ${SITE.url}/guides/buying-leads-israel
