@@ -12,16 +12,34 @@ export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${SITE.url}/#organization`,
     name: SITE.brand,
-    alternateName: "FB Group Monitor Pro",
+    alternateName: ["FB Group Monitor Pro", "FGMP · צח אור"],
     legalName: SITE.legalName,
     url: SITE.url,
-    logo: `${SITE.url}/icon`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE.url}/icon`,
+      caption: SITE.brand,
+    },
+    image: `${SITE.url}/og-image.jpeg`,
     description: SITE.descriptions.organization,
     email: SITE.notificationEmail,
     telephone: `+${SITE.whatsapp}`,
     slogan: "לידים חמים מקבוצות פייסבוק — ישר לוואטסאפ, אוטומטית",
-    founder: { "@type": "Person", name: "צח אור" },
+    foundingDate: "2026",
+    foundingLocation: {
+      "@type": "Place",
+      address: { "@type": "PostalAddress", addressCountry: "IL" },
+    },
+    founder: {
+      "@type": "Person",
+      "@id": `${SITE.url}/about#founder`,
+      name: "צח אור",
+      jobTitle: "מייסד",
+      description:
+        "יזם ישראלי עצמאי שפיתח את FGMP — מערכת לאיתור לידים אורגניים מקבוצות פייסבוק בעזרת AI.",
+    },
     knowsAbout: [
       "לידים",
       "לידים מקבוצות פייסבוק",
@@ -29,10 +47,17 @@ export function organizationSchema() {
       "אוטומציית לידים",
       "שיווק דיגיטלי לעסקים קטנים",
       "בינה מלאכותית לזיהוי לידים",
+      "מחירון לידים",
+      "עלות לליד",
+      "לידים לבעלי מקצוע",
+      "לידים פיננסיים",
+      "שיווק בוואטסאפ",
+      "לידים מקומיים בישראל",
     ],
+    knowsLanguage: ["he"],
     areaServed: { "@type": "Country", name: "Israel" },
-    // TODO(sameAs): fill with the brand's real profile URLs (Facebook page,
-    // Instagram, LinkedIn, TikTok, YouTube) — strongest entity signal for AI.
+    // sameAs: מתמלא בקישורים האמיתיים לפרופילים (Facebook/Instagram/LinkedIn/
+    // YouTube) של FGMP ברגע שהם זמינים — אות ישות חזק ל-AI ולגוגל.
     sameAs: [],
     address: {
       "@type": "PostalAddress",
@@ -44,8 +69,35 @@ export function organizationSchema() {
         contactType: "customer service",
         telephone: `+${SITE.whatsapp}`,
         availableLanguage: ["he"],
+        areaServed: "IL",
       },
     ],
+  };
+}
+
+// Person entity for the founder — E-E-A-T signal that ties the content to a
+// real, named expert who "authors" the brand's knowledge.
+export function founderSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE.url}/about#founder`,
+    name: "צח אור",
+    jobTitle: "מייסד FGMP",
+    description:
+      "יזם ישראלי עצמאי, מייסד FGMP — מערכת SaaS לאיתור לידים אורגניים מקבוצות פייסבוק בעזרת בינה מלאכותית. מתמחה בייצור לידים לעסקי שירות בישראל.",
+    worksFor: { "@id": `${SITE.url}/#organization` },
+    knowsAbout: [
+      "לידים מקבוצות פייסבוק",
+      "lead generation",
+      "אוטומציית שיווק",
+      "בינה מלאכותית לזיהוי לידים",
+      "שיווק לעסקים קטנים בישראל",
+    ],
+    knowsLanguage: ["he"],
+    nationality: { "@type": "Country", name: "Israel" },
+    // sameAs: פרופילים אישיים (LinkedIn וכו') — יתווספו כשיהיו זמינים.
+    sameAs: [],
   };
 }
 

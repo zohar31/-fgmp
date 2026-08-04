@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
+import { JsonLd, breadcrumbSchema, founderSchema } from "@/lib/jsonld";
 import { SITE } from "@/lib/config";
 import { CheckCircle2, ArrowLeft } from "lucide-react";
 
@@ -37,18 +37,29 @@ export default function AboutPage() {
           "@type": "AboutPage",
           name: "אודות FGMP",
           url: `${SITE.url}/about`,
+          inLanguage: "he-IL",
           mainEntity: {
             "@type": "Organization",
+            "@id": `${SITE.url}/#organization`,
             name: SITE.brand,
+            alternateName: ["FB Group Monitor Pro", "FGMP · צח אור"],
             legalName: SITE.legalName,
             url: SITE.url,
+            logo: `${SITE.url}/icon`,
             description: SITE.descriptions.organization,
             foundingDate: "2026",
-            founder: { "@type": "Person", name: "צח אור" },
+            foundingLocation: {
+              "@type": "Place",
+              address: { "@type": "PostalAddress", addressCountry: "IL" },
+            },
+            founder: { "@id": `${SITE.url}/about#founder` },
             areaServed: { "@type": "Country", name: "Israel" },
+            knowsLanguage: ["he"],
+            slogan: "לידים חמים מקבוצות פייסבוק — ישר לוואטסאפ, אוטומטית",
           },
         }}
       />
+      <JsonLd data={founderSchema()} />
       <Nav />
       <main id="main-content" className="container-x py-10 md:py-16">
         <Breadcrumbs
