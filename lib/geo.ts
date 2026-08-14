@@ -96,6 +96,11 @@ export const geoProfessions: GeoProfession[] = [
   { professionSlug: "lidim-lemnahel-social", noun: "מנהל סושיאל", nounGenitive: "למנהל סושיאל", service: "ניהול רשתות חברתיות", searchExamples: ["מחפש מנהל סושיאל לעסק", "מי מנהל אינסטגרם לעסקים", "צריך מישהו לרשתות החברתיות"] },
   { professionSlug: "lidim-leyotzer-tochen", noun: "יוצר תוכן", nounGenitive: "ליוצר תוכן", service: "יצירת תוכן", searchExamples: ["מחפש יוצר תוכן לעסק", "מי עושה רילסים טובים", "צריך עורך וידאו לתוכן"] },
   { professionSlug: "lidim-lemashpian", noun: "משפיען", nounGenitive: "למשפיען", service: "שיתופי פעולה עם משפיענים", searchExamples: ["מחפש משפיען לקידום העסק", "מי מכיר משפיענית באזור", "צריך שיתוף פעולה עם משפיען"] },
+  { professionSlug: "lidim-lecopywriter", noun: "קופירייטר", nounGenitive: "לקופירייטר", service: "כתיבה שיווקית", searchExamples: ["מחפש קופירייטר לאתר", "מי כותב תכנים שיווקיים", "צריך טקסט לדף נחיתה"] },
+  { professionSlug: "lidim-lemnahel-campaigns", noun: "מנהל קמפיינים", nounGenitive: "למנהל קמפיינים", service: "ניהול קמפיינים ממומנים", searchExamples: ["מחפש מנהל קמפיינים לעסק", "מי מנהל גוגל אדס", "צריך מומחה פרסום ממומן"] },
+  { professionSlug: "lidim-lemumche-seo", noun: "מומחה SEO", nounGenitive: "למומחה קידום", service: "קידום אתרים אורגני", searchExamples: ["מחפש מקדם אתרים", "מי עושה SEO טוב", "צריך מומחה קידום אורגני"] },
+  { professionSlug: "lidim-legrafikai", noun: "מעצב גרפי", nounGenitive: "למעצב גרפי", service: "עיצוב גרפי", searchExamples: ["מחפש מעצב גרפי לעסק", "מי מעצב לוגו טוב", "צריך מעצב לחומרים שיווקיים"] },
+  { professionSlug: "lidim-lebiniyat-atarim", noun: "בונה אתרים", nounGenitive: "לבניית אתרים", service: "בניית אתרים", searchExamples: ["מחפש בונה אתרים לעסק", "מי בונה אתר וורדפרס", "צריך אתר תדמית"] },
 ];
 
 // ── lookups ────────────────────────────────────────────────────────────────
