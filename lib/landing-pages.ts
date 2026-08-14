@@ -8,6 +8,7 @@
 // דפי הקטגוריות הוורטיקליות (פיננסים, אשראי, מימוש זכויות ועוד) חיים בקובץ
 // נפרד (landing-verticals.ts) ומאוחדים כאן למערך אחד.
 import { verticalPages } from "./landing-verticals";
+import { creatorPages } from "./landing-creators";
 
 export interface LandingPage {
   slug: string;
@@ -2527,8 +2528,8 @@ const basePages: LandingPage[] = [
   },
 ];
 
-// המערך המאוחד — דפי המקצוע הבסיסיים + דפי הקטגוריות הוורטיקליות.
-export const landingPages: LandingPage[] = [...basePages, ...verticalPages];
+// המערך המאוחד — דפי המקצוע הבסיסיים + קטגוריות ורטיקליות + סושיאל/תוכן.
+export const landingPages: LandingPage[] = [...basePages, ...verticalPages, ...creatorPages];
 
 export function getLandingPage(slug: string): LandingPage | undefined {
   return landingPages.find((p) => p.slug === slug);

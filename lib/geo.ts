@@ -93,6 +93,8 @@ export const geoProfessions: GeoProfession[] = [
   { professionSlug: "lidim-lemetapelet-kshishim", noun: "מטפלת קשישים", nounGenitive: "למטפלת קשישים", service: "טיפול בקשישים", searchExamples: ["מחפשים מטפלת לקשיש", "מי ממליץ על מטפלת סיעודית", "צריך מטפלת להורה"] },
   { professionSlug: "lidim-lemaalef-klavim", noun: "מאלף כלבים", nounGenitive: "למאלף כלבים", service: "אילוף כלבים", searchExamples: ["מחפש מאלף כלבים", "מי ממליץ על מאלף", "צריך אילוף לגור"] },
   { professionSlug: "lidim-leyoetz-mashkantaot", noun: "יועץ משכנתאות", nounGenitive: "ליועץ משכנתאות", service: "ייעוץ משכנתאות", searchExamples: ["מחפש יועץ משכנתאות", "מי ממליץ על יועץ משכנתא", "צריך עזרה עם משכנתא"] },
+  { professionSlug: "lidim-lemnahel-social", noun: "מנהל סושיאל", nounGenitive: "למנהל סושיאל", service: "ניהול רשתות חברתיות", searchExamples: ["מחפש מנהל סושיאל לעסק", "מי מנהל אינסטגרם לעסקים", "צריך מישהו לרשתות החברתיות"] },
+  { professionSlug: "lidim-leyotzer-tochen", noun: "יוצר תוכן", nounGenitive: "ליוצר תוכן", service: "יצירת תוכן", searchExamples: ["מחפש יוצר תוכן לעסק", "מי עושה רילסים טובים", "צריך עורך וידאו לתוכן"] },
 ];
 
 // ── lookups ────────────────────────────────────────────────────────────────
