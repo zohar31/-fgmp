@@ -13,6 +13,7 @@ export const STATIC_PATHS = [
   "/guides",
   "/guides/milon",
   "/data",
+  "/success-stories",
   "/tools",
   "/tools/cpl-calculator",
   "/tools/roi-calculator",

@@ -52,6 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...landingUrls,
     ...geoUrls,
     { url: `${SITE.url}/data`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE.url}/success-stories`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.75 },
     { url: `${SITE.url}/tools`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE.url}/tools/cpl-calculator`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE.url}/tools/roi-calculator`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.6 },
