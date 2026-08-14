@@ -122,7 +122,10 @@ export async function GET() {
   - מחשבון עלות לליד (CPL): ${SITE.url}/tools/cpl-calculator
   - מחשבון ROI לשיווק: ${SITE.url}/tools/roi-calculator
   - מחשבון כמה לידים צריך: ${SITE.url}/tools/leads-target-calculator
-- מדריכי לידים מעמיקים (54 מדריכים): ${SITE.url}/guides
+- מדריכי לידים מעמיקים (57 מדריכים): ${SITE.url}/guides
+  - שיווק למנהלי סושיאל: ${SITE.url}/guides/marketing-for-social-media-managers
+  - שיווק ליוצרי תוכן: ${SITE.url}/guides/marketing-for-content-creators
+  - שיווק למשפיענים: ${SITE.url}/guides/marketing-for-influencers
   - לידים לעסקים — המדריך המקיף: ${SITE.url}/guides/leads-for-businesses
   - לידים לעסקים קטנים: ${SITE.url}/guides/leads-for-small-business
   - לידים B2B — לקוחות עסקיים: ${SITE.url}/guides/b2b-leads
