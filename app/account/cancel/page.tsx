@@ -113,14 +113,14 @@ export default async function CancelPage() {
           <li className="flex gap-2">
             <span className="text-wa">✓</span>
             <span>
-              <strong>תוך 7 הימים הראשונים מהתשלום:</strong> ביטול = החזר מלא של 299₪. הביטול
+              <strong>תוך {SITE.pricing.refundDays} הימים הראשונים מהתשלום:</strong> ביטול = החזר מלא של 299₪. הביטול
               מיידי והגישה נסגרת.
             </span>
           </li>
           <li className="flex gap-2">
             <span className="text-wa">✓</span>
             <span>
-              <strong>אחרי 7 ימים:</strong> ביטול עוצר את החיוב הבא. תמשיך לקבל לידים עד סוף
+              <strong>אחרי {SITE.pricing.refundDays} ימים:</strong> ביטול עוצר את החיוב הבא. תמשיך לקבל לידים עד סוף
               החודש המשולם, אחר כך פג תוקף. בלי החזר על החודש הנוכחי.
             </span>
           </li>

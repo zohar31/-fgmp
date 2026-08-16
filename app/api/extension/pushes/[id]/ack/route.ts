@@ -3,7 +3,7 @@ import { db, schema } from "@/lib/db";
 import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 
-const TRIAL_DAYS = 7;
+const TRIAL_DAYS = 3;
 
 export const runtime = "nodejs";
 

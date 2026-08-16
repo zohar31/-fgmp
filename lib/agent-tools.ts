@@ -9,7 +9,7 @@
 
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { formatServiceAreas } from "@/lib/config";
+import { formatServiceAreas, SITE } from "@/lib/config";
 import {
   createAndSendVerificationCode,
   verifyCodeAndOpenSession,
@@ -321,8 +321,9 @@ export async function executeTool(
         ? Math.max(0, Math.ceil((sub.trialEndsAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
         : null;
 
-      // Refund window — 7 days from first paid charge (new model)
-      const refundDays = 7;
+      // Refund window — from first paid charge (new model). Kept in sync
+      // with SITE.pricing.refundDays so the agent never quotes a stale window.
+      const refundDays = SITE.pricing.refundDays;
       const refundDaysLeft = sub.firstPaymentAt
         ? Math.max(
             0,

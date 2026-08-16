@@ -86,7 +86,7 @@ export async function POST(req: Request) {
 
   // Pay-first model (no free trial): refuse activation until the first payment
   // is recorded. Without this gate, anyone who sends the WhatsApp activation
-  // message got flipped to trial_active + a 7-day trial window (in the ack
+  // message got flipped to trial_active + a 3-day trial window (in the ack
   // route) and received leads for free.
   if (!sub.firstPaymentAt) {
     return NextResponse.json(

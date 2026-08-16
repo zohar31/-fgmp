@@ -185,7 +185,7 @@ export default async function AdminUserDetailPage({
             <SubStatus status={subscription?.status} />
           </DataItem>
           <DataItem label="ימי ניסיון נותרו">
-            {trialDaysLeft !== null ? `${trialDaysLeft} / 7` : "—"}
+            {trialDaysLeft !== null ? `${trialDaysLeft} / 3` : "—"}
           </DataItem>
           <DataItem label="טוקן הפעלה">
             {subscription?.activationToken ? (

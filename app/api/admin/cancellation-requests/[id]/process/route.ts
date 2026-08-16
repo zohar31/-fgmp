@@ -13,7 +13,7 @@ export const runtime = "nodejs";
 // Admin processes a customer's cancellation request:
 //   - cancel_only           → mark sub cancelled at period end, no refund
 //   - cancel_and_refund     → reverse last paid invoice via Tranzila + cancel sub
-//                             (only allowed within firstPaymentAt + 7 days,
+//                             (only allowed within firstPaymentAt + 3 days,
 //                             and requires Vercel IP to be on Tranzila whitelist)
 //   - cancel_refund_manual  → admin will refund manually in Tranzila panel.
 //                             Marks invoice as refunded, sub as cancelled,
@@ -186,7 +186,7 @@ export async function POST(
   }
 
   // Two flavors of "cancel":
-  //   - cancel_and_refund / cancel_refund_manual (within 7-day window):
+  //   - cancel_and_refund / cancel_refund_manual (within 3-day window):
   //     immediate cancel + refund (auto via API or manual in Tranzila panel).
   //   - cancel_only (outside window): cancel-at-period-end. Service stays
   //     active until nextChargeAt (the end of the month they paid for),

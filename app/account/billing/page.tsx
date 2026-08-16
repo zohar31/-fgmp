@@ -87,12 +87,12 @@ export default async function BillingPage() {
               <Shield className="mt-0.5 h-5 w-5 shrink-0 text-brand-300" />
               <div className="text-sm">
                 <p className="font-bold text-white">
-                  בתוך 7 ימי הניסיון — {refundDaysRemaining}{" "}
+                  בתוך {SITE.pricing.refundDays} ימי הניסיון — {refundDaysRemaining}{" "}
                   {refundDaysRemaining === 1 ? "יום נותר" : "ימים נותרו"}
                 </p>
                 <p className="mt-1 text-ink-200">
-                  לא מרוצה? בקשת ביטול עכשיו = החזר מלא של {SITE.pricing.monthlyILS} ₪. אחרי שבעת
-                  הימים יתחיל החודש המשולם — אז כבר לא יהיה החזר.
+                  לא מרוצה? בקשת ביטול עכשיו = החזר מלא של {SITE.pricing.monthlyILS} ₪. אחרי {SITE.pricing.refundDays}
+                  {" "}הימים יתחיל החודש המשולם — אז כבר לא יהיה החזר.
                 </p>
               </div>
             </div>

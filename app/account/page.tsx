@@ -42,7 +42,7 @@ export default async function AccountDashboardPage() {
     ? Math.max(
         0,
         Math.ceil(
-          (subscription.firstPaymentAt.getTime() + 7 * 24 * 60 * 60 * 1000 - Date.now()) /
+          (subscription.firstPaymentAt.getTime() + SITE.pricing.refundDays * 24 * 60 * 60 * 1000 - Date.now()) /
             (1000 * 60 * 60 * 24)
         )
       )
@@ -85,9 +85,9 @@ export default async function AccountDashboardPage() {
           }
           value={
             showTrialCard
-              ? `${trialDaysLeft}/7`
+              ? `${trialDaysLeft}/${SITE.pricing.refundDays}`
               : showRefundCard
-                ? `${refundDaysLeft}/7`
+                ? `${refundDaysLeft}/${SITE.pricing.refundDays}`
                 : "—"
           }
           accent="brand"

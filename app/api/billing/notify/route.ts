@@ -120,7 +120,7 @@ async function handle(req: Request) {
       updatedAt: now,
     };
 
-    // Anchor the 7-day refund window on the very first paid charge
+    // Anchor the 3-day refund window on the very first paid charge
     if (isFirstPayment) updates.firstPaymentAt = now;
 
     if (payload.TranzilaTK) updates.tranzilaToken = payload.TranzilaTK;

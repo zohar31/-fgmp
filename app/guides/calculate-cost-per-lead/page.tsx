@@ -155,7 +155,7 @@ export default function CalculateCplGuide() {
             </h3>
             <p className="mt-2 text-ink-200">
               {SITE.pricing.monthlyILS}₪/חודש · לידים ללא הגבלה · ערבות החזר {SITE.pricing.refundDays} ימים —
-              נתונים אמיתיים תוך שבוע.
+              נתונים אמיתיים תוך ימים.
             </p>
             <div className="mt-6">
               <Link href="/login" className="btn-wa text-base">

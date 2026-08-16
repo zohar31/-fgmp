@@ -10,22 +10,22 @@ export const SITE = {
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "972585222227",
   pricing: {
     monthlyILS: 299,
-    refundDays: 7,
+    refundDays: 3,
     // @deprecated 2026-05-05 — replaced by money-back-guarantee model.
-    // Kept as 7 for legacy guide/about pages that still read it; new code
-    // should reference `refundDays`.
-    trialDays: 7,
+    // Kept in sync with `refundDays` for legacy pages; new code should
+    // reference `refundDays`.
+    trialDays: 3,
     currency: "₪",
   },
   notificationEmail: process.env.NOTIFICATIONS_TO_EMAIL || "a0545911111@gmail.com",
   description:
-    "FGMP — מערכת לידים אוטומטית: AI שסורק קבוצות פייסבוק 24/7 ושולח לידים חמים ישירות לוואטסאפ או טלגרם של העסק שלך. 299₪/חודש · ערבות החזר מלא תוך 7 ימים.",
+    "FGMP — מערכת לידים אוטומטית: AI שסורק קבוצות פייסבוק 24/7 ושולח לידים חמים ישירות לוואטסאפ או טלגרם של העסק שלך. 299₪/חודש · ערבות החזר מלא תוך 3 ימים.",
   // וריאציות לתיאורים — מונע duplicate content על שדות מטא שונים
   descriptions: {
     meta:
-      "מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ. AI מזהה לקוחות שמחפשים את השירות שלך ושולח לך התראה תוך שניות. 299 ₪/חודש · החזר מלא תוך 7 ימים אם לא תהיה מרוצה.",
+      "מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ. AI מזהה לקוחות שמחפשים את השירות שלך ושולח לך התראה תוך שניות. 299 ₪/חודש · החזר מלא תוך 3 ימים אם לא תהיה מרוצה.",
     og:
-      "אלפי פוסטים ביום בקבוצות פייסבוק של אנשים שמחפשים את השירות שלך. FGMP סורקת בזמן אמת ושולחת כל ליד רלוונטי לוואטסאפ או טלגרם — אוטומטית, 24/7. ערבות החזר 7 ימים.",
+      "אלפי פוסטים ביום בקבוצות פייסבוק של אנשים שמחפשים את השירות שלך. FGMP סורקת בזמן אמת ושולחת כל ליד רלוונטי לוואטסאפ או טלגרם — אוטומטית, 24/7. ערבות החזר 3 ימים.",
     organization:
       "FGMP — שירות לאיתור לידים מקבוצות פייסבוק ושליחתם בזמן אמת לוואטסאפ או טלגרם. הוקם על ידי צח אור, פעיל בישראל.",
     software:

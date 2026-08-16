@@ -12,7 +12,7 @@ export const runtime = "nodejs";
 // Customer-initiated CANCELLATION REQUEST. We do NOT cancel the subscription
 // here — only an admin can do that. We record a pending request, notify the
 // admin, and let them either cancel-only or cancel+refund (if within the
-// 7-day money-back window) from the admin dashboard.
+// 3-day money-back window) from the admin dashboard.
 
 const Body = z.object({
   reason: z.string().trim().max(400).optional().default(""),

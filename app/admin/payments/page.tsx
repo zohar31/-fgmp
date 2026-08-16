@@ -94,7 +94,7 @@ export default async function AdminPaymentsPage() {
           <strong className="text-amber-300">
             {cancelAtPeriodEndCount} מנויים בביטול בסוף תקופה.
           </strong>{" "}
-          מנויים שביקשו לבטל אחרי 7 ימים — ימשיכו עד סוף החודש המשולם, אז יפוגו
+          מנויים שביקשו לבטל אחרי 3 ימים — ימשיכו עד סוף החודש המשולם, אז יפוגו
           אוטומטית (cron).
         </div>
       )}

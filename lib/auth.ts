@@ -42,7 +42,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const now = new Date();
 
       // New money-back-guarantee model: no free trial. Customer creates
-      // account → fills settings → pays 299₪ → gets 7-day full-refund window
+      // account → fills settings → pays 299₪ → gets 3-day full-refund window
       // anchored on firstPaymentAt. trialStartedAt/trialEndsAt left null;
       // the columns remain in the schema for backward compatibility with
       // legacy users who signed up before this change.
@@ -76,7 +76,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         userId: user.id,
         type: "info",
         title: "ברוכים הבאים ל-FGMP! 🎉",
-        body: "השלימו את הגדרות העסק והתשלום באזור האישי כדי להתחיל לקבל לידים. ערבות החזר מלא 7 ימים — אם לא מרוצים, מקבלים את הכסף בחזרה.",
+        body: "השלימו את הגדרות העסק והתשלום באזור האישי כדי להתחיל לקבל לידים. ערבות החזר מלא 3 ימים — אם לא מרוצים, מקבלים את הכסף בחזרה.",
       });
 
       // Meta CAPI — שולח אירוע Lead לאופטימיזציה של קמפיינים
