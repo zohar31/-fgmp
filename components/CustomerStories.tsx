@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { MapPin, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { MapPin, CheckCircle2, Star, ArrowLeft } from "lucide-react";
 
 type Story = {
   name: string;
@@ -128,6 +129,15 @@ export function CustomerStories() {
             <span className="font-bold text-white">FGMP</span>.
             הנה כמה מהם — הצילומים אמיתיים, הלידים אמיתיים, ההצלחה — שלהם.
           </p>
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm text-ink-200 ring-1 ring-white/10">
+            <span className="flex gap-0.5" aria-hidden>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-amber-300 text-amber-300" />
+              ))}
+            </span>
+            <span className="font-bold text-white">5.0</span>
+            <span className="text-ink-400">· לקוחות ממליצים</span>
+          </div>
         </div>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -136,7 +146,14 @@ export function CustomerStories() {
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-12 flex flex-col items-center gap-4 text-center">
+          <Link
+            href="/success-stories"
+            className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-5 py-2.5 text-sm font-bold text-brand-200 ring-1 ring-brand-500/30 transition hover:bg-white/[0.08] hover:text-brand-100"
+          >
+            קראו את כל סיפורי הלקוחות
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
           <p className="text-sm text-ink-400">
             🔒 כל הלקוחות אישרו פרסום שמם במסגרת סיפורי הלקוחות שלנו.
           </p>
