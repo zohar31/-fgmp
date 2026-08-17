@@ -19,9 +19,9 @@ export function WhatsAppButton() {
       <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-white ring-2 ring-wa">
         <span className="absolute inset-0.5 rounded-full bg-wa animate-pulse" />
       </span>
-      {/* תווית בהובר (דסקטופ) */}
-      <span className="pointer-events-none absolute left-full ml-3 hidden whitespace-nowrap rounded-xl bg-bg-card px-3 py-1.5 text-sm font-medium text-white opacity-0 shadow-glow ring-1 ring-wa/40 transition group-hover:opacity-100 sm:block">
-        שיחה בוואטסאפ 💬
+      {/* כיתוב קבוע ליד הלחצן */}
+      <span className="pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-xl bg-bg-card px-3 py-1.5 text-xs font-medium text-white shadow-glow ring-1 ring-wa/40 transition group-hover:ring-wa/60 sm:text-sm">
+        שיחה בוואטסאפ עם נציג
       </span>
     </a>
   );
