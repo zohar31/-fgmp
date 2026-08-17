@@ -1,8 +1,7 @@
 import { waLink } from "@/lib/config";
 
 // כפתור וואטסאפ צף — מופיע בכל דף (מוטמע ב-layout).
-// פותח שיחה עם סוכן ה-FGMP בוואטסאפ. ממוקם מעל כפתור הנגישות (ימין-תחתון)
-// כדי לא להתנגש בו או ב-AIAgent (שמאל-תחתון בדף הבית).
+// פותח שיחה עם סוכן ה-FGMP בוואטסאפ. ממוקם בשמאל-תחתון (כפתור הנגישות בימין).
 export function WhatsAppButton() {
   return (
     <a
@@ -10,7 +9,7 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="שיחה בוואטסאפ עם FGMP"
-      className="group fixed bottom-24 right-4 z-50 grid h-14 w-14 place-items-center rounded-full bg-wa text-white shadow-lg ring-4 ring-wa/25 transition hover:scale-105 hover:bg-wa/90 focus:outline-none focus:ring-4 focus:ring-wa/50 sm:bottom-24"
+      className="group fixed bottom-5 left-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-wa text-white shadow-lg ring-4 ring-wa/25 transition hover:scale-105 hover:bg-wa/90 focus:outline-none focus:ring-4 focus:ring-wa/50 sm:bottom-6 sm:left-6"
     >
       {/* לוגו וואטסאפ */}
       <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor" aria-hidden="true">
@@ -21,7 +20,7 @@ export function WhatsAppButton() {
         <span className="absolute inset-0.5 rounded-full bg-wa animate-pulse" />
       </span>
       {/* תווית בהובר (דסקטופ) */}
-      <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-xl bg-bg-card px-3 py-1.5 text-sm font-medium text-white opacity-0 shadow-glow ring-1 ring-wa/40 transition group-hover:opacity-100 sm:block">
+      <span className="pointer-events-none absolute left-full ml-3 hidden whitespace-nowrap rounded-xl bg-bg-card px-3 py-1.5 text-sm font-medium text-white opacity-0 shadow-glow ring-1 ring-wa/40 transition group-hover:opacity-100 sm:block">
         שיחה בוואטסאפ 💬
       </span>
     </a>

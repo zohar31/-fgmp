@@ -13,7 +13,6 @@ import { GuidesPreview } from "@/components/GuidesPreview";
 import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
-import { AIAgent } from "@/components/AIAgent";
 import {
   JsonLd,
   faqSchema,
@@ -56,7 +55,6 @@ export default function HomePage() {
         <FinalCTA />
       </main>
       <Footer />
-      <AIAgent />
     </>
   );
 }
