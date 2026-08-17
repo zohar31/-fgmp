@@ -71,8 +71,8 @@ export function Nav() {
             className="btn-wa text-sm py-2 px-4"
           >
             <LogIn className="h-4 w-4" />
-            <span className="hidden sm:inline">התחילו חינם</span>
-            <span className="sm:hidden">חינם</span>
+            <span className="hidden sm:inline">התחילו עכשיו</span>
+            <span className="sm:hidden">התחילו</span>
           </Link>
         </div>
       </div>
