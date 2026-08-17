@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Tracker } from "@/components/Tracker";
 import { AccessibilityWidget } from "@/components/AccessibilityWidget";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import "./globals.css";
 import { SITE } from "@/lib/config";
 import { JsonLd, organizationSchema, websiteSchema } from "@/lib/jsonld";
@@ -123,6 +124,7 @@ export default function RootLayout({
           </noscript>
         )}
         {children}
+        <WhatsAppButton />
         <AccessibilityWidget />
         <Suspense fallback={null}>
           <Tracker />
