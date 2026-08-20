@@ -1,14 +1,24 @@
-import { waLink } from "@/lib/config";
+"use client";
 
-// כפתור וואטסאפ צף — מופיע בכל דף (מוטמע ב-layout).
+import { usePathname } from "next/navigation";
+import { waLink } from "@/lib/config";
+import { localeFromPathname } from "@/lib/i18n";
+
+// כפתור וואטסאפ צף — מופיע בכל דף (מוטמע ב-layout). דו-לשוני.
 // פותח שיחה עם סוכן ה-FGMP בוואטסאפ. ממוקם בשמאל-תחתון (כפתור הנגישות בימין).
 export function WhatsAppButton() {
+  const pathname = usePathname() || "/";
+  const en = localeFromPathname(pathname) === "en";
+  const msg = en ? "Hi, I have a question about FGMP 😊" : "היי, יש לי שאלה על FGMP 😊";
+  const aria = en ? "Chat with FGMP on WhatsApp" : "שיחה בוואטסאפ עם FGMP";
+  const label = en ? "Chat with us on WhatsApp" : "שיחה בוואטסאפ עם נציג";
+
   return (
     <a
-      href={waLink("היי, יש לי שאלה על FGMP 😊")}
+      href={waLink(msg)}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="שיחה בוואטסאפ עם FGMP"
+      aria-label={aria}
       className="group fixed bottom-5 left-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-wa text-white shadow-lg ring-4 ring-wa/25 transition hover:scale-105 hover:bg-wa/90 focus:outline-none focus:ring-4 focus:ring-wa/50 sm:bottom-6 sm:left-6"
     >
       {/* לוגו וואטסאפ */}
@@ -21,7 +31,7 @@ export function WhatsAppButton() {
       </span>
       {/* כיתוב קבוע ליד הלחצן */}
       <span className="pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-xl bg-bg-card px-3 py-1.5 text-xs font-medium text-white shadow-glow ring-1 ring-wa/40 transition group-hover:ring-wa/60 sm:text-sm">
-        שיחה בוואטסאפ עם נציג
+        {label}
       </span>
     </a>
   );

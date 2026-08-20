@@ -86,6 +86,8 @@ export default function RootLayout({
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
+  // Default (Hebrew) <html>. English pages under /en flip lang/dir to en/ltr
+  // via app/en/layout.tsx — keeps every page statically generated.
   return (
     <html lang="he" dir="rtl" className={`${heebo.variable} ${assistant.variable}`}>
       <head>
