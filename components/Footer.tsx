@@ -37,8 +37,6 @@ const FOOTER = {
       { href: "/en/#who", label: "Who it's for" },
       { href: "/en/#pricing", label: "Pricing" },
       { href: "/en/guides", label: "Lead guides" },
-      { href: "/en/success-stories", label: "Success stories" },
-      { href: "/en/tools", label: "Free tools" },
       { href: "/en/about", label: "About" },
       { href: "/en/#faq", label: "FAQ" },
       { href: "/login", label: "Sign up" },
@@ -57,7 +55,8 @@ export function Footer() {
   const pathname = usePathname() || "/";
   const locale = localeFromPathname(pathname);
   const t = FOOTER[locale];
-  const base = locale === "en" ? "/en" : "";
+  // Legal pages currently exist at the root only; English legal is a later phase.
+  const legalBase = "";
   const year = 2026;
 
   return (
@@ -92,17 +91,17 @@ export function Footer() {
             <h4 className="font-display font-bold text-white">{t.legalTitle}</h4>
             <ul className="mt-4 space-y-2 text-sm text-ink-300">
               <li>
-                <Link href={`${base}/terms`} className="hover:text-white">
+                <Link href={`${legalBase}/terms`} className="hover:text-white">
                   {t.terms}
                 </Link>
               </li>
               <li>
-                <Link href={`${base}/privacy`} className="hover:text-white">
+                <Link href={`${legalBase}/privacy`} className="hover:text-white">
                   {t.privacy}
                 </Link>
               </li>
               <li>
-                <Link href={`${base}/accessibility`} className="hover:text-white">
+                <Link href={`${legalBase}/accessibility`} className="hover:text-white">
                   {t.accessibility}
                 </Link>
               </li>

@@ -31,7 +31,6 @@ const NAV = {
       { href: "/en/#how", label: "How it works" },
       { href: "/en/#who", label: "Who it's for" },
       { href: "/en/#pricing", label: "Pricing" },
-      { href: "/en/#stories", label: "Customers" },
       { href: "/en/guides", label: "Guides" },
       { href: "/en/#faq", label: "FAQ" },
     ],

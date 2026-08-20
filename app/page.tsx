@@ -27,7 +27,14 @@ import { SITE } from "@/lib/config";
 import { customerReviews } from "@/lib/reviews";
 
 export const metadata: Metadata = {
-  alternates: { canonical: SITE.url },
+  alternates: {
+    canonical: SITE.url,
+    languages: {
+      "he-IL": SITE.url,
+      "en-US": `${SITE.url}/en`,
+      "x-default": SITE.url,
+    },
+  },
 };
 
 export default function HomePage() {

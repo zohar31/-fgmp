@@ -3,6 +3,7 @@ import { SITE } from "@/lib/config";
 import { guides } from "@/lib/guides";
 import { landingPages } from "@/lib/landing-pages";
 import { allGeoParams } from "@/lib/geo";
+import { guidesEn } from "@/lib/guides-en";
 
 // תאריכי lastModified אמיתיים פר-תוכן — לא new Date() בכל deploy.
 // גוגל מתעלם מ"טריות מזויפת" (כל הדפים מתעדכנים בכל בנייה); תאריך אמיתי
@@ -36,6 +37,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
+  const enGuideUrls: MetadataRoute.Sitemap = guidesEn.map((g) => ({
+    url: `${SITE.url}/en/guides/${g.slug}`,
+    lastModified: new Date(g.updatedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
   // מטריצת מקצוע × עיר (Local SEO) — תאריך שינוי מהותי אחרון: יולי 2026.
   const GEO_LASTMOD = new Date("2026-07-25");
   const geoUrls: MetadataRoute.Sitemap = allGeoParams().map(({ slug, city }) => ({
@@ -64,5 +72,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/terms`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.3 },
     { url: `${SITE.url}/privacy`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.3 },
     { url: `${SITE.url}/accessibility`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.3 },
+    // ── English (/en) — US market ──
+    {
+      url: `${SITE.url}/en`,
+      lastModified: NEWEST,
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: { languages: { "he-IL": `${SITE.url}/`, "en-US": `${SITE.url}/en` } },
+    },
+    { url: `${SITE.url}/en/about`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE.url}/en/guides`, lastModified: NEWEST, changeFrequency: "weekly", priority: 0.7 },
+    ...enGuideUrls,
   ];
 }

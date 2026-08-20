@@ -15,11 +15,17 @@ export function LanguageSwitcher() {
   const label = target === "en" ? "EN" : "עב";
   const aria = target === "en" ? "Switch to English" : "עבור לעברית";
 
+  // Persist the manual choice so it overrides geo-based auto-redirect.
+  const remember = () => {
+    document.cookie = `locale=${target};path=/;max-age=31536000;samesite=lax`;
+  };
+
   return (
     <Link
       href={href}
       hrefLang={target}
       aria-label={aria}
+      onClick={remember}
       className="inline-flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-bold text-ink-200 ring-1 ring-white/10 transition-colors hover:bg-white/5 hover:text-white"
     >
       <Globe className="h-4 w-4" />
