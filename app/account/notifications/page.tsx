@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { CheckCircle2, Info, AlertTriangle, CreditCard, Settings } from "lucide-react";
+import { getServerLocale } from "@/lib/i18n-server";
 
 export const metadata: Metadata = { title: "הודעות" };
 
@@ -25,6 +26,8 @@ const typeColor = {
 export default async function NotificationsPage() {
   const session = await auth();
   const userId = session!.user.id;
+  const en = (await getServerLocale()) === "en";
+  const dateLocale = en ? "en-US" : "he-IL";
 
   const items = await db.query.notifications.findMany({
     where: eq(schema.notifications.userId, userId),
@@ -33,15 +36,15 @@ export default async function NotificationsPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={en ? "ltr" : "rtl"}>
       <header>
-        <h1 className="font-display text-3xl font-extrabold text-white">הודעות</h1>
-        <p className="mt-2 text-ink-300">היסטוריית הודעות מערכת והתראות.</p>
+        <h1 className="font-display text-3xl font-extrabold text-white">{en ? "Notifications" : "הודעות"}</h1>
+        <p className="mt-2 text-ink-300">{en ? "History of system messages and alerts." : "היסטוריית הודעות מערכת והתראות."}</p>
       </header>
 
       {items.length === 0 ? (
         <div className="card p-8 text-center">
-          <p className="text-ink-300">אין הודעות עדיין.</p>
+          <p className="text-ink-300">{en ? "No notifications yet." : "אין הודעות עדיין."}</p>
         </div>
       ) : (
         <ul className="space-y-3">
@@ -60,7 +63,7 @@ export default async function NotificationsPage() {
                       <p className="mt-1 text-sm leading-6 text-ink-200">{n.body}</p>
                     )}
                     <div className="mt-2 text-xs text-ink-500">
-                      {new Date(n.createdAt).toLocaleString("he-IL", {
+                      {new Date(n.createdAt).toLocaleString(dateLocale, {
                         timeZone: "Asia/Jerusalem",
                       })}
                     </div>

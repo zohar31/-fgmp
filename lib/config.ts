@@ -70,8 +70,10 @@ export function formatServiceAreas(raw: string | null | undefined): string {
   if (s === "ארצי" || /(^|,\s*)כל הארץ(,|$)/.test(s) || /(^|,\s*)ארצי(,|$)/.test(s)) {
     return "ארצי";
   }
-  // מקומי חדש: "מקומי — תל אביב"
-  if (s.startsWith("מקומי — ")) return s;
+  // English nationwide
+  if (s === "Nationwide" || /nationwide/i.test(s)) return "Nationwide";
+  // מקומי חדש: "מקומי — תל אביב" / English "Local — Houston"
+  if (s.startsWith("מקומי — ") || s.startsWith("Local — ")) return s;
   // ערכים חופשיים — הצג כמו שהם
   return s;
 }

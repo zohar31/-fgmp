@@ -11,6 +11,7 @@ const Body = z.object({
   serviceAreas: z.string().trim().max(1000).optional().default(""),
   description: z.string().trim().max(800).optional().default(""),
   businessName: z.string().trim().max(120).optional().default(""),
+  locale: z.enum(["he", "en"]).optional().default("he"),
 });
 
 export async function POST(req: Request) {
@@ -46,10 +47,27 @@ export async function POST(req: Request) {
     );
   }
 
-  const { niche, serviceAreas, description, businessName } = parsed.data;
+  const { niche, serviceAreas, description, businessName, locale } = parsed.data;
   const openai = new OpenAI({ apiKey });
 
-  const prompt = `אתה מומחה לשיווק דיגיטלי וקבוצות פייסבוק בישראל.
+  const promptEn = `You are a digital-marketing and Facebook-groups expert for the US market.
+
+Goal: generate up to 30 short keywords and phrases in ENGLISH that people type in US Facebook groups when they're looking for a service in the following field:
+
+Trade: ${niche}${businessName ? `\nBusiness name: ${businessName}` : ""}${serviceAreas ? `\nService areas: ${serviceAreas}` : ""}${description ? `\nDescription: ${description}` : ""}
+
+Guidelines:
+- Each keyword must be short: 1-4 words
+- Include common variations, slang, and typical phrasings
+- Include common service/job types in this trade
+- Include questions customers commonly ask ("anyone recommend", "looking for", "need a")
+- Don't include words that are too generic like "price" or "recommendation" alone
+- Prefer specific phrases over single words
+- Return ONLY a comma-separated list — no numbering, no explanations, no bullets, no tags
+
+Example of valid output: "looking for a plumber, water heater repair, burst pipe, drain cleaning, ..."`;
+
+  const promptHe = `אתה מומחה לשיווק דיגיטלי וקבוצות פייסבוק בישראל.
 
 מטרתך: לייצר עד 30 מילות מפתח וצירופים קצרים בעברית שאנשים מקלידים בקבוצות פייסבוק כשהם מחפשים שירות מהתחום הבא:
 
@@ -65,6 +83,8 @@ export async function POST(req: Request) {
 - החזר אך ורק רשימה מופרדת בפסיקים, ללא מספור, ללא הסברים, ללא קווי-תחתוני, ללא תגיות
 
 דוגמה לפלט תקין: "מחפשת קונדיטוריה, עוגת חתונה, עוגת בר מצווה, עוגות מעוצבות, ..."`;
+
+  const prompt = locale === "en" ? promptEn : promptHe;
 
   try {
     const response = await openai.chat.completions.create({

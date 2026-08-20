@@ -4,12 +4,15 @@ import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { CheckCircle2 } from "lucide-react";
 import { SetupForm } from "./SetupForm";
+import { getServerLocale } from "@/lib/i18n-server";
 
 export const metadata: Metadata = { title: "הגדרות עסק" };
 
 export default async function SetupPage() {
   const session = await auth();
   const userId = session!.user.id;
+  const locale = await getServerLocale();
+  const en = locale === "en";
 
   const [settings, user, subscription] = await Promise.all([
     db.query.businessSettings.findFirst({
@@ -41,27 +44,40 @@ export default async function SetupPage() {
         : 1;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={en ? "ltr" : "rtl"}>
       <header>
         <h1 className="font-display text-3xl font-extrabold text-white">
-          הגדרות העסק
+          {en ? "Business settings" : "הגדרות העסק"}
         </h1>
         <p className="mt-2 text-ink-300">
-          מלא/י את הפרטים — אלה יישלחו למערכת אחרי השלמת התשלום והפעלת ה-WhatsApp.
+          {en
+            ? "Fill in your details — these are sent to the system after payment and WhatsApp activation."
+            : "מלא/י את הפרטים — אלה יישלחו למערכת אחרי השלמת התשלום והפעלת ה-WhatsApp."}
         </p>
       </header>
 
-      <ProgressSteps current={currentStep} />
+      <ProgressSteps current={currentStep} en={en} />
 
       <div className="card border-l-4 border-brand-500 p-4">
         <p className="text-sm leading-7 text-ink-200">
-          <strong className="text-white">סדר ההרשמה:</strong> פרטי עסק (שלב זה) →{" "}
-          <strong className="text-amber-300">תשלום</strong> →{" "}
-          <strong className="text-wa">הפעלת WhatsApp</strong>. אחרי שמירת הפרטים תועבר אוטומטית לשלב הבא.
+          {en ? (
+            <>
+              <strong className="text-white">Signup order:</strong> business details (this step) →{" "}
+              <strong className="text-amber-300">payment</strong> →{" "}
+              <strong className="text-wa">WhatsApp activation</strong>. After you save, you'll move to the next step automatically.
+            </>
+          ) : (
+            <>
+              <strong className="text-white">סדר ההרשמה:</strong> פרטי עסק (שלב זה) →{" "}
+              <strong className="text-amber-300">תשלום</strong> →{" "}
+              <strong className="text-wa">הפעלת WhatsApp</strong>. אחרי שמירת הפרטים תועבר אוטומטית לשלב הבא.
+            </>
+          )}
         </p>
       </div>
 
       <SetupForm
+        locale={locale}
         defaults={{
           businessName: settings?.businessName ?? null,
           contactName: settings?.contactName ?? null,
@@ -79,12 +95,18 @@ export default async function SetupPage() {
   );
 }
 
-function ProgressSteps({ current }: { current: 1 | 2 | 3 | 4 }) {
-  const steps = [
-    { n: 1, label: "פרטי העסק" },
-    { n: 2, label: "תשלום" },
-    { n: 3, label: "הפעלת WhatsApp" },
-  ] as const;
+function ProgressSteps({ current, en }: { current: 1 | 2 | 3 | 4; en: boolean }) {
+  const steps = en
+    ? ([
+        { n: 1, label: "Business details" },
+        { n: 2, label: "Payment" },
+        { n: 3, label: "WhatsApp activation" },
+      ] as const)
+    : ([
+        { n: 1, label: "פרטי העסק" },
+        { n: 2, label: "תשלום" },
+        { n: 3, label: "הפעלת WhatsApp" },
+      ] as const);
 
   return (
     <ol className="flex items-center justify-between gap-1 rounded-2xl bg-white/[0.03] p-3 ring-1 ring-white/5 sm:gap-2 sm:p-4">

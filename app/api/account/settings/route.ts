@@ -3,16 +3,21 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
+import { getServerLocale } from "@/lib/i18n-server";
 
 export const runtime = "nodejs";
 
 const SettingsSchema = z.object({
   businessName: z.string().trim().min(2).max(80),
   contactName: z.string().trim().min(2).max(80),
+  // Optional — Israeli customers may enter a 9-digit ID (ח.פ./ע.מ./ת.ז.);
+  // US customers can leave it blank (they don't have an Israeli tax ID).
   vatId: z
     .string()
     .trim()
-    .regex(/^\d{9}$/, "ח.פ. / ע.מ. / ת.ז. חייב להיות 9 ספרות"),
+    .regex(/^\d{9}$/, "ח.פ. / ע.מ. / ת.ז. חייב להיות 9 ספרות")
+    .optional()
+    .or(z.literal("")),
   contactEmail: z.string().trim().email().max(120),
   leadPhone: z
     .string()
@@ -49,26 +54,45 @@ export async function POST(req: Request) {
 
   const parsed = SettingsSchema.safeParse(body);
   if (!parsed.success) {
+    const en = (await getServerLocale()) === "en";
     const issue = parsed.error.issues[0];
-    const fieldLabels: Record<string, string> = {
-      businessName: "שם העסק",
-      contactName: "שם איש קשר",
-      vatId: "ח.פ. / עוסק מורשה",
-      contactEmail: "אימייל",
-      leadPhone: "טלפון לקבלת לידים",
-      niche: "תחום עיסוק",
-      serviceAreas: "אזורי שירות",
-      keywords: "מילות מפתח",
-      description: "תיאור",
-      telegramUsername: "טלגרם",
-    };
+    const fieldLabels: Record<string, string> = en
+      ? {
+          businessName: "Business name",
+          contactName: "Contact name",
+          vatId: "Tax ID",
+          contactEmail: "Email",
+          leadPhone: "Lead phone",
+          niche: "Trade",
+          serviceAreas: "Service areas",
+          keywords: "Keywords",
+          description: "Description",
+          telegramUsername: "Telegram",
+        }
+      : {
+          businessName: "שם העסק",
+          contactName: "שם איש קשר",
+          vatId: "ח.פ. / עוסק מורשה",
+          contactEmail: "אימייל",
+          leadPhone: "טלפון לקבלת לידים",
+          niche: "תחום עיסוק",
+          serviceAreas: "אזורי שירות",
+          keywords: "מילות מפתח",
+          description: "תיאור",
+          telegramUsername: "טלגרם",
+        };
     const fieldKey = issue?.path[0] as string | undefined;
     const fieldName = fieldKey ? fieldLabels[fieldKey] || fieldKey : "";
+    // For English users, prefer a generic per-field message (Zod's built-in
+    // messages are English; the custom .regex() messages are Hebrew).
+    const fallback = en ? "is invalid or missing" : "לא תקין";
+    const rawMsg = issue?.message || "";
+    const msgText = en && /[֐-׿]/.test(rawMsg) ? fallback : rawMsg;
     const msg = issue
       ? fieldName
-        ? `${fieldName}: ${issue.message}`
-        : issue.message
-      : "פרטים לא תקינים";
+        ? `${fieldName}: ${msgText}`
+        : msgText || (en ? "Invalid details" : "פרטים לא תקינים")
+      : en ? "Invalid details" : "פרטים לא תקינים";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 
@@ -86,7 +110,7 @@ export async function POST(req: Request) {
   const values = {
     businessName: data.businessName,
     contactName: data.contactName,
-    vatId: data.vatId,
+    vatId: data.vatId || null,
     contactEmail: data.contactEmail,
     leadPhone: data.leadPhone,
     niche: data.niche,
