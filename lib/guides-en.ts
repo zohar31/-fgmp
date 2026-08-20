@@ -163,6 +163,84 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-20",
     keywords: ["cost per lead", "how much does a lead cost", "cost per lead by industry", "lead prices", "cpl 2026"],
   },
+  {
+    slug: "lead-automation",
+    title: "Lead Automation — How to Put Lead Generation on Autopilot in 2026",
+    description:
+      "What lead automation is, which parts of the lead process you can automate (capture, routing, response, follow-up), the tools that do it, and how a small business gets hot leads without lifting a finger.",
+    excerpt:
+      "The best lead source is the one that runs while you work. Here's what lead automation actually means, which steps you can automate today, and how to stop trading hours for leads.",
+    category: "Automation",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead automation", "automate lead generation", "automated leads", "lead generation automation", "lead capture automation"],
+  },
+  {
+    slug: "exclusive-vs-shared-leads",
+    title: "Exclusive vs. Shared Leads — Which Is Worth Paying For?",
+    description:
+      "The real difference between exclusive and shared leads: how lead companies sell the same lead to 3–5 businesses, what it does to your close rate, the true cost math, and when exclusive is worth the premium.",
+    excerpt:
+      "A shared lead is sold to you and four competitors — so you're racing on price and speed before you even say hello. Here's the honest comparison of exclusive vs. shared leads.",
+    category: "Buying Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["exclusive vs shared leads", "exclusive leads", "shared leads", "are shared leads worth it", "exclusive lead generation"],
+  },
+  {
+    slug: "real-time-leads",
+    title: "Real-Time Leads — Why Fresh Leads Close and Aged Leads Don't",
+    description:
+      "What a real-time lead is, why lead freshness is one of the biggest drivers of close rate, how aged and recycled leads waste your money, and how to get leads the moment intent appears.",
+    excerpt:
+      "A lead is worth the most in the first few minutes and almost nothing a week later. Here's why real-time leads close, what \"aged leads\" really are, and how to always be first.",
+    category: "Lead Guides",
+    readTime: 7,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["real time leads", "real-time leads", "fresh leads", "aged leads", "live leads"],
+  },
+  {
+    slug: "quality-leads",
+    title: "What Makes a Quality Lead — And How to Get More of Them",
+    description:
+      "How to tell a quality lead from a junk one: the signals of real buying intent, why 10 good leads beat 100 bad ones, how to score leads, and where the highest-quality leads actually come from.",
+    excerpt:
+      "\"More leads\" is the wrong goal — better leads is the right one. Here's how to recognize a quality lead, why it matters more than volume, and how to get more of them.",
+    category: "Lead Basics",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["quality leads", "high quality leads", "qualified leads", "lead quality", "how to get quality leads"],
+  },
+  {
+    slug: "first-message-to-lead",
+    title: "The First Message to a New Lead — Templates That Get a Reply",
+    description:
+      "What to say in your very first message to a lead: the structure that gets a reply, mistakes that kill the conversation, and copy-paste WhatsApp/text templates for service businesses.",
+    excerpt:
+      "The first message decides whether a lead replies or ghosts you. Here's the structure that works, the mistakes to avoid, and templates you can copy today.",
+    category: "Converting Leads",
+    readTime: 7,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["first message to a lead", "how to message a lead", "lead follow up message", "what to say to a lead", "lead response template"],
+  },
+  {
+    slug: "follow-up-cold-leads",
+    title: "How to Follow Up With Cold Leads (Without Being Annoying)",
+    description:
+      "A practical follow-up system for cold leads: how many times to follow up, the right cadence, what to say each time, and how to revive old leads that went quiet — without feeling pushy.",
+    excerpt:
+      "Most deals are lost in the follow-up, not the pitch. Here's a simple, non-annoying system for following up with cold leads and reviving the ones that went silent.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["follow up with leads", "cold lead follow up", "how to follow up with leads", "lead nurturing", "reviving old leads"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
