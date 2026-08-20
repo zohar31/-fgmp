@@ -11,7 +11,7 @@ export const SITE_EN = {
   url: SITE.url,
   whatsapp: SITE.whatsapp,
   pricing: {
-    monthlyUSD: 79, // confirmed with owner 2026-08-20
+    monthlyUSD: 99, // = 299 ILS (corrected 2026-08-20; billed via Tranzila in ILS)
     refundDays: SITE.pricing.refundDays, // 3
     currency: "$",
     // Actual charge is processed via Tranzila in ILS; USD is a display price.
