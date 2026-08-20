@@ -1,14 +1,33 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { Logo } from "@/components/Logo";
-import { AIAgent } from "@/components/AIAgent";
 import { ShieldCheck } from "lucide-react";
 import { isInAppWebView, isAndroid, isIOS } from "@/lib/webview";
 import { SITE } from "@/lib/config";
+import { SITE_EN } from "@/lib/config-en";
 import { WebViewWarning } from "./WebViewWarning";
+
+const T = {
+  he: {
+    title: "התחברות לאזור האישי",
+    sub: "התחבר/י באמצעות חשבון Google כדי לנהל את המנוי שלך",
+    cta: "המשך עם Google",
+    noPass: "ללא סיסמה",
+    secure: "חיבור מאובטח",
+    foot: `הכניסה היא גם ההרשמה — לחיצה אחת על Google. מנוי ${SITE.pricing.monthlyILS}₪/חודש עם ערבות החזר מלא ${SITE.pricing.refundDays} ימים.`,
+  },
+  en: {
+    title: "Sign in to your account",
+    sub: "Sign in with your Google account to manage your subscription",
+    cta: "Continue with Google",
+    noPass: "No password",
+    secure: "Secure connection",
+    foot: `Signing in is also signing up — one click with Google. $${SITE_EN.pricing.monthlyUSD}/month with a full ${SITE_EN.pricing.refundDays}-day money-back guarantee.`,
+  },
+} as const;
 
 export const metadata: Metadata = {
   title: "התחברות",
@@ -33,6 +52,10 @@ export default async function LoginPage({
     return <WebViewWarning url={`${SITE.url}/login`} platform={platform} />;
   }
 
+  // Locale from the language cookie (set by the switcher / geo-redirect).
+  const locale = (await cookies()).get("locale")?.value === "en" ? "en" : "he";
+  const t = T[locale];
+
   return (
     <main className="flex min-h-[80vh] items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
@@ -40,13 +63,11 @@ export default async function LoginPage({
           <Logo />
         </div>
 
-        <div className="card p-8">
+        <div className="card p-8" dir={locale === "en" ? "ltr" : "rtl"}>
           <h1 className="text-center font-display text-2xl font-extrabold text-white">
-            התחברות לאזור האישי
+            {t.title}
           </h1>
-          <p className="mt-2 text-center text-sm text-ink-300">
-            התחבר/י באמצעות חשבון Google כדי לנהל את המנוי שלך
-          </p>
+          <p className="mt-2 text-center text-sm text-ink-300">{t.sub}</p>
 
           <form
             action={async () => {
@@ -60,27 +81,26 @@ export default async function LoginPage({
               className="flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-6 py-3.5 font-semibold text-gray-900 transition hover:bg-gray-100"
             >
               <GoogleIcon />
-              <span>המשך עם Google</span>
+              <span>{t.cta}</span>
             </button>
           </form>
 
           <div className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-ink-400">
             <span className="flex items-center gap-1">
               <ShieldCheck className="h-3.5 w-3.5 text-wa" />
-              ללא סיסמה
+              {t.noPass}
             </span>
             <span className="flex items-center gap-1">
               <ShieldCheck className="h-3.5 w-3.5 text-wa" />
-              חיבור מאובטח
+              {t.secure}
             </span>
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-ink-400">
-          הכניסה היא גם ההרשמה — לחיצה אחת על Google. מנוי {SITE.pricing.monthlyILS}₪/חודש עם ערבות החזר מלא {SITE.pricing.refundDays} ימים.
+        <p className="mt-6 text-center text-xs text-ink-400" dir={locale === "en" ? "ltr" : "rtl"}>
+          {t.foot}
         </p>
       </div>
-      <AIAgent />
     </main>
   );
 }
