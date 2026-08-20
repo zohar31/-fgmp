@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   title: "מתודולוגיה — איך אנחנו מודדים את המספרים",
   description:
     "המקור והשיטה לכל מספר שמופיע באתר FGMP — 50,000+ קבוצות, 60,000+ פוסטים יומיים, 4,670+ מילות מפתח, 1,000+ לידים יומיים. מדד אמיתי, מעודכן בזמן אמת.",
-  alternates: { canonical: `${SITE.url}/methodology` },
+  alternates: {
+    canonical: `${SITE.url}/methodology`,
+    languages: { "he-IL": `${SITE.url}/methodology`, "en-US": `${SITE.url}/en/methodology` },
+  },
   openGraph: {
     type: "article",
     title: "מתודולוגיה — איך מודדים את הסטטיסטיקות של FGMP",

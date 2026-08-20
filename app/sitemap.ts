@@ -82,6 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: { "he-IL": `${SITE.url}/`, "en-US": `${SITE.url}/en` } },
     },
     { url: `${SITE.url}/en/about`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE.url}/en/methodology`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE.url}/en/terms`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.3 },
     { url: `${SITE.url}/en/privacy`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.3 },
     { url: `${SITE.url}/en/accessibility`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.3 },
