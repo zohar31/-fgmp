@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import { Logo } from "@/components/Logo";
-import { AIAgent } from "@/components/AIAgent";
+import { getServerLocale } from "@/lib/i18n-server";
 import {
   LayoutDashboard,
   Settings,
@@ -16,19 +16,30 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: { template: "%s · אזור אישי FGMP", default: "אזור אישי FGMP" },
+  title: { template: "%s · FGMP", default: "FGMP Account" },
   robots: { index: false, follow: false },
 };
 
-const navItems = [
-  { href: "/account", label: "סטטוס", icon: LayoutDashboard },
-  { href: "/account/setup", label: "הגדרות עסק", icon: Settings },
-  { href: "/account/whatsapp", label: "הפעלת WhatsApp", icon: MessageCircle },
-  { href: "/account/billing", label: "תשלום ומנוי", icon: CreditCard },
-  { href: "/account/invoices", label: "חשבוניות", icon: Receipt },
-  { href: "/account/notifications", label: "הודעות", icon: Bell },
-  { href: "/account/cancel", label: "ביטול מנוי", icon: XCircle },
-];
+const NAV = {
+  he: [
+    { href: "/account", label: "סטטוס", icon: LayoutDashboard },
+    { href: "/account/setup", label: "הגדרות עסק", icon: Settings },
+    { href: "/account/whatsapp", label: "הפעלת WhatsApp", icon: MessageCircle },
+    { href: "/account/billing", label: "תשלום ומנוי", icon: CreditCard },
+    { href: "/account/invoices", label: "חשבוניות", icon: Receipt },
+    { href: "/account/notifications", label: "הודעות", icon: Bell },
+    { href: "/account/cancel", label: "ביטול מנוי", icon: XCircle },
+  ],
+  en: [
+    { href: "/account", label: "Status", icon: LayoutDashboard },
+    { href: "/account/setup", label: "Business settings", icon: Settings },
+    { href: "/account/whatsapp", label: "Activate WhatsApp", icon: MessageCircle },
+    { href: "/account/billing", label: "Billing & subscription", icon: CreditCard },
+    { href: "/account/invoices", label: "Invoices", icon: Receipt },
+    { href: "/account/notifications", label: "Notifications", icon: Bell },
+    { href: "/account/cancel", label: "Cancel subscription", icon: XCircle },
+  ],
+} as const;
 
 export default async function AccountLayout({
   children,
@@ -37,9 +48,12 @@ export default async function AccountLayout({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login?callbackUrl=/account");
+  const locale = await getServerLocale();
+  const en = locale === "en";
+  const navItems = NAV[locale];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-bg">
+    <div className="min-h-screen overflow-x-hidden bg-bg" dir={en ? "ltr" : "rtl"}>
       <div className="container-x py-8">
         <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
           <aside className="card h-fit p-5 lg:sticky lg:top-6">
@@ -63,7 +77,7 @@ export default async function AccountLayout({
                 )}
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold text-white">
-                    {session.user.name || "משתמש"}
+                    {session.user.name || (en ? "User" : "משתמש")}
                   </div>
                   <div className="truncate text-xs text-ink-400">{session.user.email}</div>
                 </div>
@@ -95,7 +109,7 @@ export default async function AccountLayout({
                 className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-300 transition hover:bg-white/5 hover:text-white"
               >
                 <LogOut className="h-4 w-4" />
-                <span>יציאה</span>
+                <span>{en ? "Sign out" : "יציאה"}</span>
               </button>
             </form>
           </aside>
@@ -103,7 +117,6 @@ export default async function AccountLayout({
           <main>{children}</main>
         </div>
       </div>
-      <AIAgent />
     </div>
   );
 }
