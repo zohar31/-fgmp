@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { WhatsAppMockupEn } from "@/components/WhatsAppMockupEn";
 import { JsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/config";
 import { SITE_EN } from "@/lib/config-en";
@@ -175,6 +176,9 @@ export default function EnHome() {
             ))}
           </div>
         </section>
+
+        {/* WhatsApp lead mockup demo */}
+        <WhatsAppMockupEn />
 
         {/* Who it's for */}
         <section id="who" className="container-x py-16 md:py-20">
