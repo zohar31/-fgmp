@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Globe } from "lucide-react";
 import { localeFromPathname, switchLocalePath } from "@/lib/i18n";
 
-// Language toggle shown in the nav. Links to the equivalent path in the other
-// locale (he ↔ en). Label shows the language you'll switch TO.
+// Language toggle shown in the nav. Switches to the equivalent path in the
+// other locale (he ↔ en). Uses a FULL page load (plain <a>) so the root
+// <html lang/dir> is re-rendered correctly for the target locale — a
+// client-side navigation would leave the previous locale's dir/lang in place.
 export function LanguageSwitcher() {
   const pathname = usePathname() || "/";
   const current = localeFromPathname(pathname);
@@ -21,7 +22,7 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <Link
+    <a
       href={href}
       hrefLang={target}
       aria-label={aria}
@@ -30,6 +31,6 @@ export function LanguageSwitcher() {
     >
       <Globe className="h-4 w-4" />
       {label}
-    </Link>
+    </a>
   );
 }

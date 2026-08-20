@@ -52,8 +52,14 @@ export default async function LoginPage({
     return <WebViewWarning url={`${SITE.url}/login`} platform={platform} />;
   }
 
-  // Locale from the language cookie (set by the switcher / geo-redirect).
-  const locale = (await cookies()).get("locale")?.value === "en" ? "en" : "he";
+  // Locale detection for the shared login page: the language cookie (set by the
+  // switcher / geo-redirect) OR the referring page being under /en. This ensures
+  // an English visitor who clicks "Get started" always sees English.
+  const hdrs = await headers();
+  const cookieLocale = (await cookies()).get("locale")?.value;
+  const referer = hdrs.get("referer") || "";
+  const refIsEn = /^https?:\/\/[^/]+\/en(\/|$|\?|#)/.test(referer);
+  const locale = cookieLocale === "en" || (cookieLocale !== "he" && refIsEn) ? "en" : "he";
   const t = T[locale];
 
   return (

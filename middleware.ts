@@ -26,7 +26,11 @@ export function middleware(req: NextRequest) {
     req.geo?.country ||
     "";
   if (country && country !== "IL") {
-    return NextResponse.redirect(new URL("/en", req.url));
+    // Redirect to English AND remember it, so downstream pages (e.g. /login)
+    // render in English without re-checking geo.
+    const res = NextResponse.redirect(new URL("/en", req.url));
+    res.cookies.set("locale", "en", { path: "/", maxAge: 31536000, sameSite: "lax" });
+    return res;
   }
   return NextResponse.next();
 }
