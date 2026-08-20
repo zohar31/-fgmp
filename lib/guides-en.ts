@@ -241,6 +241,84 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["follow up with leads", "cold lead follow up", "how to follow up with leads", "lead nurturing", "reviving old leads"],
   },
+  {
+    slug: "sales-call-script",
+    title: "The Sales Call Script That Books the Job (For Service Businesses)",
+    description:
+      "A simple, proven sales call script for service businesses: how to open, qualify, present the price, and close — with the exact lines to use and the mistakes that lose the job on the phone.",
+    excerpt:
+      "You don't need to be a smooth talker to close on the phone — you need a structure. Here's a simple sales call script that books the job, line by line.",
+    category: "Converting Leads",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["sales call script", "phone sales script", "how to close on the phone", "service business sales script", "sales script for small business"],
+  },
+  {
+    slug: "price-objection",
+    title: "How to Handle 'You're Too Expensive' — Beating the Price Objection",
+    description:
+      "Why customers say you're too expensive, what they usually mean, and exactly how to respond without dropping your price. Real scripts to handle the price objection and win the job on value.",
+    excerpt:
+      "\"That's more than I expected.\" It isn't always about money — and caving on price is the worst response. Here's how to handle the price objection and still close.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["price objection", "you're too expensive", "handle price objection", "overcoming price objections", "customer says too expensive"],
+  },
+  {
+    slug: "lead-funnel",
+    title: "The Lead Funnel Explained — From First Contact to Paying Customer",
+    description:
+      "What a lead funnel is, the stages every customer moves through (awareness → interest → decision → action), where leads leak out, and how a small service business plugs the holes.",
+    excerpt:
+      "Most businesses lose customers not because of bad leads, but a leaky funnel. Here's the lead funnel in plain English — the stages, the leaks, and how to fix them.",
+    category: "Lead Basics",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead funnel", "sales funnel", "lead funnel stages", "sales funnel for small business", "how a sales funnel works"],
+  },
+  {
+    slug: "b2b-leads",
+    title: "B2B Lead Generation in 2026 — A Practical Guide for Small Companies",
+    description:
+      "How B2B lead generation actually works for small companies: the best channels, why buying intent matters more than volume, outreach vs. inbound, and low-cost ways to fill your pipeline.",
+    excerpt:
+      "B2B lead gen doesn't need a huge sales team or ad budget. Here's a practical guide for small companies: the channels that work, and how to find businesses actively looking.",
+    category: "Lead Generation",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["b2b lead generation", "b2b leads", "how to generate b2b leads", "b2b lead gen", "business to business leads"],
+  },
+  {
+    slug: "google-vs-facebook-leads",
+    title: "Google vs. Facebook Leads — Which Channel Wins for Local Business?",
+    description:
+      "A head-to-head comparison of Google and Facebook for local leads: buying intent, cost per lead, speed, and close rate. When search wins, when social wins, and why most businesses need both.",
+    excerpt:
+      "Google catches people searching; Facebook catches people scrolling. Both produce leads — but very different ones. Here's the honest comparison for a local business.",
+    category: "Lead Economics",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["google vs facebook leads", "google ads vs facebook ads", "best channel for local leads", "facebook vs google for business", "where to get local leads"],
+  },
+  {
+    slug: "filter-facebook-leads",
+    title: "How to Filter Facebook Group Leads — Cut the Noise, Keep the Buyers",
+    description:
+      "Facebook groups are full of noise — spam, other businesses, tire-kickers. Here's how to filter group posts down to real buyers: keywords, negative keywords, intent signals, and AI filtering.",
+    excerpt:
+      "The problem with Facebook groups isn't too few leads — it's too much noise. Here's how to filter group posts down to the people actually ready to buy.",
+    category: "Lead Guides",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["filter facebook leads", "facebook group leads filter", "find buyers in facebook groups", "facebook lead keywords", "qualify facebook group leads"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
