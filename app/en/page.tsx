@@ -61,6 +61,42 @@ const softwareSchema = {
   provider: { "@type": "Organization", name: SITE.brand, url: SITE.url },
 };
 
+// Service schema — US market, for AI engines and Google.
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: `${SITE.brand} — Facebook-group lead generation`,
+  serviceType: "Lead Generation",
+  description: SITE_EN.descriptions.service,
+  provider: { "@type": "Organization", name: SITE.brand, url: SITE.url },
+  areaServed: { "@type": "Country", name: "United States" },
+  audience: { "@type": "BusinessAudience", audienceType: "US local service businesses" },
+  inLanguage: "en-US",
+  url: URL,
+  offers: {
+    "@type": "Offer",
+    price: SITE_EN.pricing.monthlyUSD,
+    priceCurrency: "USD",
+    url: `${SITE.url}/login`,
+  },
+};
+
+// HowTo schema — English, for rich results and AI answers.
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "How to get leads from Facebook groups automatically",
+  description: "From a post in a group to a lead in your WhatsApp, in four steps.",
+  totalTime: "PT1M",
+  inLanguage: "en-US",
+  step: [
+    { "@type": "HowToStep", position: 1, name: "A request is posted in a Facebook group", text: "Someone posts publicly asking for a service you provide." },
+    { "@type": "HowToStep", position: 2, name: "AI scans and filters the post", text: "FGMP detects the post within seconds and matches it to your trade and keywords." },
+    { "@type": "HowToStep", position: 3, name: "An alert is sent to you", text: "You get a WhatsApp message with the post, a direct link, and an AI-written reply." },
+    { "@type": "HowToStep", position: 4, name: "You reply and win the job", text: "You review the reply, send it first, and turn the lead into a customer." },
+  ],
+};
+
 const faqs = [
   {
     q: "How does FGMP work?",
@@ -102,6 +138,8 @@ export default function EnHome() {
   return (
     <>
       <JsonLd data={softwareSchema} />
+      <JsonLd data={serviceSchema} />
+      <JsonLd data={howToSchema} />
       <JsonLd data={faqSchema} />
       <Nav />
       <main id="main-content">
