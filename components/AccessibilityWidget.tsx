@@ -1,7 +1,48 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Accessibility, X, RotateCcw, Type, Eye, Link2, Pause, Focus, Palette } from "lucide-react";
+import { localeFromPathname } from "@/lib/i18n";
+
+const STR = {
+  he: {
+    openMenu: "פתח תפריט נגישות",
+    menu: "תפריט נגישות",
+    close: "סגור תפריט",
+    fontSize: "גודל גופן",
+    sizes: ["רגיל", "גדול", "גדול+", "ענק"],
+    contrast: "ניגודיות",
+    contrastOpts: ["רגיל", "גבוה", "הפוך"],
+    display: "תצוגה",
+    readableFont: "גופן קריא (Arial)",
+    underline: "הדגשת קישורים",
+    focus: "הדגשת אלמנט בפוקוס",
+    noMotion: "עצירת אנימציות",
+    reset: "איפוס הגדרות נגישות",
+    statement: "הצהרת נגישות מלאה →",
+    contact: "נתקלת בבעיית נגישות? צור קשר: 058-5222227",
+    statementHref: "/accessibility",
+  },
+  en: {
+    openMenu: "Open accessibility menu",
+    menu: "Accessibility menu",
+    close: "Close menu",
+    fontSize: "Font size",
+    sizes: ["Default", "Large", "Larger", "Huge"],
+    contrast: "Contrast",
+    contrastOpts: ["Default", "High", "Inverted"],
+    display: "Display",
+    readableFont: "Readable font (Arial)",
+    underline: "Underline links",
+    focus: "Highlight focused element",
+    noMotion: "Stop animations",
+    reset: "Reset accessibility settings",
+    statement: "Full accessibility statement →",
+    contact: "Found an accessibility issue? Contact: +972585222227",
+    statementHref: "/en/accessibility",
+  },
+} as const;
 
 type Settings = {
   fontSize: "default" | "large" | "xlarge" | "xxlarge";
@@ -56,6 +97,9 @@ export function AccessibilityWidget() {
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const panelRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname() || "/";
+  const locale = localeFromPathname(pathname);
+  const t = STR[locale];
 
   useEffect(() => {
     try {
@@ -114,7 +158,7 @@ export function AccessibilityWidget() {
     <>
       <button
         onClick={() => setOpen((o) => !o)}
-        aria-label="פתח תפריט נגישות"
+        aria-label={t.openMenu}
         aria-expanded={open}
         accessKey="a"
         data-fgmp-a11y-fab
@@ -127,18 +171,18 @@ export function AccessibilityWidget() {
         <div
           ref={panelRef}
           role="dialog"
-          aria-label="תפריט נגישות"
+          aria-label={t.menu}
           className="fixed bottom-20 right-4 z-50 w-[min(360px,calc(100vw-2rem))] rounded-2xl bg-bg-soft text-white shadow-2xl ring-1 ring-white/20"
-          dir="rtl"
+          dir={locale === "en" ? "ltr" : "rtl"}
         >
           <div className="flex items-center justify-between border-b border-white/10 p-4">
             <div className="flex items-center gap-2">
               <Accessibility className="h-5 w-5 text-blue-400" />
-              <h2 className="font-display text-lg font-bold">תפריט נגישות</h2>
+              <h2 className="font-display text-lg font-bold">{t.menu}</h2>
             </div>
             <button
               onClick={() => setOpen(false)}
-              aria-label="סגור תפריט"
+              aria-label={t.close}
               className="rounded-lg p-1 text-ink-300 hover:bg-white/10 hover:text-white"
             >
               <X className="h-5 w-5" />
@@ -146,7 +190,7 @@ export function AccessibilityWidget() {
           </div>
 
           <div className="max-h-[70vh] overflow-y-auto p-4 space-y-5">
-            <Group icon={Type} title="גודל גופן">
+            <Group icon={Type} title={t.fontSize}>
               <div className="grid grid-cols-4 gap-1.5">
                 {(["default", "large", "xlarge", "xxlarge"] as const).map((s, i) => (
                   <button
@@ -159,18 +203,18 @@ export function AccessibilityWidget() {
                         : "bg-white/5 text-ink-200 ring-white/10 hover:bg-white/10"
                     }`}
                   >
-                    {["רגיל", "גדול", "גדול+", "ענק"][i]}
+                    {t.sizes[i]}
                   </button>
                 ))}
               </div>
             </Group>
 
-            <Group icon={Palette} title="ניגודיות">
+            <Group icon={Palette} title={t.contrast}>
               <div className="grid grid-cols-3 gap-1.5">
                 {[
-                  { v: "default", label: "רגיל" },
-                  { v: "high", label: "גבוה" },
-                  { v: "inverted", label: "הפוך" },
+                  { v: "default", label: t.contrastOpts[0] },
+                  { v: "high", label: t.contrastOpts[1] },
+                  { v: "inverted", label: t.contrastOpts[2] },
                 ].map((opt) => (
                   <button
                     key={opt.v}
@@ -188,27 +232,27 @@ export function AccessibilityWidget() {
               </div>
             </Group>
 
-            <Group icon={Eye} title="תצוגה">
+            <Group icon={Eye} title={t.display}>
               <div className="space-y-2">
                 <Toggle
-                  label="גופן קריא (Arial)"
+                  label={t.readableFont}
                   active={settings.readableFont}
                   onChange={(v) => update({ readableFont: v })}
                 />
                 <Toggle
-                  label="הדגשת קישורים"
+                  label={t.underline}
                   active={settings.underlineLinks}
                   onChange={(v) => update({ underlineLinks: v })}
                   icon={Link2}
                 />
                 <Toggle
-                  label="הדגשת אלמנט בפוקוס"
+                  label={t.focus}
                   active={settings.focusHighlight}
                   onChange={(v) => update({ focusHighlight: v })}
                   icon={Focus}
                 />
                 <Toggle
-                  label="עצירת אנימציות"
+                  label={t.noMotion}
                   active={settings.noMotion}
                   onChange={(v) => update({ noMotion: v })}
                   icon={Pause}
@@ -221,16 +265,14 @@ export function AccessibilityWidget() {
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm font-medium text-ink-200 ring-1 ring-white/10 transition hover:bg-white/10 hover:text-white"
             >
               <RotateCcw className="h-4 w-4" />
-              איפוס הגדרות נגישות
+              {t.reset}
             </button>
 
             <div className="border-t border-white/5 pt-3 text-xs text-ink-400">
-              <a href="/accessibility" className="text-blue-400 hover:underline">
-                הצהרת נגישות מלאה →
+              <a href={t.statementHref} className="text-blue-400 hover:underline">
+                {t.statement}
               </a>
-              <p className="mt-1">
-                נתקלת בבעיית נגישות? צור קשר: 058-5222227
-              </p>
+              <p className="mt-1">{t.contact}</p>
             </div>
           </div>
         </div>
