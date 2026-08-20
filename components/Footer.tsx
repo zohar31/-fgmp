@@ -37,6 +37,7 @@ const FOOTER = {
       { href: "/en/leads", label: "Leads by trade" },
       { href: "/en/#pricing", label: "Pricing" },
       { href: "/en/guides", label: "Lead guides" },
+      { href: "/en/tools", label: "Free tools" },
       { href: "/en/about", label: "About" },
       { href: "/en/#faq", label: "FAQ" },
       { href: "/login", label: "Sign up" },
