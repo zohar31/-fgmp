@@ -4,6 +4,7 @@ import { guides } from "@/lib/guides";
 import { landingPages } from "@/lib/landing-pages";
 import { allGeoParams } from "@/lib/geo";
 import { guidesEn } from "@/lib/guides-en";
+import { professionsEn, allGeoEnParams } from "@/lib/geo-en";
 
 // תאריכי lastModified אמיתיים פר-תוכן — לא new Date() בכל deploy.
 // גוגל מתעלם מ"טריות מזויפת" (כל הדפים מתעדכנים בכל בנייה); תאריך אמיתי
@@ -83,5 +84,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/en/about`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE.url}/en/guides`, lastModified: NEWEST, changeFrequency: "weekly", priority: 0.7 },
     ...enGuideUrls,
+    { url: `${SITE.url}/en/leads`, lastModified: NEWEST, changeFrequency: "weekly", priority: 0.8 },
+    ...professionsEn.map((p) => ({
+      url: `${SITE.url}/en/leads/${p.slug}`,
+      lastModified: NEWEST,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...allGeoEnParams().map(({ profession, city }) => ({
+      url: `${SITE.url}/en/leads/${profession}/${city}`,
+      lastModified: NEWEST,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ];
 }

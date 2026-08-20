@@ -29,7 +29,7 @@ const NAV = {
   en: {
     links: [
       { href: "/en/#how", label: "How it works" },
-      { href: "/en/#who", label: "Who it's for" },
+      { href: "/en/leads", label: "Leads by trade" },
       { href: "/en/#pricing", label: "Pricing" },
       { href: "/en/guides", label: "Guides" },
       { href: "/en/#faq", label: "FAQ" },

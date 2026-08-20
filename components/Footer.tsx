@@ -34,7 +34,7 @@ const FOOTER = {
     navTitle: "Navigate",
     nav: [
       { href: "/en/#how", label: "How it works" },
-      { href: "/en/#who", label: "Who it's for" },
+      { href: "/en/leads", label: "Leads by trade" },
       { href: "/en/#pricing", label: "Pricing" },
       { href: "/en/guides", label: "Lead guides" },
       { href: "/en/about", label: "About" },
