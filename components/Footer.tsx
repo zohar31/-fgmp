@@ -55,8 +55,8 @@ export function Footer() {
   const pathname = usePathname() || "/";
   const locale = localeFromPathname(pathname);
   const t = FOOTER[locale];
-  // Legal pages currently exist at the root only; English legal is a later phase.
-  const legalBase = "";
+  // Legal pages exist per-locale: Hebrew at root, English under /en.
+  const legalBase = locale === "en" ? "/en" : "";
   const year = 2026;
 
   return (
