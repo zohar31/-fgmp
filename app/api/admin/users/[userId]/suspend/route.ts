@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
+import { isEnglishCustomer } from "@/lib/config";
 
 export const runtime = "nodejs";
 
@@ -35,6 +36,14 @@ export async function POST(
     return NextResponse.json({ error: "מנוי לא נמצא" }, { status: 404 });
   }
 
+  const suspSettings = await db.query.businessSettings.findFirst({
+    where: eq(schema.businessSettings.userId, userId),
+  });
+  const en = isEnglishCustomer({
+    leadPhone: suspSettings?.leadPhone,
+    serviceAreas: suspSettings?.serviceAreas,
+  });
+
   const now = new Date();
   if (parsed.data.action === "suspend") {
     await db
@@ -49,10 +58,14 @@ export async function POST(
     await db.insert(schema.notifications).values({
       userId,
       type: "warning",
-      title: "המנוי שלך הושעה",
-      body: parsed.data.reason
-        ? `סיבה: ${parsed.data.reason}. ליצירת קשר — וואטסאפ 058-5222227.`
-        : "ליצירת קשר ולפרטים — וואטסאפ 058-5222227.",
+      title: en ? "Your subscription was suspended" : "המנוי שלך הושעה",
+      body: en
+        ? (parsed.data.reason
+            ? `Reason: ${parsed.data.reason}. To get in touch — WhatsApp +972585222227.`
+            : "To get in touch and for details — WhatsApp +972585222227.")
+        : (parsed.data.reason
+            ? `סיבה: ${parsed.data.reason}. ליצירת קשר — וואטסאפ 058-5222227.`
+            : "ליצירת קשר ולפרטים — וואטסאפ 058-5222227."),
     });
   } else {
     await db
@@ -67,8 +80,10 @@ export async function POST(
     await db.insert(schema.notifications).values({
       userId,
       type: "success",
-      title: "המנוי שלך חודש ✓",
-      body: "השהיית המנוי הוסרה. השירות פעיל שוב.",
+      title: en ? "Your subscription was reinstated ✓" : "המנוי שלך חודש ✓",
+      body: en
+        ? "The suspension has been lifted. Your service is active again."
+        : "השהיית המנוי הוסרה. השירות פעיל שוב.",
     });
   }
 

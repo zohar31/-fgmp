@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { parseTranzilaNotify, tranzilaResponseMessage } from "@/lib/tranzila";
+import { isEnglishCustomer } from "@/lib/config";
+import { SITE_EN } from "@/lib/config-en";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -107,6 +109,16 @@ async function handle(req: Request) {
     isRecurring: false,
   });
 
+  // No request cookie in a Tranzila webhook — derive locale from settings.
+  const custSettings = await db.query.businessSettings.findFirst({
+    where: eq(schema.businessSettings.userId, userId),
+  });
+  const en = isEnglishCustomer({
+    leadPhone: custSettings?.leadPhone,
+    serviceAreas: custSettings?.serviceAreas,
+  });
+  const notifDateLocale = en ? "en-US" : "he-IL";
+
   if (isSuccess) {
     const now = new Date();
     const nextCharge = addOneMonth(now);
@@ -136,15 +148,19 @@ async function handle(req: Request) {
     await db.insert(schema.notifications).values({
       userId,
       type: "billing",
-      title: "תשלום התקבל ✓",
-      body: `תודה! חויבת ב-${amountInt} ₪. החיוב הבא: ${nextCharge.toLocaleDateString("he-IL")}.`,
+      title: en ? "Payment received ✓" : "תשלום התקבל ✓",
+      body: en
+        ? `Thank you! You were charged $${SITE_EN.pricing.monthlyUSD}. Next charge: ${nextCharge.toLocaleDateString(notifDateLocale)}.`
+        : `תודה! חויבת ב-${amountInt} ₪. החיוב הבא: ${nextCharge.toLocaleDateString(notifDateLocale)}.`,
     });
   } else {
     await db.insert(schema.notifications).values({
       userId,
       type: "warning",
-      title: "תשלום נכשל",
-      body: `הסליקה לא הצליחה (${responseMsg}). ניתן לנסות שוב באזור האישי.`,
+      title: en ? "Payment failed" : "תשלום נכשל",
+      body: en
+        ? `The payment didn't go through (${responseMsg}). You can try again from your account.`
+        : `הסליקה לא הצליחה (${responseMsg}). ניתן לנסות שוב באזור האישי.`,
     });
   }
 

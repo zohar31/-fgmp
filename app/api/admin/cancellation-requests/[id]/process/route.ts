@@ -5,7 +5,7 @@ import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { and, desc, eq } from "drizzle-orm";
 import { cancelStandingOrderV2, refundOrVoidTranzila } from "@/lib/tranzila";
-import { isWithinRefundWindow } from "@/lib/config";
+import { isWithinRefundWindow, isEnglishCustomer } from "@/lib/config";
 
 export const runtime = "nodejs";
 
@@ -63,6 +63,13 @@ export async function POST(
   const sub = await db.query.subscriptions.findFirst({
     where: eq(schema.subscriptions.userId, request.userId),
   });
+  const custSettings = await db.query.businessSettings.findFirst({
+    where: eq(schema.businessSettings.userId, request.userId),
+  });
+  const en = isEnglishCustomer({
+    leadPhone: custSettings?.leadPhone,
+    serviceAreas: custSettings?.serviceAreas,
+  });
   if (!sub) {
     return NextResponse.json({ error: "מנוי לא נמצא" }, { status: 404 });
   }
@@ -84,10 +91,14 @@ export async function POST(
     await db.insert(schema.notifications).values({
       userId: request.userId,
       type: "info",
-      title: "בקשת הביטול שלך לא אושרה",
-      body: parsed.data.notes
-        ? `הבקשה לא אושרה. הערה: ${parsed.data.notes}. ניתן לפנות בוואטסאפ ל-058-5222227.`
-        : "הבקשה לא אושרה. ניתן לפנות בוואטסאפ ל-058-5222227 לשיחה.",
+      title: en ? "Your cancellation request wasn't approved" : "בקשת הביטול שלך לא אושרה",
+      body: en
+        ? (parsed.data.notes
+            ? `The request wasn't approved. Note: ${parsed.data.notes}. You can reach us on WhatsApp at +972585222227.`
+            : "The request wasn't approved. You can reach us on WhatsApp at +972585222227.")
+        : (parsed.data.notes
+            ? `הבקשה לא אושרה. הערה: ${parsed.data.notes}. ניתן לפנות בוואטסאפ ל-058-5222227.`
+            : "הבקשה לא אושרה. ניתן לפנות בוואטסאפ ל-058-5222227 לשיחה."),
     });
 
     return NextResponse.json({ ok: true, action: "rejected" });
@@ -243,10 +254,16 @@ export async function POST(
   await db.insert(schema.notifications).values({
     userId: request.userId,
     type: "system",
-    title: isRefundAction ? "המנוי בוטל והוחזר הכסף ✓" : "המנוי בוטל",
-    body: isRefundAction
-      ? "המנוי בוטל לבקשתך וההחזר המלא נשלח לכרטיס. החיוב יבוטל תוך מספר ימי עסקים."
-      : "המנוי בוטל לבקשתך. הנתונים שלך נשמרו — אפשר להפעיל מחדש בכל עת.",
+    title: en
+      ? (isRefundAction ? "Subscription cancelled and refunded ✓" : "Subscription cancelled")
+      : (isRefundAction ? "המנוי בוטל והוחזר הכסף ✓" : "המנוי בוטל"),
+    body: en
+      ? (isRefundAction
+          ? "Your subscription was cancelled as requested and a full refund was sent to your card. It will clear within a few business days."
+          : "Your subscription was cancelled as requested. Your data is saved — you can reactivate any time.")
+      : (isRefundAction
+          ? "המנוי בוטל לבקשתך וההחזר המלא נשלח לכרטיס. החיוב יבוטל תוך מספר ימי עסקים."
+          : "המנוי בוטל לבקשתך. הנתונים שלך נשמרו — אפשר להפעיל מחדש בכל עת."),
   });
 
   return NextResponse.json({

@@ -55,6 +55,21 @@ export function refundDaysLeft(
   return Math.max(0, Math.ceil((totalMs - elapsedMs) / (24 * 60 * 60 * 1000)));
 }
 
+// Best-effort locale detection for server contexts where no request cookie is
+// available (admin actions, Tranzila webhooks). US signups always store a "+1"
+// lead phone and English service areas ("Nationwide" / "Local — City, State"),
+// so those markers reliably identify an English customer for notifications.
+export function isEnglishCustomer(opts: {
+  leadPhone?: string | null;
+  serviceAreas?: string | null;
+}): boolean {
+  const phone = (opts.leadPhone || "").trim();
+  if (/^\+?1[\s-]?\d/.test(phone)) return true;
+  const areas = (opts.serviceAreas || "").trim();
+  if (/nationwide/i.test(areas) || areas.startsWith("Local — ")) return true;
+  return false;
+}
+
 export function waLink(message?: string) {
   const text = message ? `?text=${encodeURIComponent(message)}` : "";
   return `https://wa.me/${SITE.whatsapp}${text}`;

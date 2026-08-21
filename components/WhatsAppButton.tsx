@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { waLink } from "@/lib/config";
 import { localeFromPathname } from "@/lib/i18n";
@@ -8,7 +9,19 @@ import { localeFromPathname } from "@/lib/i18n";
 // פותח שיחה עם סוכן ה-FGMP בוואטסאפ. ממוקם בשמאל-תחתון (כפתור הנגישות בימין).
 export function WhatsAppButton() {
   const pathname = usePathname() || "/";
-  const en = localeFromPathname(pathname) === "en";
+  // /en/* pages are unambiguous from the path. Shared pages rendered per-locale
+  // via the cookie (e.g. /account, /login) aren't under /en, so fall back to
+  // the `locale` cookie there. Initialize from the path to avoid a hydration
+  // mismatch, then reconcile with the cookie on the client.
+  const [en, setEn] = useState(() => localeFromPathname(pathname) === "en");
+  useEffect(() => {
+    if (localeFromPathname(pathname) === "en") {
+      setEn(true);
+      return;
+    }
+    const m = document.cookie.match(/(?:^|;\s*)locale=(en|he)/);
+    setEn(m ? m[1] === "en" : false);
+  }, [pathname]);
   const msg = en ? "Hi, I have a question about FGMP 😊" : "היי, יש לי שאלה על FGMP 😊";
   const aria = en ? "Chat with FGMP on WhatsApp" : "שיחה בוואטסאפ עם FGMP";
   const label = en ? "Chat with us on WhatsApp" : "שיחה בוואטסאפ עם נציג";

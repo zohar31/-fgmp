@@ -5,6 +5,7 @@ import { db, schema } from "./db";
 import { eq } from "drizzle-orm";
 import { generateActivationToken } from "./activation-token";
 import { sendLeadEvent, isConfigured as isCapiConfigured } from "./meta-capi";
+import { getServerLocale } from "./i18n-server";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db, {
@@ -72,11 +73,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           .where(eq(schema.signupIntents.id, intent.id));
       }
 
+      // Welcome notification — matched to the signup locale (cookie/referer).
+      // Defensive: any locale-detection failure falls back to Hebrew.
+      let welcomeEn = false;
+      try {
+        welcomeEn = (await getServerLocale()) === "en";
+      } catch {
+        welcomeEn = false;
+      }
       await db.insert(schema.notifications).values({
         userId: user.id,
         type: "info",
-        title: "ברוכים הבאים ל-FGMP! 🎉",
-        body: "השלימו את הגדרות העסק והתשלום באזור האישי כדי להתחיל לקבל לידים. ערבות החזר מלא 3 ימים — אם לא מרוצים, מקבלים את הכסף בחזרה.",
+        title: welcomeEn ? "Welcome to FGMP! 🎉" : "ברוכים הבאים ל-FGMP! 🎉",
+        body: welcomeEn
+          ? "Complete your business settings and payment in your account to start receiving leads. 3-day money-back guarantee — cancel within 3 days of your first payment for a full refund."
+          : "השלימו את הגדרות העסק והתשלום באזור האישי כדי להתחיל לקבל לידים. ערבות החזר מלא 3 ימים — אם לא מרוצים, מקבלים את הכסף בחזרה.",
       });
 
       // Meta CAPI — שולח אירוע Lead לאופטימיזציה של קמפיינים

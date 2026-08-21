@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
 import { sendAdminNotification } from "@/lib/email";
-import { isWithinRefundWindow, refundDaysLeft } from "@/lib/config";
+import { isWithinRefundWindow, refundDaysLeft, isEnglishCustomer } from "@/lib/config";
 
 export const runtime = "nodejs";
 
@@ -72,13 +72,19 @@ export async function POST(req: Request) {
     wasRefundEligible: refundEligible,
   });
 
+  const en = isEnglishCustomer({ leadPhone: settings?.leadPhone, serviceAreas: settings?.serviceAreas });
+
   await db.insert(schema.notifications).values({
     userId,
     type: "system",
-    title: "הבקשה הועברה למחלקת זיכויים FGMP",
-    body: refundEligible
-      ? `הבקשה הועברה למחלקת זיכויים FGMP. אתה בתוך חלון ההחזר המלא (${daysLeft} ימים נותרו) — אם הביטול יאושר, יתבצע גם החזר כספי מלא על החיוב הראשון.`
-      : "הבקשה הועברה למחלקת זיכויים FGMP. נחזור אליך בהקדם דרך וואטסאפ או באזור האישי.",
+    title: en ? "Your request was sent to the FGMP refunds team" : "הבקשה הועברה למחלקת זיכויים FGMP",
+    body: en
+      ? (refundEligible
+          ? `Your request was sent to the FGMP refunds team. You're within the full money-back window (${daysLeft} day(s) left) — if the cancellation is approved, a full refund of the first charge will also be issued.`
+          : "Your request was sent to the FGMP refunds team. We'll get back to you shortly via WhatsApp or in your account.")
+      : (refundEligible
+          ? `הבקשה הועברה למחלקת זיכויים FGMP. אתה בתוך חלון ההחזר המלא (${daysLeft} ימים נותרו) — אם הביטול יאושר, יתבצע גם החזר כספי מלא על החיוב הראשון.`
+          : "הבקשה הועברה למחלקת זיכויים FGMP. נחזור אליך בהקדם דרך וואטסאפ או באזור האישי."),
   });
 
   try {
@@ -91,7 +97,7 @@ export async function POST(req: Request) {
           <li>אימייל: ${escapeHtml(user?.email || "—")}</li>
           <li>וואטסאפ: ${escapeHtml(settings?.leadPhone || "—")}</li>
           <li>סיבת ביטול: ${escapeHtml(reason || "לא צוין")}</li>
-          <li><strong>זכאי להחזר מלא:</strong> ${refundEligible ? `כן (${daysLeft} ימים נותרו בחלון)` : "לא — מחוץ לחלון 7 הימים"}</li>
+          <li><strong>זכאי להחזר מלא:</strong> ${refundEligible ? `כן (${daysLeft} ימים נותרו בחלון)` : "לא — מחוץ לחלון 3 הימים"}</li>
         </ul>
         <p>טפל ב-/admin/cancellations</p>`,
     });

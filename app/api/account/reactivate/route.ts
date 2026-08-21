@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { sendAdminNotification } from "@/lib/email";
+import { isEnglishCustomer } from "@/lib/config";
 
 export const runtime = "nodejs";
 
@@ -74,11 +75,15 @@ export async function POST() {
     actionType: "reactivate",
   });
 
+  const en = isEnglishCustomer({ leadPhone: settings?.leadPhone, serviceAreas: settings?.serviceAreas });
+
   await db.insert(schema.notifications).values({
     userId,
     type: "success",
-    title: "המנוי שלך הופעל מחדש ✓",
-    body: "ברוכים השבים! המערכת חוזרת לפעילות. אם נדרשת פעולה נוספת — הבאנר באזור האישי ינחה אותך.",
+    title: en ? "Your subscription is active again ✓" : "המנוי שלך הופעל מחדש ✓",
+    body: en
+      ? "Welcome back! The system is active again. If any further action is needed, the banner in your account will guide you."
+      : "ברוכים השבים! המערכת חוזרת לפעילות. אם נדרשת פעולה נוספת — הבאנר באזור האישי ינחה אותך.",
   });
 
   try {

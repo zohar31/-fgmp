@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Accessibility, X, RotateCcw, Type, Eye, Link2, Pause, Focus, Palette } from "lucide-react";
-import { localeFromPathname } from "@/lib/i18n";
+import { localeFromPathname, type Locale } from "@/lib/i18n";
 
 const STR = {
   he: {
@@ -98,7 +98,18 @@ export function AccessibilityWidget() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const panelRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname() || "/";
-  const locale = localeFromPathname(pathname);
+  // /en/* is unambiguous from the path; shared per-locale pages (/account,
+  // /login) rely on the `locale` cookie. Init from path (no hydration
+  // mismatch), reconcile with the cookie on the client.
+  const [locale, setLocale] = useState<Locale>(() => localeFromPathname(pathname));
+  useEffect(() => {
+    if (localeFromPathname(pathname) === "en") {
+      setLocale("en");
+      return;
+    }
+    const m = document.cookie.match(/(?:^|;\s*)locale=(en|he)/);
+    setLocale(m ? (m[1] as Locale) : "he");
+  }, [pathname]);
   const t = STR[locale];
 
   useEffect(() => {
