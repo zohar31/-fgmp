@@ -60,7 +60,7 @@ export default async function CancelPage() {
                 {en ? "Want to come back? One tap and you're active again:" : "רוצה לחזור? לחיצה אחת ואת/ה שוב פעיל/ה במערכת:"}
               </p>
               <div className="mt-4">
-                <ReactivateButton size="md" />
+                <ReactivateButton size="md" en={en} />
               </div>
             </div>
           </div>

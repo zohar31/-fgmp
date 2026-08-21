@@ -7,9 +7,11 @@ import { Loader2, Play, AlertCircle } from "lucide-react";
 export function ReactivateButton({
   className = "",
   size = "md",
+  en = false,
 }: {
   className?: string;
   size?: "sm" | "md" | "lg";
+  en?: boolean;
 }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -22,13 +24,13 @@ export function ReactivateButton({
       const res = await fetch("/api/account/reactivate", { method: "POST" });
       const json = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || !json.ok) {
-        setError(json.error || "שגיאה בהפעלה מחדש");
+        setError(json.error || (en ? "Error reactivating" : "שגיאה בהפעלה מחדש"));
         setSubmitting(false);
         return;
       }
       router.refresh();
     } catch {
-      setError("שגיאת רשת");
+      setError(en ? "Network error" : "שגיאת רשת");
       setSubmitting(false);
     }
   }
@@ -49,12 +51,12 @@ export function ReactivateButton({
         {submitting ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            מפעיל...
+            {en ? "Activating..." : "מפעיל..."}
           </>
         ) : (
           <>
             <Play className="h-4 w-4" />
-            הפעלת מנוי מחדש
+            {en ? "Reactivate subscription" : "הפעלת מנוי מחדש"}
           </>
         )}
       </button>

@@ -135,7 +135,7 @@ export default async function AccountDashboardPage() {
                 <p className="mt-1 text-sm text-ink-300">{tt.cancelledText}</p>
               </div>
             </div>
-            <ReactivateButton />
+            <ReactivateButton en={en} />
           </div>
         </div>
       )}
