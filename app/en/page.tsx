@@ -108,7 +108,7 @@ const faqs = [
   },
   {
     q: "How much does it cost?",
-    a: `$${SITE_EN.pricing.monthlyUSD}/month, paid upfront at signup. There's a full money-back guarantee for ${SITE_EN.pricing.refundDays} days — if it's not for you, request a cancellation and get your money back. No contract, cancel anytime.`,
+    a: `$${SITE_EN.pricing.monthlyUSD}/month, paid upfront at signup. There's a money-back guarantee for the first ${SITE_EN.pricing.refundDays} days — cancel within ${SITE_EN.pricing.refundDays} days of your first payment for a full refund. After that, cancelling stops future charges but the current month isn't refunded. No contract, cancel anytime.`,
   },
   {
     q: "How fast do leads arrive?",

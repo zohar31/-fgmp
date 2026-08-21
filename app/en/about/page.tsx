@@ -104,9 +104,9 @@ export default function EnAbout() {
             <h2>What it costs</h2>
             <p>
               <strong>${P}/month</strong>, paid upfront at signup, for unlimited leads with no
-              per-lead fees. There's a <strong>{R}-day full money-back guarantee</strong> — if it's
-              not for you, request a cancellation and get your money back. No contract, cancel
-              anytime.
+              per-lead fees. There's a <strong>{R}-day money-back guarantee</strong> — if it's not
+              for you, cancel within {R} days of your first payment for a full refund. After the {R}{" "}
+              days, the paid month runs and isn't refundable. No contract, cancel anytime.
             </p>
 
             <h2>Is it legal?</h2>

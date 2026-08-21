@@ -319,6 +319,84 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["filter facebook leads", "facebook group leads filter", "find buyers in facebook groups", "facebook lead keywords", "qualify facebook group leads"],
   },
+  {
+    slug: "message-templates-for-leads",
+    title: "Message Templates for Leads — Text & WhatsApp Scripts That Get Replies",
+    description:
+      "Copy-paste text and WhatsApp templates for every stage of a lead: first contact, quoting, following up, handling silence, and closing. Ready-to-use scripts for service businesses.",
+    excerpt:
+      "Stop writing every message from scratch. Here are copy-paste text and WhatsApp templates for each stage of a lead — first contact, quote, follow-up, and close.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead message templates", "text templates for leads", "whatsapp templates business", "sales message templates", "follow up text templates"],
+  },
+  {
+    slug: "close-deal-over-text",
+    title: "How to Close a Deal Over Text & WhatsApp (Without Being Pushy)",
+    description:
+      "Closing over text and WhatsApp is different from the phone. Here's how to move a chat to a booked job: build trust fast, quote clearly, create urgency, and ask for the yes — with example messages.",
+    excerpt:
+      "More customers want to text than talk. Closing over WhatsApp or text is a skill of its own — here's how to turn a chat into a booked job without sounding pushy.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["close deal over text", "closing over whatsapp", "how to close a sale by text", "text message sales", "closing deals on whatsapp"],
+  },
+  {
+    slug: "best-facebook-groups-for-leads",
+    title: "Best Facebook Groups for Finding Leads (And How to Use Them)",
+    description:
+      "Which Facebook groups actually produce leads for a service business: local buy/sell/recommend groups, neighborhood groups, and niche groups — how to find them, join, and turn them into customers.",
+    excerpt:
+      "Not all Facebook groups are worth your time. Here are the types that actually produce leads for local businesses — and how to find and use them without getting banned.",
+    category: "Lead Guides",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["best facebook groups for leads", "facebook groups for business leads", "local facebook groups", "recommendation groups", "find leads facebook groups"],
+  },
+  {
+    slug: "lead-sources",
+    title: "The 10 Best Lead Sources for a Small Business in 2026",
+    description:
+      "A ranked rundown of the best lead sources for a small business — referrals, Google, Facebook groups, GBP, and more — with the cost, intent, and effort of each, so you know where to focus first.",
+    excerpt:
+      "There are a dozen places to get leads, but they're not equal. Here are the 10 best lead sources for a small business, ranked by cost, intent, and effort.",
+    category: "Lead Generation",
+    readTime: 10,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead sources", "best lead sources", "where to get leads", "lead generation sources", "small business lead sources"],
+  },
+  {
+    slug: "how-many-leads-per-month",
+    title: "How Many Leads Do You Need Per Month? (A Simple Formula)",
+    description:
+      "How to calculate exactly how many leads your business needs each month to hit your revenue goal — using your close rate, average job value, and target. A simple, no-nonsense formula with examples.",
+    excerpt:
+      "\"I need more leads\" — but how many? Here's the simple formula to work out exactly how many leads a month you need to hit your revenue goal, with worked examples.",
+    category: "Lead Basics",
+    readTime: 7,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["how many leads per month", "how many leads do i need", "leads needed to hit goal", "lead goal calculator", "leads per month formula"],
+  },
+  {
+    slug: "first-customers-new-business",
+    title: "How to Get Your First Customers for a New Business",
+    description:
+      "A practical playbook for landing your first customers with no reputation and no budget: where to start, how to use your network, free high-intent channels, and how to turn the first jobs into more.",
+    excerpt:
+      "The hardest customers to get are the first ones — no reviews, no reputation, no budget. Here's a practical playbook to land your first customers and build momentum.",
+    category: "Lead Generation",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["first customers new business", "how to get first customers", "getting first clients", "new business no customers", "first clients startup"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {

@@ -162,7 +162,7 @@ export function buildGeoEnContent(p: ProfessionEn, c: CityEn, monthly: number, r
     },
     {
       q: `How much does it cost?`,
-      a: `$${monthly}/month, no per-lead fees, no contract. There's a ${refundDays}-day full money-back guarantee — if you don't get real ${p.noun} leads in ${c.name}, you get your money back.`,
+      a: `$${monthly}/month, no per-lead fees, no contract. There's a ${refundDays}-day money-back guarantee — cancel within ${refundDays} days of your first payment for a full refund. After that, the paid month isn't refundable.`,
     },
   ];
 
