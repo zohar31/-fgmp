@@ -735,6 +735,45 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["locksmith leads", "leads for locksmiths", "how to get locksmith leads", "locksmith marketing", "locksmith lead generation", "get more locksmith calls"],
   },
+  {
+    slug: "plumber-leads",
+    title: "Plumber Leads — How Plumbers Get More Jobs in 2026",
+    description:
+      "How plumbers get leads that book: why plumbing leads are urgent and pricey, how to win the speed race on emergencies, the best low-cost channels, and where homeowners post when they need a plumber.",
+    excerpt:
+      "Plumbing is urgent, local, and high-value — the plumber who answers first usually wins. Here's how plumbers get more jobs with low-cost, high-intent leads instead of overpriced shared ones.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["plumber leads", "plumbing leads", "leads for plumbers", "how to get plumbing leads", "plumber marketing", "plumbing lead generation"],
+  },
+  {
+    slug: "electrician-leads",
+    title: "Electrician Leads — How Electricians Get More Work in 2026",
+    description:
+      "How electricians get leads that convert: why licensing and trust matter most, how to win emergency calls on speed, the best low-cost channels, and where homeowners ask for an electrician.",
+    excerpt:
+      "Electrical work is trust-heavy and local — people want a licensed pro, fast. Here's how electricians get more work with high-intent, low-cost leads instead of expensive shared ones.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["electrician leads", "electrical leads", "leads for electricians", "how to get electrician leads", "electrician marketing", "electrical lead generation"],
+  },
+  {
+    slug: "hvac-leads",
+    title: "HVAC Leads — How HVAC Companies Get More Calls in 2026",
+    description:
+      "How HVAC companies get leads that book: why HVAC leads are seasonal and expensive, how to win the speed race on no-AC emergencies, the best low-cost channels, and where homeowners post for AC and heating help.",
+    excerpt:
+      "HVAC is seasonal, urgent, and one of the priciest lead categories there is. Here's how HVAC companies get more calls with high-intent, low-cost leads instead of overpriced shared ones.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["hvac leads", "leads for hvac", "how to get hvac leads", "hvac marketing", "ac repair leads", "hvac lead generation"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {

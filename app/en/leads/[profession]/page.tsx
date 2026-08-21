@@ -19,6 +19,9 @@ export function generateStaticParams() {
 const TRADE_GUIDE: Record<string, { slug: string; label: string }> = {
   mover: { slug: "mover-leads", label: "How moving companies get more booked jobs" },
   locksmith: { slug: "locksmith-leads", label: "How locksmiths get more calls" },
+  plumber: { slug: "plumber-leads", label: "How plumbers get more jobs" },
+  electrician: { slug: "electrician-leads", label: "How electricians get more work" },
+  hvac: { slug: "hvac-leads", label: "How HVAC companies get more calls" },
 };
 
 export async function generateMetadata({
