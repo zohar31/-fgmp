@@ -1,10 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-// Geo-aware default locale. Runs ONLY on the homepage "/". Visitors outside
-// Israel are redirected to the English site (/en); Israeli visitors stay on
-// Hebrew. An explicit language choice (the `locale` cookie, set by the language
-// switcher) always wins over geo. Known crawlers are never redirected, so both
-// language versions stay independently indexable (hreflang handles the rest).
+// Geo-aware default locale (Next.js `proxy` convention, formerly `middleware`).
+// Runs ONLY on the two homepages ("/" and "/en"). Visitors outside Israel are
+// sent to the English site (/en); Israeli visitors are kept on Hebrew. An
+// explicit language choice (the `locale` cookie, set by the language switcher)
+// always wins over geo. Known crawlers are never redirected, so both language
+// versions stay independently indexable (hreflang handles the rest).
 const BOT_RE =
   /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|embedly|quora|pinterest|vkshare|whatsapp|telegram|googlebot|bingbot|duckduckbot|baiduspider|yandex|applebot|petalbot|gptbot|ccbot|claudebot|perplexity/i;
 
@@ -24,7 +25,7 @@ function detectCountry(req: NextRequest): string {
 const YEAR = 31536000;
 const cookieOpts = { path: "/", maxAge: YEAR, sameSite: "lax" as const };
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const ua = req.headers.get("user-agent") || "";
   if (BOT_RE.test(ua)) return NextResponse.next();
 
