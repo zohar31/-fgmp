@@ -14,6 +14,13 @@ export function generateStaticParams() {
   return professionsEn.map((p) => ({ profession: p.slug }));
 }
 
+// Trades with a dedicated in-depth lead guide — builds a two-way internal
+// cluster (geo hub ⇄ guide). Extend as more trade guides are added.
+const TRADE_GUIDE: Record<string, { slug: string; label: string }> = {
+  mover: { slug: "mover-leads", label: "How moving companies get more booked jobs" },
+  locksmith: { slug: "locksmith-leads", label: "How locksmiths get more calls" },
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -46,6 +53,7 @@ export default async function ProfessionEnPage({
   const P = SITE_EN.pricing.monthlyUSD;
   const R = SITE_EN.pricing.refundDays;
   const Noun = p.noun.charAt(0).toUpperCase() + p.noun.slice(1);
+  const tradeGuide = TRADE_GUIDE[profession];
 
   const faq = [
     {
@@ -110,6 +118,21 @@ export default async function ProfessionEnPage({
               ))}
             </ul>
           </div>
+
+          {tradeGuide && (
+            <div className="mt-10 rounded-2xl bg-white/[0.03] p-5 ring-1 ring-brand-500/20">
+              <Link
+                href={`/en/guides/${tradeGuide.slug}`}
+                className="group inline-flex items-center gap-2 font-display text-lg font-bold text-brand-200 hover:text-brand-100"
+              >
+                📘 Deep dive: {tradeGuide.label}
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+              </Link>
+              <p className="mt-1 text-sm text-ink-300">
+                The full playbook for getting {p.noun} leads — channels, speed, and what it costs.
+              </p>
+            </div>
+          )}
 
           <section className="mt-12">
             <h2 className="flex items-center gap-2 font-display text-2xl font-bold text-white">
