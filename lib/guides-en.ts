@@ -397,6 +397,84 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["first customers new business", "how to get first customers", "getting first clients", "new business no customers", "first clients startup"],
   },
+  {
+    slug: "post-in-facebook-groups-without-getting-banned",
+    title: "How to Post in Facebook Groups Without Getting Banned",
+    description:
+      "Facebook groups ban self-promotion fast. Here's how to get business from groups without getting removed: the rules that matter, the helpful-reply approach, and what gets you banned.",
+    excerpt:
+      "Spam a group and you're gone — and so are your leads. Here's how to get real business from Facebook groups without getting banned: the etiquette, the rules, and what to avoid.",
+    category: "Lead Guides",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["facebook group ban", "post in facebook groups without getting banned", "facebook group rules", "facebook group etiquette", "promote business facebook groups"],
+  },
+  {
+    slug: "free-leads",
+    title: "How to Get Free Leads for Your Business (No Ad Budget)",
+    description:
+      "A practical guide to getting leads for free: referrals, Google Business Profile, Facebook groups, and content. The exact free channels that work for a small business — and how to work them.",
+    excerpt:
+      "You don't need an ad budget to get customers. Here are the free lead channels that actually work for a small business — and how to turn them into a steady stream.",
+    category: "Lead Generation",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["free leads", "how to get free leads", "free lead generation", "get leads without paying", "free leads for business"],
+  },
+  {
+    slug: "lead-generation-strategy",
+    title: "How to Build a Lead Generation Strategy That Actually Works",
+    description:
+      "A step-by-step framework for building a lead generation strategy: set a goal, know your numbers, pick your channels, respond fast, and measure. Practical, no-fluff, for small businesses.",
+    excerpt:
+      "Random tactics produce random results. A real lead generation strategy is simpler than it sounds — here's a step-by-step framework any small business can follow.",
+    category: "Lead Generation",
+    readTime: 10,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead generation strategy", "lead gen strategy", "how to build a lead strategy", "lead generation plan", "b2b lead strategy"],
+  },
+  {
+    slug: "price-quote-that-closes",
+    title: "How to Write a Price Quote That Closes the Job",
+    description:
+      "Your quote is a sales tool, not a receipt. Here's how to write a price quote that wins the job: what to include, how to present the price, anchoring, and the follow-up that seals it.",
+    excerpt:
+      "A quote isn't just a number — it's your closing pitch in writing. Here's how to write a price quote that wins the job instead of getting ghosted.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["price quote that closes", "how to write a quote", "sales quote", "quote to win the job", "how to quote a job"],
+  },
+  {
+    slug: "lead-handling-mistakes",
+    title: "7 Lead-Handling Mistakes That Quietly Cost You Customers",
+    description:
+      "The most common mistakes businesses make with leads — slow response, no follow-up, weak first message, no qualifying — and exactly how to fix each one to close more of the leads you already get.",
+    excerpt:
+      "You don't always need more leads — you need to stop losing the ones you have. Here are the 7 most common lead-handling mistakes, and how to fix each.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead handling mistakes", "why am i losing leads", "lead follow up mistakes", "not closing leads", "lead conversion mistakes"],
+  },
+  {
+    slug: "marketing-for-contractors",
+    title: "Marketing for Contractors — How to Get More Jobs in 2026",
+    description:
+      "A practical marketing guide for contractors: the best lead sources for construction and home services, how to get found locally, why speed wins jobs, and low-cost ways to fill your schedule.",
+    excerpt:
+      "Contractors don't need fancy marketing — they need a full schedule. Here are the lead sources and tactics that actually get contractors more jobs, without a big ad budget.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["marketing for contractors", "contractor leads", "how to get construction leads", "contractor marketing", "get more contracting jobs"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
