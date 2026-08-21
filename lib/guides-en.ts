@@ -631,6 +631,71 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["leads for small business", "small business leads", "how to get leads for small business", "small business lead generation", "get customers small business"],
   },
+  {
+    slug: "marketing-for-salons",
+    title: "Marketing for Salons & Beauty Pros — How to Fill Your Chair",
+    description:
+      "A practical marketing guide for salons, stylists, and beauty pros: how to get new clients locally, the power of reviews and social proof, rebooking, and low-cost ways to stay fully booked.",
+    excerpt:
+      "In beauty, a full book is everything. Here's a practical marketing guide for salons and beauty pros: how to get new local clients and keep your chair full — without a big ad spend.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["marketing for salons", "salon marketing", "how to get salon clients", "beauty business marketing", "hair stylist marketing"],
+  },
+  {
+    slug: "marketing-for-content-creators",
+    title: "Marketing for Content Creators — How to Get Paid Clients & Brand Deals",
+    description:
+      "A practical guide for content creators who want paid work: how to land clients and brand deals, position your offer, use your portfolio, and find businesses actively looking for content help.",
+    excerpt:
+      "Making great content isn't the same as getting paid for it. Here's how content creators land clients and brand deals — positioning, outreach, and finding businesses that need you.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["marketing for content creators", "how to get content creation clients", "content creator clients", "get brand deals", "freelance content clients"],
+  },
+  {
+    slug: "marketing-for-social-media-managers",
+    title: "Marketing for Social Media Managers — How to Get Clients",
+    description:
+      "A practical guide for social media managers who want more clients: niching, packaging your service, proving ROI, and finding business owners actively looking for social media help.",
+    excerpt:
+      "You can run great social media for clients — but you have to find them first. Here's how social media managers get clients: positioning, outreach, and where businesses ask for help.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["marketing for social media managers", "how to get social media management clients", "smm clients", "get social media clients", "freelance social media manager"],
+  },
+  {
+    slug: "marketing-for-influencers",
+    title: "Marketing for Influencers — How to Land Brand Deals & Monetize",
+    description:
+      "A practical guide for influencers who want to monetize: landing brand deals, pitching brands, pricing your audience, and finding companies actively looking to collaborate with creators.",
+    excerpt:
+      "An audience is only worth what you monetize it for. Here's how influencers land brand deals and paid partnerships — pitching, pricing, and finding brands that want to work with you.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["marketing for influencers", "how to get brand deals", "influencer brand partnerships", "monetize influence", "influencer sponsorships"],
+  },
+  {
+    slug: "leads-from-telegram",
+    title: "How to Get Leads from Telegram — A Practical Guide",
+    description:
+      "Telegram groups and channels can be a real lead source. Here's how to find relevant groups, spot buying intent, engage without spamming, and turn Telegram activity into customers.",
+    excerpt:
+      "It's not just Facebook — Telegram groups and channels are full of people asking for services too. Here's how to turn Telegram into a real, low-cost lead source for your business.",
+    category: "Lead Guides",
+    readTime: 7,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["leads from telegram", "telegram leads", "how to get leads on telegram", "telegram groups for business", "telegram lead generation"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
