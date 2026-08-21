@@ -475,6 +475,84 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["marketing for contractors", "contractor leads", "how to get construction leads", "contractor marketing", "get more contracting jobs"],
   },
+  {
+    slug: "lead-generation-system",
+    title: "What Is a Lead Generation System — And How to Choose One",
+    description:
+      "What a lead generation system is, the parts it should have (capture, filter, deliver, respond), the types available, and how a small business picks one that produces customers, not busywork.",
+    excerpt:
+      "A lead generation system turns 'hoping the phone rings' into a predictable flow of customers. Here's what one actually is, and how to choose the right one for your business.",
+    category: "Lead Generation",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead generation system", "lead gen system", "best lead generation system", "how to choose a lead system", "automated lead system"],
+  },
+  {
+    slug: "lead-generation-companies",
+    title: "Lead Generation Companies — How to Choose One (or Skip It)",
+    description:
+      "How lead generation companies work, what they charge, the difference between shared and exclusive leads, the red flags to watch for, and when a flat-rate real-time source beats buying leads.",
+    excerpt:
+      "Lead generation companies promise a shortcut to customers — but the fine print matters. Here's how they work, what to watch for, and when a different model wins.",
+    category: "Buying Leads",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead generation companies", "lead company", "best lead generation companies", "lead gen company", "should i use a lead company"],
+  },
+  {
+    slug: "lead-kpis",
+    title: "Lead Generation KPIs — The Metrics That Actually Matter",
+    description:
+      "The lead generation metrics worth tracking: cost per lead, cost per acquisition, close rate, response time, and lead-to-customer rate — what each tells you and how to use them to grow.",
+    excerpt:
+      "You can't improve what you don't measure — but most businesses track the wrong numbers. Here are the lead generation KPIs that actually matter, and how to use them.",
+    category: "Lead Basics",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead generation kpis", "lead metrics", "lead generation metrics", "lead conversion rate", "cost per acquisition"],
+  },
+  {
+    slug: "lead-management-system",
+    title: "Lead Management — Do You Really Need a CRM?",
+    description:
+      "What lead management means, when a simple system beats a full CRM, what to track for every lead, and how to make sure no lead ever falls through the cracks — without drowning in software.",
+    excerpt:
+      "Leads slip through the cracks when there's no system to catch them. Here's how to manage leads properly — and whether you actually need a CRM or something simpler.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["lead management", "lead management system", "do i need a crm", "how to manage leads", "lead tracking"],
+  },
+  {
+    slug: "leads-for-service-businesses",
+    title: "Leads for Service Businesses — The Complete 2026 Playbook",
+    description:
+      "A practical lead-generation playbook for service businesses: the best channels for local services, why speed and reviews win, what leads cost, and how to build a steady flow of booked jobs.",
+    excerpt:
+      "Service businesses live and die by a full schedule. Here's the complete playbook for getting leads for a local service business — the channels, the costs, and the method.",
+    category: "Lead Generation",
+    readTime: 10,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["leads for service businesses", "service business leads", "local service leads", "home service leads", "how to get service business leads"],
+  },
+  {
+    slug: "why-buying-leads-fails",
+    title: "Why Buying Leads Fails — And What to Do Instead",
+    description:
+      "The real reasons bought leads disappoint: shared contacts, cold timing, low intent, and rising costs. A clear look at why buying leads fails for most small businesses — and the alternative that works.",
+    excerpt:
+      "Buying leads feels like buying customers — until you meet the reality: shared, cold, and expensive. Here's why buying leads fails, and what actually works instead.",
+    category: "Buying Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["why buying leads fails", "are bought leads worth it", "problems with buying leads", "buying leads doesn't work", "stop buying leads"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
