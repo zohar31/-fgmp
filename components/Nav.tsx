@@ -62,7 +62,7 @@ export function Nav() {
         scrolled ? "bg-bg/80 backdrop-blur-lg ring-1 ring-white/5" : "bg-transparent"
       )}
     >
-      <div className="container-x flex h-16 items-center justify-between gap-4">
+      <div className="container-x flex h-16 items-center justify-between gap-2 sm:gap-4">
         <Link
           href={t.home}
           aria-label={SITE.brand}
@@ -90,7 +90,7 @@ export function Nav() {
           <LanguageSwitcher />
           <Link
             href={t.login}
-            className="hidden rounded-xl px-3 py-2 text-sm font-medium text-ink-200 hover:bg-white/5 hover:text-white transition-colors sm:inline-block"
+            className="inline-flex items-center rounded-xl px-2.5 py-2 text-sm font-medium text-ink-200 hover:bg-white/5 hover:text-white transition-colors sm:px-3"
           >
             {t.signin}
           </Link>
