@@ -91,6 +91,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/en/tools/roi-calculator`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.55 },
     { url: `${SITE.url}/en/tools/leads-target-calculator`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.55 },
     { url: `${SITE.url}/en/guides`, lastModified: NEWEST, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE.url}/en/guides/glossary`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.55 },
     ...enGuideUrls,
     { url: `${SITE.url}/en/leads`, lastModified: NEWEST, changeFrequency: "weekly", priority: 0.8 },
     ...professionsEn.map((p) => ({

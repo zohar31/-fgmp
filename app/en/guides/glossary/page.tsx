@@ -5,88 +5,91 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
-import { glossary } from "@/lib/glossary";
+import { glossaryEn } from "@/lib/glossary-en";
 import { SITE } from "@/lib/config";
+import { SITE_EN } from "@/lib/config-en";
+
+const URL = `${SITE.url}/en/guides/glossary`;
 
 export const metadata: Metadata = {
-  title: "מילון מונחי לידים — 24 מושגים שכל עסק חייב להכיר | FGMP",
+  title: "Lead Generation Glossary — 24 Terms Every Business Should Know | FGMP",
   description:
-    "מילון מונחי לידים בעברית: ליד חם, ליד קר, CPL, CPA, שיעור המרה, משפך לידים, ליד בלעדי ועוד. הגדרות קצרות וברורות לכל מושג — עם קישור למדריך מעמיק.",
+    "A plain-English glossary of lead generation terms: hot lead, cold lead, CPL, CPA, close rate, lead funnel, exclusive lead, and more. Short, clear definitions — each linked to a deep-dive guide.",
   keywords: [
-    "מילון מונחי לידים",
-    "מה זה ליד",
-    "מונחי שיווק",
+    "lead generation glossary",
+    "lead terms",
+    "what is a lead",
     "CPL CPA",
-    "הגדרות לידים",
+    "lead definitions",
   ],
   alternates: {
-    canonical: `${SITE.url}/guides/milon`,
-    languages: { "he-IL": `${SITE.url}/guides/milon`, "en-US": `${SITE.url}/en/guides/glossary` },
+    canonical: URL,
+    languages: { "he-IL": `${SITE.url}/guides/milon`, "en-US": URL },
   },
   openGraph: {
     type: "article",
-    title: "מילון מונחי לידים — FGMP",
-    description: "כל מונחי הלידים בעברית, מוגדרים בקצרה ובבירור.",
-    url: `${SITE.url}/guides/milon`,
+    locale: "en_US",
+    title: "Lead Generation Glossary — FGMP",
+    description: "Every lead generation term, defined clearly and simply.",
+    url: URL,
   },
 };
 
-// DefinedTermSet — נבנה דינמית מהמילון כדי שיישאר מסונכרן.
+// DefinedTermSet — built from the glossary so it stays in sync.
 const definedTermSet = {
   "@context": "https://schema.org",
   "@type": "DefinedTermSet",
-  name: "מילון מונחי לידים",
-  inLanguage: "he-IL",
-  url: `${SITE.url}/guides/milon`,
-  hasDefinedTerm: glossary.map((t) => ({
+  name: "Lead Generation Glossary",
+  inLanguage: "en-US",
+  url: URL,
+  hasDefinedTerm: glossaryEn.map((t) => ({
     "@type": "DefinedTerm",
     name: t.term,
     ...(t.aka?.length ? { alternateName: t.aka } : {}),
     description: t.def,
-    inDefinedTermSet: `${SITE.url}/guides/milon`,
-    url: `${SITE.url}/guides/milon#${t.anchor}`,
+    inDefinedTermSet: URL,
+    url: `${URL}#${t.anchor}`,
   })),
 };
 
-export default function GlossaryPage() {
+export default function GlossaryPageEn() {
   return (
     <>
       <JsonLd data={definedTermSet} />
       <JsonLd
         data={breadcrumbSchema([
-          { name: "דף הבית", url: SITE.url },
-          { name: "מדריכים", url: `${SITE.url}/guides` },
-          { name: "מילון מונחי לידים", url: `${SITE.url}/guides/milon` },
+          { name: "Home", url: `${SITE.url}/en` },
+          { name: "Guides", url: `${SITE.url}/en/guides` },
+          { name: "Lead Generation Glossary", url: URL },
         ])}
       />
       <Nav />
-      <main id="main-content" className="container-x py-10 md:py-16">
+      <main id="main-content" className="container-x py-10 md:py-16" dir="ltr">
         <Breadcrumbs
           items={[
-            { name: "דף הבית", href: "/" },
-            { name: "מדריכים", href: "/guides" },
-            { name: "מילון מונחים", href: "/guides/milon" },
+            { name: "Home", href: "/en" },
+            { name: "Guides", href: "/en/guides" },
+            { name: "Glossary", href: "/en/guides/glossary" },
           ]}
         />
 
         <header className="mx-auto mt-8 max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-xs font-medium text-ink-200 ring-1 ring-white/10">
             <BookOpen className="h-3.5 w-3.5 text-brand-400" />
-            מילון מונחים
+            Glossary
           </div>
           <h1 className="mt-4 font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl">
-            מילון מונחי לידים
+            Lead Generation Glossary
           </h1>
           <p className="mt-4 text-lg leading-8 text-ink-200">
-            {glossary.length} המושגים החשובים בעולם הלידים — מוגדרים בקצרה, בעברית פשוטה. כל מונח
-            עם קישור למדריך המעמיק שלו.
+            The {glossaryEn.length} most important terms in the world of leads — defined briefly, in plain
+            English. Each term links to its in-depth guide.
           </p>
         </header>
 
-        {/* אינדקס אותיות/קפיצה מהיר */}
-        <nav aria-label="מונחים" className="mx-auto mt-8 max-w-3xl">
+        <nav aria-label="Terms" className="mx-auto mt-8 max-w-3xl">
           <div className="flex flex-wrap gap-2">
-            {glossary.map((t) => (
+            {glossaryEn.map((t) => (
               <a
                 key={t.anchor}
                 href={`#${t.anchor}`}
@@ -99,7 +102,7 @@ export default function GlossaryPage() {
         </nav>
 
         <dl className="mx-auto mt-10 max-w-3xl space-y-4">
-          {glossary.map((t) => (
+          {glossaryEn.map((t) => (
             <div
               key={t.anchor}
               id={t.anchor}
@@ -117,10 +120,10 @@ export default function GlossaryPage() {
                   <>
                     {" "}
                     <Link
-                      href={`/guides/${t.guide}`}
+                      href={`/en/guides/${t.guide}`}
                       className="whitespace-nowrap text-brand-300 underline underline-offset-2 hover:text-brand-200"
                     >
-                      ← מדריך מלא
+                      Full guide →
                     </Link>
                   </>
                 ) : null}
@@ -131,27 +134,27 @@ export default function GlossaryPage() {
 
         <section className="mx-auto mt-16 max-w-3xl rounded-3xl bg-gradient-to-br from-brand-500/10 to-wa/10 p-8 ring-1 ring-white/10 md:p-12">
           <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-            מכירים את המונחים — עכשיו תקבלו את הלידים.
+            You know the terms — now get the leads.
           </h2>
           <p className="mt-2 text-ink-200">
-            {SITE.brand} סורקת קבוצות פייסבוק 24/7 ושולחת לידים חמים לוואטסאפ.{" "}
-            {SITE.pricing.monthlyILS}₪/חודש · ערבות החזר {SITE.pricing.refundDays} ימים.
+            {SITE.brand} scans Facebook groups 24/7 and sends hot leads to your WhatsApp.{" "}
+            ${SITE_EN.pricing.monthlyUSD}/month · {SITE_EN.pricing.refundDays}-day money-back guarantee.
           </p>
           <div className="mt-6">
             <Link href="/login" className="btn-wa text-base">
-              התחילו עכשיו
-              <ArrowLeft className="h-4 w-4" />
+              Get started
+              <ArrowLeft className="h-4 w-4 rotate-180" />
             </Link>
           </div>
         </section>
 
         <div className="mx-auto mt-12 max-w-3xl border-t border-white/5 pt-8">
           <Link
-            href="/guides"
+            href="/en/guides"
             className="inline-flex items-center gap-2 text-sm text-ink-300 hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
-            חזרה לכל המדריכים
+            Back to all guides
           </Link>
         </div>
       </main>

@@ -55,6 +55,33 @@ export default function EnGuidesIndex() {
           </p>
         </header>
 
+        {/* Featured resources — glossary + free tools, for discovery. */}
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          {[
+            {
+              href: "/en/guides/glossary",
+              title: "Lead Generation Glossary",
+              desc: "Every lead term, defined briefly and clearly",
+            },
+            {
+              href: "/en/tools",
+              title: "Free Lead Calculators",
+              desc: "Cost-per-lead, ROI, and leads-target tools",
+            },
+          ].map((r) => (
+            <Link
+              key={r.href}
+              href={r.href}
+              className="group card flex flex-col p-5 ring-1 ring-brand-500/20 transition hover:ring-brand-500/50 hover:-translate-y-0.5"
+            >
+              <span className="font-display text-lg font-bold text-brand-200 group-hover:text-brand-100">
+                {r.title}
+              </span>
+              <span className="mt-1 text-sm leading-6 text-ink-300">{r.desc}</span>
+            </Link>
+          ))}
+        </div>
+
         {categories.map((category) => (
           <section key={category} className="mt-14">
             <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">{category}</h2>
