@@ -709,6 +709,32 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["best lead generation system", "best lead generation software", "best way to get leads", "compare lead generation systems", "best facebook leads system"],
   },
+  {
+    slug: "mover-leads",
+    title: "Mover Leads — How Moving Companies Get More Booked Jobs in 2026",
+    description:
+      "How moving companies get leads that actually book: why moving leads are so competitive and expensive, the best low-cost channels, how to win the speed race, and where to find people who just posted that they're moving.",
+    excerpt:
+      "Moving leads are some of the priciest in the country — and mostly shared. Here's how moving companies get exclusive, low-cost leads and win the booking before competitors even call.",
+    category: "Industry Guides",
+    readTime: 10,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["mover leads", "moving leads", "moving company leads", "leads for movers", "how to get moving leads", "moving company marketing"],
+  },
+  {
+    slug: "locksmith-leads",
+    title: "Locksmith Leads — How Locksmiths Get More Calls in 2026",
+    description:
+      "How locksmiths get leads that convert: why locksmith leads are expensive and urgent, how to win the speed-to-lead race on lockouts, the best low-cost channels, and where to catch people who just got locked out.",
+    excerpt:
+      "Locksmith work is urgent and local — the first to answer usually wins. Here's how locksmiths get more calls with low-cost, high-intent leads instead of overpriced shared ones.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["locksmith leads", "leads for locksmiths", "how to get locksmith leads", "locksmith marketing", "locksmith lead generation", "get more locksmith calls"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
