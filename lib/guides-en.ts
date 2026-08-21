@@ -553,6 +553,84 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["why buying leads fails", "are bought leads worth it", "problems with buying leads", "buying leads doesn't work", "stop buying leads"],
   },
+  {
+    slug: "manage-leads-in-whatsapp",
+    title: "How to Manage Leads in WhatsApp (Without Losing Track)",
+    description:
+      "WhatsApp is where a lot of leads live now. Here's how to manage them: labels, quick replies, keeping every lead organized, and making sure none go cold — using WhatsApp Business tools.",
+    excerpt:
+      "If your leads come through WhatsApp, chaos is one busy day away. Here's how to manage leads in WhatsApp so none slip through — using labels, quick replies, and simple habits.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["manage leads in whatsapp", "whatsapp lead management", "organize whatsapp leads", "whatsapp business labels", "whatsapp for sales"],
+  },
+  {
+    slug: "whatsapp-business-setup",
+    title: "WhatsApp Business Setup — A Simple Guide for Getting Leads",
+    description:
+      "How to set up WhatsApp Business the right way to win more customers: profile, catalog, quick replies, greeting and away messages, labels, and the settings that make you look professional.",
+    excerpt:
+      "WhatsApp Business is free and built for exactly this. Here's how to set it up properly so you respond faster, look professional, and turn more chats into customers.",
+    category: "Converting Leads",
+    readTime: 8,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["whatsapp business setup", "how to set up whatsapp business", "whatsapp business for leads", "whatsapp business features", "whatsapp business tips"],
+  },
+  {
+    slug: "whatsapp-vs-phone-leads",
+    title: "WhatsApp vs. Phone Calls for Leads — Which Closes Better?",
+    description:
+      "Should you call a lead or message them? A practical comparison of WhatsApp/text vs. phone calls for leads: response rates, customer preference, speed, and when each wins the job.",
+    excerpt:
+      "Call or text? For today's leads it's a real decision. Here's how WhatsApp and phone calls compare for reaching and closing leads — and when to use each.",
+    category: "Converting Leads",
+    readTime: 7,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["whatsapp vs phone", "text vs call leads", "should i call or text a lead", "best way to contact a lead", "whatsapp or phone for business"],
+  },
+  {
+    slug: "marketing-for-lawyers",
+    title: "Marketing for Lawyers — How to Get More Clients in 2026",
+    description:
+      "A practical marketing guide for lawyers and small law firms: the best channels for legal clients, why trust and reviews matter most, ethical lead generation, and how to get found locally.",
+    excerpt:
+      "Legal clients hire on trust, not ads. Here's a practical marketing guide for lawyers and small firms: the channels that bring real clients, and how to build the trust that closes them.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["marketing for lawyers", "law firm marketing", "how to get legal clients", "attorney lead generation", "lawyer leads"],
+  },
+  {
+    slug: "marketing-for-insurance-agents",
+    title: "Marketing for Insurance Agents — How to Get More Clients",
+    description:
+      "A practical marketing guide for insurance agents: the best lead sources, why speed and follow-up win policies, referrals and local presence, and low-cost ways to build a steady client pipeline.",
+    excerpt:
+      "Insurance is a relationship business built on trust and timing. Here's a practical marketing guide for agents: the lead sources that work, and how to turn them into policies.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["marketing for insurance agents", "insurance leads", "how to get insurance clients", "insurance agent marketing", "insurance lead generation"],
+  },
+  {
+    slug: "leads-for-small-business",
+    title: "Leads for Small Business — How to Get a Steady Flow of Customers",
+    description:
+      "A no-fluff guide to getting leads for a small business on a tight budget: the highest-ROI channels, why speed beats spend, what leads cost, and how to build a predictable stream of customers.",
+    excerpt:
+      "Every small business needs a steady flow of customers — without a big-company budget. Here's how to get leads for a small business, focused on what actually returns money.",
+    category: "Lead Generation",
+    readTime: 10,
+    publishedAt: "2026-08-21",
+    updatedAt: "2026-08-21",
+    keywords: ["leads for small business", "small business leads", "how to get leads for small business", "small business lead generation", "get customers small business"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
