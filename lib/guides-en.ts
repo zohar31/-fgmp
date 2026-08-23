@@ -774,6 +774,84 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-21",
     keywords: ["hvac leads", "leads for hvac", "how to get hvac leads", "hvac marketing", "ac repair leads", "hvac lead generation"],
   },
+  {
+    slug: "roofer-leads",
+    title: "Roofing Leads — How Roofers Get More Jobs in 2026",
+    description:
+      "How roofers get leads that close: why roofing leads are among the priciest in home services, the storm-and-insurance opportunity, how to win on trust and speed, and where homeowners ask for a roofer.",
+    excerpt:
+      "Roofing leads are some of the most expensive in the country — big tickets, big competition. Here's how roofers get high-intent, low-cost leads and win the job on trust, not just price.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["roofing leads", "roofer leads", "leads for roofers", "how to get roofing leads", "roofing marketing", "storm damage roofing leads"],
+  },
+  {
+    slug: "handyman-leads",
+    title: "Handyman Leads — How Handymen Get More Jobs in 2026",
+    description:
+      "How handymen get a steady flow of jobs: why volume and speed matter most, the best low-cost local channels, how to handle small jobs profitably, and where homeowners ask for a handyman.",
+    excerpt:
+      "Handyman work is high-volume and local — the one who answers first and shows up wins. Here's how handymen keep the calendar full with low-cost, high-intent leads.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["handyman leads", "leads for handyman", "how to get handyman jobs", "handyman marketing", "handyman lead generation"],
+  },
+  {
+    slug: "house-cleaning-leads",
+    title: "House Cleaning Leads — How Cleaners Get More Clients in 2026",
+    description:
+      "How house cleaners get recurring clients: why retention beats one-off jobs, the best local channels, how trust and reviews win the booking, and where homeowners ask for a cleaner.",
+    excerpt:
+      "In cleaning, recurring clients are gold. Here's how house cleaners get more clients — and keep them — with low-cost, high-intent leads instead of a race to the bottom on price.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["house cleaning leads", "cleaning leads", "leads for house cleaners", "how to get cleaning clients", "cleaning business marketing"],
+  },
+  {
+    slug: "painter-leads",
+    title: "Painting Leads — How Painters Get More Jobs in 2026",
+    description:
+      "How painters get leads that book: why the quote and portfolio win the job, seasonality, the best low-cost channels, and where homeowners ask for a painter for interior and exterior work.",
+    excerpt:
+      "Painting jobs are won on trust, a sharp quote, and great before/after photos. Here's how painters get more high-intent, low-cost leads and turn them into booked jobs.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["painting leads", "painter leads", "leads for painters", "how to get painting jobs", "painting business marketing"],
+  },
+  {
+    slug: "landscaping-leads",
+    title: "Landscaping & Lawn Care Leads — How to Get More Clients in 2026",
+    description:
+      "How landscapers and lawn-care pros get clients: why recurring maintenance is the goal, seasonality, the best local channels, and where homeowners ask for lawn care and landscaping help.",
+    excerpt:
+      "Lawn care and landscaping thrive on recurring accounts, not one-off mows. Here's how to get more landscaping clients with low-cost, high-intent local leads.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["landscaping leads", "lawn care leads", "leads for landscapers", "how to get landscaping clients", "lawn care marketing"],
+  },
+  {
+    slug: "pest-control-leads",
+    title: "Pest Control Leads — How to Get More Clients in 2026",
+    description:
+      "How pest control companies get leads: why urgency and recurring plans drive the business, the best local channels, how trust wins the call, and where homeowners ask for pest control.",
+    excerpt:
+      "Pest problems are urgent and recurring — a great mix for a steady business. Here's how pest control companies get more high-intent, low-cost leads and turn them into recurring plans.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["pest control leads", "leads for pest control", "how to get pest control clients", "exterminator leads", "pest control marketing"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {

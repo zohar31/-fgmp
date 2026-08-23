@@ -22,6 +22,14 @@ const TRADE_GUIDE: Record<string, { slug: string; label: string }> = {
   plumber: { slug: "plumber-leads", label: "How plumbers get more jobs" },
   electrician: { slug: "electrician-leads", label: "How electricians get more work" },
   hvac: { slug: "hvac-leads", label: "How HVAC companies get more calls" },
+  roofer: { slug: "roofer-leads", label: "How roofers get more jobs" },
+  handyman: { slug: "handyman-leads", label: "How handymen get more jobs" },
+  "house-cleaner": { slug: "house-cleaning-leads", label: "How cleaners get more clients" },
+  painter: { slug: "painter-leads", label: "How painters get more jobs" },
+  landscaper: { slug: "landscaping-leads", label: "How landscapers get more clients" },
+  "pest-control": { slug: "pest-control-leads", label: "How pest control companies get more clients" },
+  "general-contractor": { slug: "marketing-for-contractors", label: "Marketing for contractors" },
+  "insurance-agent": { slug: "marketing-for-insurance-agents", label: "How insurance agents get more clients" },
 };
 
 export async function generateMetadata({
