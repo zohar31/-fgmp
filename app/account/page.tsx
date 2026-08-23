@@ -9,6 +9,7 @@ import { ReactivateButton } from "@/components/ReactivateButton";
 import { SITE } from "@/lib/config";
 import { SITE_EN } from "@/lib/config-en";
 import { getServerLocale } from "@/lib/i18n-server";
+import { LocalDateTime } from "@/components/LocalDateTime";
 
 export default async function AccountDashboardPage() {
   const session = await auth();
@@ -233,9 +234,13 @@ export default async function AccountDashboardPage() {
                   <div className="text-sm font-semibold text-white">{n.title}</div>
                   {n.body && <div className="mt-1 text-xs text-ink-300">{n.body}</div>}
                   <div className="mt-1 text-[10px] text-ink-500">
-                    {new Date(n.createdAt).toLocaleString(dateLocale, {
-                      timeZone: "Asia/Jerusalem",
-                    })}
+                    {en ? (
+                      <LocalDateTime iso={new Date(n.createdAt).toISOString()} locale="en-US" />
+                    ) : (
+                      new Date(n.createdAt).toLocaleString(dateLocale, {
+                        timeZone: "Asia/Jerusalem",
+                      })
+                    )}
                   </div>
                 </div>
               </li>

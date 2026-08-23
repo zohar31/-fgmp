@@ -8,6 +8,7 @@ import { ReactivateButton } from "@/components/ReactivateButton";
 import { isWithinRefundWindow, refundDaysLeft, SITE } from "@/lib/config";
 import { SITE_EN } from "@/lib/config-en";
 import { getServerLocale } from "@/lib/i18n-server";
+import { LocalDateTime } from "@/components/LocalDateTime";
 
 export const metadata: Metadata = { title: "ביטול מנוי" };
 
@@ -84,9 +85,13 @@ export default async function CancelPage() {
               </h3>
               <p className="mt-1 text-sm text-ink-300">
                 {en ? "Request submitted on " : "בקשה הוגשה ב-"}
-                {new Date(pendingRequest.requestedAt).toLocaleString(dateLocale, {
-                  timeZone: "Asia/Jerusalem",
-                })}
+                {en ? (
+                  <LocalDateTime iso={new Date(pendingRequest.requestedAt).toISOString()} locale="en-US" />
+                ) : (
+                  new Date(pendingRequest.requestedAt).toLocaleString(dateLocale, {
+                    timeZone: "Asia/Jerusalem",
+                  })
+                )}
                 .{" "}
                 {pendingRequest.wasRefundEligible
                   ? (en ? "The request is pending — once approved, a full refund will also be issued to your card." : "הבקשה במצב המתנה — אם תאושר יתבצע גם החזר מלא לכרטיסך.")
