@@ -30,6 +30,17 @@ const TRADE_GUIDE: Record<string, { slug: string; label: string }> = {
   "pest-control": { slug: "pest-control-leads", label: "How pest control companies get more clients" },
   "general-contractor": { slug: "marketing-for-contractors", label: "Marketing for contractors" },
   "insurance-agent": { slug: "marketing-for-insurance-agents", label: "How insurance agents get more clients" },
+  carpenter: { slug: "carpenter-leads", label: "How carpenters get more jobs" },
+  "appliance-repair": { slug: "appliance-repair-leads", label: "How appliance repair techs get more calls" },
+  "garage-door": { slug: "garage-door-leads", label: "How garage door companies get more jobs" },
+  flooring: { slug: "flooring-leads", label: "How flooring installers get more jobs" },
+  "junk-removal": { slug: "junk-removal-leads", label: "How junk removal companies get more jobs" },
+  "pressure-washing": { slug: "pressure-washing-leads", label: "How pressure washing pros get more jobs" },
+  "tree-service": { slug: "tree-service-leads", label: "How tree services get more jobs" },
+  photographer: { slug: "photographer-leads", label: "How photographers get more bookings" },
+  "real-estate-agent": { slug: "real-estate-leads", label: "How agents get more clients" },
+  "personal-trainer": { slug: "personal-training-leads", label: "How trainers get more clients" },
+  "auto-mechanic": { slug: "auto-repair-leads", label: "How mechanics get more customers" },
 };
 
 export async function generateMetadata({

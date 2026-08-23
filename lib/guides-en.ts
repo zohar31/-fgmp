@@ -852,6 +852,149 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-23",
     keywords: ["pest control leads", "leads for pest control", "how to get pest control clients", "exterminator leads", "pest control marketing"],
   },
+  {
+    slug: "carpenter-leads",
+    title: "Carpentry Leads — How Carpenters Get More Jobs in 2026",
+    description:
+      "How carpenters get leads for custom and finish work: why a portfolio wins the job, the best local channels, remodels and built-ins, and where homeowners ask for a carpenter.",
+    excerpt:
+      "Carpentry sells on craftsmanship — your portfolio does the pitching. Here's how carpenters get more custom, finish, and remodel work with high-intent, low-cost local leads.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["carpentry leads", "carpenter leads", "leads for carpenters", "how to get carpentry jobs", "finish carpentry marketing"],
+  },
+  {
+    slug: "appliance-repair-leads",
+    title: "Appliance Repair Leads — How to Get More Calls in 2026",
+    description:
+      "How appliance repair techs get leads: why the broken-fridge urgency drives fast calls, diagnostic fees, brand specialization, and where homeowners ask for appliance repair.",
+    excerpt:
+      "A dead fridge or washer is an emergency — the tech who answers first gets the call. Here's how appliance repair pros get more high-intent, low-cost leads.",
+    category: "Industry Guides",
+    readTime: 7,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["appliance repair leads", "leads for appliance repair", "how to get appliance repair calls", "appliance repair marketing", "refrigerator repair leads"],
+  },
+  {
+    slug: "garage-door-leads",
+    title: "Garage Door Leads — How to Get More Jobs in 2026",
+    description:
+      "How garage door companies get leads: urgent repairs (stuck door, broken spring), opener installs, safety, and where homeowners ask for garage door service.",
+    excerpt:
+      "A stuck or broken garage door is urgent — and repairs plus installs are solid tickets. Here's how garage door companies get more high-intent, low-cost leads.",
+    category: "Industry Guides",
+    readTime: 7,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["garage door leads", "leads for garage door", "how to get garage door jobs", "garage door repair leads", "garage door marketing"],
+  },
+  {
+    slug: "flooring-leads",
+    title: "Flooring Leads — How Flooring Installers Get More Jobs in 2026",
+    description:
+      "How flooring installers get leads that book: mid-to-large tickets, material choices, why the quote and portfolio win, and where homeowners ask for flooring installation.",
+    excerpt:
+      "Flooring is a big-ticket, quote-driven job — the installer with the best portfolio and clearest estimate wins. Here's how flooring pros get more high-intent, low-cost leads.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["flooring leads", "leads for flooring", "how to get flooring jobs", "flooring installer marketing", "hardwood flooring leads"],
+  },
+  {
+    slug: "junk-removal-leads",
+    title: "Junk Removal Leads — How to Get More Jobs in 2026",
+    description:
+      "How junk removal companies get leads: same-day demand, simple upfront pricing, commercial and property-manager accounts, and where people ask for junk hauling.",
+    excerpt:
+      "Junk removal is fast-turnaround and volume-driven — the first to reply and quote wins. Here's how junk removal companies get more high-intent, low-cost leads.",
+    category: "Industry Guides",
+    readTime: 7,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["junk removal leads", "leads for junk removal", "how to get junk removal jobs", "junk hauling leads", "junk removal marketing"],
+  },
+  {
+    slug: "pressure-washing-leads",
+    title: "Pressure Washing Leads — How to Get More Jobs in 2026",
+    description:
+      "How pressure washing pros get leads: seasonality, the power of before/after photos, driveways/houses/decks, and where homeowners ask for pressure washing.",
+    excerpt:
+      "Pressure washing sells on dramatic before/after results — the photos do the pitching. Here's how pressure washing pros get more high-intent, low-cost local leads.",
+    category: "Industry Guides",
+    readTime: 7,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["pressure washing leads", "leads for pressure washing", "how to get pressure washing jobs", "power washing leads", "pressure washing marketing"],
+  },
+  {
+    slug: "tree-service-leads",
+    title: "Tree Service Leads — How to Get More Jobs in 2026",
+    description:
+      "How tree service companies get leads: why insurance and safety win the job, storm-emergency demand, big tickets, and where homeowners ask for tree removal and trimming.",
+    excerpt:
+      "Tree work is high-ticket and high-stakes — homeowners want an insured pro, fast, especially after storms. Here's how tree services get more high-intent, low-cost leads.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["tree service leads", "leads for tree service", "how to get tree removal jobs", "tree trimming leads", "tree service marketing"],
+  },
+  {
+    slug: "photographer-leads",
+    title: "Photography Leads — How Photographers Get More Bookings in 2026",
+    description:
+      "How photographers get clients: why the portfolio and reviews win, weddings/events/portraits, booking ahead, and where people ask for a photographer.",
+    excerpt:
+      "Photography is booked on your portfolio and your vibe. Here's how photographers get more weddings, events, and portrait clients with high-intent, low-cost leads.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["photography leads", "photographer leads", "how to get photography clients", "wedding photographer marketing", "how to book more photo clients"],
+  },
+  {
+    slug: "real-estate-leads",
+    title: "Real Estate Leads — How Agents Get More Clients in 2026",
+    description:
+      "How real estate agents get leads: buyers vs. sellers, referrals and sphere, local farming, and where people ask for an agent — plus why speed to lead decides who wins.",
+    excerpt:
+      "Real estate runs on relationships and speed. Here's how agents get more buyer and seller leads — from referrals, local presence, and the requests happening in local groups right now.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["real estate leads", "realtor leads", "how to get real estate clients", "real estate agent marketing", "buyer and seller leads"],
+  },
+  {
+    slug: "personal-training-leads",
+    title: "Personal Training Leads — How Trainers Get More Clients in 2026",
+    description:
+      "How personal trainers get clients: results and transformations sell, retention beats churn, online vs. in-person, and where people ask for a trainer.",
+    excerpt:
+      "Personal training sells on results and trust — and thrives on retention. Here's how trainers get more clients, online and in-person, with high-intent, low-cost leads.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["personal training leads", "personal trainer leads", "how to get personal training clients", "fitness coach marketing", "get more training clients"],
+  },
+  {
+    slug: "auto-repair-leads",
+    title: "Auto Repair Leads — How Mechanics Get More Customers in 2026",
+    description:
+      "How auto mechanics and repair shops get leads: trust in a scam-wary market, diagnostics, repeat customers, and where drivers ask for a mechanic they can trust.",
+    excerpt:
+      "Drivers fear being ripped off — the mechanic they trust wins. Here's how auto repair shops get more customers with high-intent, low-cost local leads and earned trust.",
+    category: "Industry Guides",
+    readTime: 8,
+    publishedAt: "2026-08-23",
+    updatedAt: "2026-08-23",
+    keywords: ["auto repair leads", "mechanic leads", "how to get auto repair customers", "auto shop marketing", "car repair leads"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
