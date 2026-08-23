@@ -30,9 +30,10 @@ export default function EnAccessibility() {
       >
         <p>
           {SITE.brand} is committed to making its website accessible to as many people as possible,
-          including people with disabilities. We aim to conform to widely accepted accessibility
-          guidelines (WCAG 2.1, level AA) and continually work to improve the experience for all
-          users.
+          including people with disabilities. We aim to conform to the Web Content Accessibility
+          Guidelines (WCAG 2.1, level AA) — the standard referenced by the Americans with
+          Disabilities Act (ADA) and Section 508 — and we continually work to improve the experience
+          for all users.
         </p>
 
         <h2>Measures we take</h2>

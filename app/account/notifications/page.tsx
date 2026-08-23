@@ -4,6 +4,7 @@ import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { CheckCircle2, Info, AlertTriangle, CreditCard, Settings } from "lucide-react";
 import { getServerLocale } from "@/lib/i18n-server";
+import { LocalDateTime } from "@/components/LocalDateTime";
 
 export const metadata: Metadata = { title: "הודעות" };
 
@@ -63,9 +64,13 @@ export default async function NotificationsPage() {
                       <p className="mt-1 text-sm leading-6 text-ink-200">{n.body}</p>
                     )}
                     <div className="mt-2 text-xs text-ink-500">
-                      {new Date(n.createdAt).toLocaleString(dateLocale, {
-                        timeZone: "Asia/Jerusalem",
-                      })}
+                      {en ? (
+                        <LocalDateTime iso={new Date(n.createdAt).toISOString()} locale="en-US" />
+                      ) : (
+                        new Date(n.createdAt).toLocaleString(dateLocale, {
+                          timeZone: "Asia/Jerusalem",
+                        })
+                      )}
                     </div>
                   </div>
                 </div>

@@ -7,6 +7,7 @@ import { CheckCircle2, AlertCircle, MessageCircle, Settings, CreditCard } from "
 import { SITE, formatServiceAreas } from "@/lib/config";
 import { SITE_EN } from "@/lib/config-en";
 import { getServerLocale } from "@/lib/i18n-server";
+import { LocalDateTime } from "@/components/LocalDateTime";
 
 export const metadata: Metadata = { title: "Activate WhatsApp" };
 
@@ -95,7 +96,11 @@ export default async function WhatsAppActivationPage() {
               <h3 className="font-display font-bold text-white">{en ? "System is active ✓" : "המערכת פעילה ✓"}</h3>
               <p className="mt-1 text-sm text-ink-300">
                 {en ? "Your WhatsApp was activated on " : "ה-WhatsApp שלך הופעל בתאריך "}
-                {new Date(subscription.activatedAt).toLocaleString(dateLocale, { timeZone: "Asia/Jerusalem" })}
+                {en ? (
+                  <LocalDateTime iso={new Date(subscription.activatedAt).toISOString()} locale="en-US" />
+                ) : (
+                  new Date(subscription.activatedAt).toLocaleString(dateLocale, { timeZone: "Asia/Jerusalem" })
+                )}
                 {en ? ". Leads should arrive at " : ". לידים אמורים להגיע למספר "}
                 <span dir="ltr">{subscription.activatedFromPhone || settings.leadPhone}</span>.
               </p>

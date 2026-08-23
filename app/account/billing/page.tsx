@@ -63,7 +63,7 @@ export default async function BillingPage() {
         cancelledText: "You can reactivate in one click.",
         becomePaid: isTrialing ? "Upgrade to a paid subscription" : "Start subscription",
         priceLine: `${priceLabel}. Automatic monthly billing.`,
-        billedNote: `(Billed securely via Tranzila as ₪${ILS}.)`,
+        billedNote: `Your card is charged ₪${ILS} (Israeli shekels, ≈ $${USD}) securely via Tranzila. Your bank may add a foreign-transaction fee, and the exact USD amount depends on the exchange rate on the day of the charge.`,
         guarantee: `Money-back guarantee — cancel within ${R} days of your first payment for a full refund. After that, the paid month isn't refundable.`,
         secure: "Secure checkout by Tranzila (PCI-DSS Level 1)",
         cards: "Visa / Mastercard / Amex",

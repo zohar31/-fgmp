@@ -85,13 +85,27 @@ export default function EnPrivacy() {
           preference) and analytics. You can control cookies through your browser settings.
         </p>
 
-        <h2>8. Changes</h2>
+        <h2>8. Your California privacy rights (CCPA/CPRA)</h2>
+        <p>
+          If you are a California resident, you have the right to know what personal information we
+          collect and how we use it, to request access to or deletion of your personal information,
+          to correct inaccurate information, and to not be discriminated against for exercising these
+          rights.
+        </p>
+        <p>
+          <strong>Do Not Sell or Share My Personal Information.</strong> {SITE.brand} does not sell
+          your personal information, and we do not share it for cross-context behavioral advertising
+          in exchange for value. To make any privacy request, contact us using the details below and
+          we will verify and respond as required by law.
+        </p>
+
+        <h2>9. Changes</h2>
         <p>
           We may update this policy from time to time. Material changes will be communicated by email
           or WhatsApp.
         </p>
 
-        <h2>9. Contact</h2>
+        <h2>10. Contact</h2>
         <ul>
           <li>WhatsApp: +972585222227</li>
           <li>Email: {SITE.notificationEmail}</li>
