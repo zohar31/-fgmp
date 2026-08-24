@@ -5,7 +5,7 @@ import { isAdmin } from "@/lib/admin";
 import { db, schema } from "@/lib/db";
 import { and, desc, eq } from "drizzle-orm";
 import { cancelStandingOrderV2, refundOrVoidTranzila } from "@/lib/tranzila";
-import { isWithinRefundWindow, isEnglishCustomer } from "@/lib/config";
+import { isWithinRefundWindow, isEnglishCustomer, SITE } from "@/lib/config";
 
 export const runtime = "nodejs";
 
@@ -118,14 +118,13 @@ export async function POST(
     if (!isWithinRefundWindow(sub.firstPaymentAt)) {
       return NextResponse.json(
         {
-          error:
-            "מחוץ לחלון 7 הימים. ניתן לבצע cancel_only ולבצע החזר ידני בפאנל Tranzila.",
+          error: `מחוץ לחלון ${SITE.pricing.refundDays} הימים. ניתן לבצע "בטל בלבד" ולבצע החזר ידני בפאנל Tranzila.`,
         },
         { status: 400 }
       );
     }
 
-    // Find the most recent paid first-payment invoice (the one to refund)
+    // Find the most recent paid first-payment invoice (the one to refund).
     const paidInvoice = await db
       .select()
       .from(schema.invoices)
@@ -139,31 +138,31 @@ export async function POST(
       .orderBy(desc(schema.invoices.paidAt))
       .limit(1);
 
-    if (
-      !paidInvoice.length ||
-      !paidInvoice[0].tranzilaIndex ||
-      !paidInvoice[0].tranzilaConfirmationCode
-    ) {
-      return NextResponse.json(
-        { error: "לא נמצאה חשבונית עם index ו-ConfirmationCode להחזר." },
-        { status: 400 }
-      );
-    }
-
-    const inv = paidInvoice[0];
+    const inv = paidInvoice[0] || null;
 
     if (parsed.data.action === "cancel_and_refund") {
-      // Auto-refund via Tranzila API. Requires Vercel IP on Tranzila whitelist.
+      // AUTO refund via Tranzila API — this path genuinely needs the invoice's
+      // index + confirmation code, and the Vercel IP on Tranzila's whitelist.
+      if (!inv || !inv.tranzilaIndex || !inv.tranzilaConfirmationCode) {
+        return NextResponse.json(
+          {
+            error:
+              'לא נמצאה חשבונית עם index ו-ConfirmationCode להחזר אוטומטי. השתמש ב-"בטל + סימון החזר ידני" ובצע את הזיכוי בפאנל Tranzila.',
+          },
+          { status: 400 }
+        );
+      }
+
       const refund = await refundOrVoidTranzila({
-        originalIndex: inv.tranzilaIndex!,
-        authNr: inv.tranzilaConfirmationCode!,
+        originalIndex: inv.tranzilaIndex,
+        authNr: inv.tranzilaConfirmationCode,
         amount: inv.amount,
       });
 
       if (!refund.ok) {
         return NextResponse.json(
           {
-            error: `Tranzila דחתה את ההחזר: ${refund.responseMessage || refund.responseCode}. ניתן לנסות "ביטול + סימון החזר ידני" ולבצע את הזיכוי בפאנל Tranzila.`,
+            error: `Tranzila דחתה את ההחזר: ${refund.responseMessage || refund.responseCode}. ניתן לנסות "בטל + סימון החזר ידני" ולבצע את הזיכוי בפאנל Tranzila.`,
             tranzilaCode: refund.responseCode,
           },
           { status: 502 }
@@ -179,21 +178,28 @@ export async function POST(
           tranzilaResponseMessage: `Reversed by admin via API: ${refund.mode}`,
         })
         .where(eq(schema.invoices.id, inv.id));
+
+      refundedInvoiceId = inv.id;
     } else {
-      // Manual refund — admin will void/refund in Tranzila panel themselves.
-      // We just record the intent in DB.
-      refundResultText = `manual: admin will refund in Tranzila panel (idx=${inv.tranzilaIndex}, conf=${inv.tranzilaConfirmationCode})`;
-
-      await db
-        .update(schema.invoices)
-        .set({
-          status: "refunded",
-          tranzilaResponseMessage: `Manual refund: admin marks as refunded; actual reversal done in Tranzila panel`,
-        })
-        .where(eq(schema.invoices.id, inv.id));
+      // MANUAL refund — admin refunds in the Tranzila panel by hand. This path
+      // does NOT call Tranzila, so it must NOT be blocked by a missing index/
+      // confirmation code. Mark the invoice refunded if we have one; otherwise
+      // still proceed with the cancellation and record that a manual refund is
+      // due (the admin does the reversal in Tranzila regardless).
+      if (inv) {
+        refundResultText = `manual: admin refunds in Tranzila panel (idx=${inv.tranzilaIndex ?? "?"}, conf=${inv.tranzilaConfirmationCode ?? "?"})`;
+        await db
+          .update(schema.invoices)
+          .set({
+            status: "refunded",
+            tranzilaResponseMessage: `Manual refund: admin marks as refunded; actual reversal done in Tranzila panel`,
+          })
+          .where(eq(schema.invoices.id, inv.id));
+        refundedInvoiceId = inv.id;
+      } else {
+        refundResultText = `manual: no matching paid invoice found in DB — admin to refund in Tranzila panel`;
+      }
     }
-
-    refundedInvoiceId = inv.id;
   }
 
   // Two flavors of "cancel":

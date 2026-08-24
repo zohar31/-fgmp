@@ -93,7 +93,7 @@ export default async function AdminCancellationsPage() {
                             </span>
                           ) : (
                             <span className="text-ink-400">
-                              ✗ מחוץ לחלון 7 הימים
+                              ✗ מחוץ לחלון {SITE.pricing.refundDays} הימים
                             </span>
                           )}
                         </div>

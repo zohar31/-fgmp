@@ -116,7 +116,12 @@ export function ProcessCancellationButtons({
         דחה בקשה
       </button>
 
-      {error && <div className="text-xs text-rose-300">{error}</div>}
+      {error && (
+        <div className="rounded-xl bg-rose-500/10 p-3 text-xs leading-5 text-rose-200 ring-1 ring-rose-500/30">
+          <strong className="mb-0.5 block text-rose-100">הפעולה לא בוצעה</strong>
+          {error}
+        </div>
+      )}
     </div>
   );
 }
