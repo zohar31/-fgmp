@@ -11,7 +11,7 @@ import { CookieNotice } from "@/components/CookieNotice";
 import "../globals.css";
 import { SITE } from "@/lib/config";
 import { SITE_EN } from "@/lib/config-en";
-import { JsonLd, organizationSchema, websiteSchema } from "@/lib/jsonld";
+import { JsonLd, organizationSchemaEn, websiteSchemaEn } from "@/lib/jsonld";
 
 const heebo = Heebo({
   subsets: ["hebrew", "latin"],
@@ -113,8 +113,8 @@ export default function EnRootLayout({
       </head>
       <body className="min-h-screen bg-bg bg-grad-hero">
         <a href="#main-content" className="a11y-skip">Skip to main content</a>
-        <JsonLd data={organizationSchema()} />
-        <JsonLd data={websiteSchema()} />
+        <JsonLd data={organizationSchemaEn()} />
+        <JsonLd data={websiteSchemaEn()} />
         {gtmId && (
           <noscript>
             <iframe

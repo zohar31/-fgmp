@@ -1,4 +1,5 @@
 import { SITE } from "./config";
+import { SITE_EN } from "./config-en";
 import type { CustomerReview } from "./reviews";
 
 // תוקף הצעת המחיר — שנה אחת קדימה (מתעדכן בכל deploy)
@@ -114,6 +115,59 @@ export function websiteSchema() {
       target: `${SITE.url}/?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
+  };
+}
+
+// English (/en) variants — used by the English root layout so English pages
+// don't emit a Hebrew-language WebSite/Organization schema.
+export function websiteSchemaEn() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.brand,
+    url: `${SITE.url}/en`,
+    inLanguage: "en-US",
+    description: SITE_EN.descriptions.meta,
+  };
+}
+
+export function organizationSchemaEn() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE.url}/#organization`,
+    name: SITE.brand,
+    alternateName: ["FB Group Monitor Pro", "FGMP"],
+    legalName: SITE_EN.legalName,
+    url: `${SITE.url}/en`,
+    logo: { "@type": "ImageObject", url: `${SITE.url}/icon`, caption: SITE.brand },
+    image: `${SITE.url}/og-image.jpeg`,
+    description: SITE_EN.descriptions.organization,
+    email: SITE.notificationEmail,
+    slogan: "Hot leads from Facebook groups — straight to your WhatsApp, automatically",
+    foundingDate: "2026",
+    knowsAbout: [
+      "lead generation",
+      "facebook group leads",
+      "local business leads",
+      "lead automation",
+      "small business marketing",
+      "cost per lead",
+      "leads to whatsapp",
+    ],
+    knowsLanguage: ["en", "he"],
+    areaServed: [
+      { "@type": "Country", name: "United States" },
+      { "@type": "Country", name: "Israel" },
+    ],
+    sameAs: [],
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        availableLanguage: ["en", "he"],
+      },
+    ],
   };
 }
 
