@@ -8,8 +8,9 @@ import { Tracker } from "@/components/Tracker";
 import { AccessibilityWidget } from "@/components/AccessibilityWidget";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CookieNotice } from "@/components/CookieNotice";
-import "./globals.css";
+import "../globals.css";
 import { SITE } from "@/lib/config";
+import { SITE_EN } from "@/lib/config-en";
 import { JsonLd, organizationSchema, websiteSchema } from "@/lib/jsonld";
 
 const heebo = Heebo({
@@ -26,45 +27,45 @@ const assistant = Assistant({
   weight: ["400", "600", "700", "800"],
 });
 
+// English (/en) root layout. Serves real English server HTML —
+// <html lang="en" dir="ltr"> — so crawlers see the English pages as English
+// (the Hebrew root under app/(he) serves lang="he" dir="rtl"). `template: "%s"`
+// passes each page's title through unchanged (pages brand themselves).
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `לידים מקבוצות פייסבוק בוואטסאפ — מערכת AI | ${SITE.brand}`,
-    template: `%s | ${SITE.brand}`,
+    default: `${SITE.brand} — Facebook Group Leads, Straight to Your WhatsApp`,
+    template: "%s",
   },
-  description: SITE.descriptions.meta,
-  // Note: meta-keywords is ignored by Google since ~2009 and most modern
-  // engines. Kept as a tiny list for the few legacy crawlers that still
-  // read it (Yandex, Bing fallback). Real keyword targeting happens via
-  // body content, headings, and structured data.
+  description: SITE_EN.descriptions.meta,
   keywords: [
-    "לידים",
-    "לידים מקבוצות פייסבוק",
-    "לידים בוואטסאפ",
-    "מערכת לידים אוטומטית",
+    "facebook group leads",
+    "leads to whatsapp",
+    "lead generation",
+    "local business leads",
     "FGMP",
   ],
   openGraph: {
     type: "website",
-    locale: "he_IL",
-    url: SITE.url,
+    locale: "en_US",
+    url: `${SITE.url}/en`,
     siteName: SITE.brand,
-    title: `מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
-    description: SITE.descriptions.og,
+    title: `${SITE.brand} — Facebook Group Leads to WhatsApp`,
+    description: SITE_EN.descriptions.og,
     images: [
       {
         url: "/og-image.jpeg",
         width: 1200,
         height: 630,
-        alt: `לידים מקבוצות פייסבוק לוואטסאפ או טלגרם — ${SITE.brand}`,
+        alt: `${SITE.brand} — Facebook group leads to WhatsApp`,
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `מערכת לידים אוטומטית מקבוצות פייסבוק לוואטסאפ — ${SITE.brand}`,
-    description: SITE.descriptions.og,
+    title: `${SITE.brand} — Facebook Group Leads to WhatsApp`,
+    description: SITE_EN.descriptions.og,
     images: ["/og-image.jpeg"],
   },
   robots: { index: true, follow: true },
@@ -79,7 +80,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default function EnRootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -87,10 +88,8 @@ export default function RootLayout({
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
-  // Default (Hebrew) <html>. English pages under /en flip lang/dir to en/ltr
-  // via app/en/layout.tsx — keeps every page statically generated.
   return (
-    <html lang="he" dir="rtl" className={`${heebo.variable} ${assistant.variable}`}>
+    <html lang="en" dir="ltr" className={`${heebo.variable} ${assistant.variable}`}>
       <head>
         {gtmId && (
           <Script id="gtm" strategy="afterInteractive">{`
@@ -113,7 +112,7 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-screen bg-bg bg-grad-hero">
-        <a href="#main-content" className="a11y-skip">דלג לתוכן הראשי</a>
+        <a href="#main-content" className="a11y-skip">Skip to main content</a>
         <JsonLd data={organizationSchema()} />
         <JsonLd data={websiteSchema()} />
         {gtmId && (
