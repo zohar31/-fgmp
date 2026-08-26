@@ -12,7 +12,7 @@ import { SITE_EN } from "@/lib/config-en";
 const URL = `${SITE.url}/en/guides`;
 
 export const metadata: Metadata = {
-  title: "Lead Generation Guides — How to Get Customers from Facebook Groups",
+  title: "Lead Generation Guides for Small Business | FGMP",
   description:
     "Practical guides on lead generation for small businesses: how to get leads from Facebook groups, hot vs. cold leads, speed to lead, cost per lead, and more.",
   alternates: {

@@ -20,7 +20,7 @@ import { SITE_EN } from "@/lib/config-en";
 const URL = `${SITE.url}/en`;
 
 export const metadata: Metadata = {
-  title: "FGMP — Automated Facebook-Group Leads, Straight to Your WhatsApp",
+  title: "FGMP — Automated Facebook-Group Leads to WhatsApp",
   description: SITE_EN.descriptions.meta,
   alternates: {
     canonical: URL,

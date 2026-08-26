@@ -12,7 +12,7 @@ import { professionsEn, citiesEn } from "@/lib/geo-en";
 const URL = `${SITE.url}/en/leads`;
 
 export const metadata: Metadata = {
-  title: "Leads by Trade & City — Facebook-Group Leads to WhatsApp | FGMP",
+  title: "Leads by Trade & City — Facebook-Group Leads | FGMP",
   description:
     "Choose your trade and city. FGMP scans local Facebook groups 24/7 and sends every relevant request to your WhatsApp — plumbers, electricians, movers, roofers, and more, across major US cities.",
   alternates: { canonical: URL, languages: { "en-US": URL } },
