@@ -117,7 +117,7 @@ export function buildGeoEnContent(p: ProfessionEn, c: CityEn, monthly: number, r
   const kicker = pick([`${c.name} leads`, `Leads in ${c.name}`, `${cityState}`], seed + "k");
   const h1 = `${p.noun.charAt(0).toUpperCase() + p.noun.slice(1)} Leads in ${c.name}, ${c.state} — From Facebook Groups to Your WhatsApp`;
   const metaTitle = `${p.noun.charAt(0).toUpperCase() + p.noun.slice(1)} Leads in ${c.name}, ${c.state} | FGMP`;
-  const metaDescription = `Get ${p.noun} leads in ${cityState}. FGMP scans ${c.name}-area Facebook groups 24/7 and sends every ${p.service} request straight to your WhatsApp — before your competitors. $${monthly}/mo, ${refundDays}-day money-back guarantee.`;
+  const metaDescription = `Get ${p.noun} leads in ${cityState} — FGMP scans local Facebook groups 24/7 and sends each to your WhatsApp. $${monthly}/mo, ${refundDays}-day money-back.`;
   const subheading = `Every day, people in ${c.name} post things like "${example} in ${c.name}" in local Facebook groups. FGMP finds them in real time and sends the lead to your WhatsApp — before anyone else replies.`;
 
   const intro1 = pick(
