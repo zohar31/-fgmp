@@ -8,6 +8,8 @@ import {
   geoStats,
   findDuplicates,
   freshness,
+  coreMetaEn,
+  geoMetaEn,
 } from "@/lib/seo-audit";
 import { isGscConfigured, getGscData, type GscSummary } from "@/lib/gsc";
 import { IndexNowButton } from "./IndexNowButton";
@@ -70,10 +72,15 @@ export default async function SeoPage() {
   const inv = inventory();
   const core = coreMeta();
   const geo = geoMeta();
-  const allRows = [...core, ...geo];
+  const enCore = coreMetaEn();
+  const enGeo = geoMetaEn();
+  const allRows = [...core, ...geo, ...enCore, ...enGeo];
   const dupes = findDuplicates(allRows);
   const gstats = geoStats(geo);
+  const enGstats = geoStats(enGeo);
   const coreIssues = core.filter((r) => r.issues.length > 0);
+  const enCoreIssues = enCore.filter((r) => r.issues.length > 0);
+  const enGeoIssues = enGstats.longTitle + enGstats.longDesc + enGstats.shortDesc;
   const fresh = freshness();
   const staleCount = fresh.filter((f) => f.stale).length;
 
@@ -235,12 +242,41 @@ export default async function SeoPage() {
           אודיט מטא-תגיות
         </h2>
 
+        <div className="mb-1 text-xs font-bold text-ink-400">🇮🇱 עברית</div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Stat label="בעיות במדריכים/נחיתה" value={coreIssues.length} tone={coreIssues.length ? "warn" : "ok"} />
           <Stat label="כפילויות מטא" value={dupes.length} tone={dupes.length ? "error" : "ok"} />
           <Stat label="גאו · כותרת ארוכה" value={gstats.longTitle} tone={gstats.longTitle ? "warn" : "ok"} />
           <Stat label="גאו · תיאור בעייתי" value={gstats.longDesc + gstats.shortDesc} tone="ok" />
         </div>
+
+        <div className="mb-1 mt-4 text-xs font-bold text-ink-400">🇺🇸 English (/en)</div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat label="EN מדריכים · בעיות" value={enCoreIssues.length} tone={enCoreIssues.length ? "warn" : "ok"} />
+          <Stat label="EN גאו · כותרת ארוכה" value={enGstats.longTitle} tone={enGstats.longTitle ? "warn" : "ok"} />
+          <Stat label="EN גאו · תיאור בעייתי" value={enGstats.longDesc + enGstats.shortDesc} tone={enGstats.longDesc + enGstats.shortDesc ? "warn" : "ok"} />
+          <Stat label="EN סה״כ בעיות" value={enCoreIssues.length + enGeoIssues} tone={enCoreIssues.length + enGeoIssues ? "warn" : "ok"} />
+        </div>
+
+        {enCoreIssues.length > 0 && (
+          <div className="mt-5 overflow-x-auto">
+            <h3 className="mb-2 text-sm font-bold text-amber-300">EN — בעיות מטא ({enCoreIssues.length})</h3>
+            <table className="w-full min-w-[520px] text-right text-sm">
+              <tbody className="divide-y divide-white/5">
+                {enCoreIssues.map((r) => (
+                  <tr key={r.path}>
+                    <td className="py-2 pl-3">
+                      <Link href={r.path} target="_blank" className="text-brand-300 hover:underline" dir="ltr">
+                        {r.path}
+                      </Link>
+                    </td>
+                    <td className="py-2 text-amber-300">{r.issues.join(" · ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         {coreIssues.length > 0 && (
           <div className="mt-5 overflow-x-auto">
