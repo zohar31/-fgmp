@@ -164,9 +164,9 @@ export function buildGeoContent(
 
   const h1 = `לידים ${p.nounGenitive} ב${c.name} — מקבוצות פייסבוק, ישר לוואטסאפ`;
 
-  const metaTitle = `לידים ${p.nounGenitive} ב${c.name} | ${p.service} — FGMP`;
+  const metaTitle = `לידים ${p.nounGenitive} ב${c.name} — FGMP`;
 
-  const metaDescription = `מחפש לידים ${p.nounGenitive} ב${c.name}? FGMP סורקת את קבוצות הפייסבוק של ${c.name} והאזור 24/7 ושולחת כל פנייה ל${p.service} ישר לוואטסאפ שלך. ${monthly}₪/חודש · ערבות החזר ${refundDays} ימים.`;
+  const metaDescription = `מחפש לידים ${p.nounGenitive} ב${c.name}? FGMP סורקת קבוצות פייסבוק 24/7 ושולחת כל פנייה לוואטסאפ. ${monthly}₪/חודש · החזר ${refundDays} ימים.`;
 
   const subheading = `בכל יום מתפרסמים בקבוצות של ${c.name} והסביבה פוסטים כמו "${example} ב${c.name}". FGMP מאתרת אותם בזמן אמת ושולחת לך את הליד לוואטסאפ — לפני שהמתחרים בכלל ראו.`;
 
