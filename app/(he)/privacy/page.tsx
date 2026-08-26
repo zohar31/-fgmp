@@ -5,7 +5,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "מדיניות פרטיות",
-  description: `מדיניות הפרטיות של ${SITE.brand}`,
+  description: `מדיניות הפרטיות של ${SITE.brand} — איזה מידע אנחנו אוספים, איך משתמשים בו, איך שומרים עליו, ומהן הזכויות שלך.`,
   alternates: {
     canonical: `${SITE.url}/privacy`,
     languages: { "he-IL": `${SITE.url}/privacy`, "en-US": `${SITE.url}/en/privacy`, "x-default": `${SITE.url}/privacy` },

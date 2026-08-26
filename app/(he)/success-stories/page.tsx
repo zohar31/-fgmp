@@ -9,7 +9,7 @@ import { customerReviews } from "@/lib/reviews";
 import { SITE } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "סיפורי לקוחות — עסקים שמקבלים לידים עם FGMP",
+  title: "סיפורי לקוחות — עסקים שמקבלים לידים אמיתיים",
   description:
     "סיפורי הצלחה אמיתיים של עסקים בישראל שמקבלים לידים חמים מקבוצות פייסבוק עם FGMP — שיפוצניקים, קוסמטיקאיות, סוכני ביטוח, צלמים ועוד. דירוג ממוצע 5.0.",
   alternates: { canonical: `${SITE.url}/success-stories` },

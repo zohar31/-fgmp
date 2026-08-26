@@ -10,7 +10,7 @@ import { SITE } from "@/lib/config";
 export const metadata: Metadata = {
   title: "Methodology — how we measure the numbers",
   description:
-    "The source and method behind every number on FGMP — 50,000+ groups, 60,000+ posts daily, 4,670+ keywords, 1,000+ leads a day. Real metrics, updated in real time.",
+    "The source and method behind every number on FGMP — 50,000+ groups, 60,000+ posts daily, 4,670+ keywords, 1,000+ leads a day. Updated in real time.",
   alternates: {
     canonical: `${SITE.url}/en/methodology`,
     languages: { "he-IL": `${SITE.url}/methodology`, "en-US": `${SITE.url}/en/methodology` },

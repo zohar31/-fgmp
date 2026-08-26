@@ -15,7 +15,7 @@ const R = SITE_EN.pricing.refundDays;
 export const metadata: Metadata = {
   title: "About FGMP — Automated Facebook-Group Lead Generation",
   description:
-    "FGMP is an AI service that scans public Facebook group posts 24/7 and delivers hot leads straight to a business owner's WhatsApp. Learn what it is, how it works, and what it costs.",
+    "FGMP is an AI service that scans public Facebook groups 24/7 and delivers hot leads to your WhatsApp. What it is, how it works, and what it costs.",
   alternates: {
     canonical: URL,
     languages: { "he-IL": `${SITE.url}/about`, "en-US": URL, "x-default": `${SITE.url}/about` },

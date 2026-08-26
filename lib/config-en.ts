@@ -20,7 +20,7 @@ export const SITE_EN = {
   notificationEmail: SITE.notificationEmail,
   descriptions: {
     meta:
-      "Automated lead generation from Facebook groups, straight to your WhatsApp. FGMP's AI scans public group posts 24/7 and sends you people actively looking for your service — in seconds.",
+      "Automated lead generation from Facebook groups to your WhatsApp. FGMP's AI scans public group posts 24/7 and sends you people looking for your service.",
     og:
       "Every day, thousands of people post in Facebook groups looking for a service like yours. FGMP finds them in real time and sends each relevant lead to your WhatsApp — automatically, 24/7.",
     organization:

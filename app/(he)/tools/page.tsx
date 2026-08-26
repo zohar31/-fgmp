@@ -8,7 +8,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 import { SITE } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "כלים חינמיים לעסקים — מחשבוני לידים ו-ROI | FGMP",
+  title: "כלים חינמיים לעסקים — מחשבוני לידים ו-ROI",
   description:
     "כלים חינמיים לבעלי עסקים: מחשבון עלות לליד (CPL), מחשבון ROI לשיווק, ומחשבון כמה לידים צריך בחודש. חשב, תכנן, והחלט נכון.",
   alternates: {

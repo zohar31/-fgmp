@@ -10,6 +10,7 @@ import {
   freshness,
   coreMetaEn,
   geoMetaEn,
+  staticPagesMeta,
 } from "@/lib/seo-audit";
 import { isGscConfigured, getGscData, type GscSummary } from "@/lib/gsc";
 import { IndexNowButton } from "./IndexNowButton";
@@ -70,7 +71,7 @@ export default async function SeoPage() {
 
   // ── אינוונטר + אודיט מטא ────────────────────────────────────────────
   const inv = inventory();
-  const core = coreMeta();
+  const core = [...coreMeta(), ...staticPagesMeta()];
   const geo = geoMeta();
   const enCore = coreMetaEn();
   const enGeo = geoMetaEn();
