@@ -29,7 +29,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "how-to-get-more-customers",
-    title: "How to Get More Customers for a Small Business (Without a Big Budget)",
+    title: "How to Get More Customers for a Small Business",
     description:
       "Practical, low-cost ways to get more customers for a small business: the fastest channels, how to respond first, referrals, Google Business Profile, and Facebook groups. No big ad budget required.",
     excerpt:
@@ -42,7 +42,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "buying-leads",
-    title: "Buying Leads — Is It Worth It? Lead Companies, Costs & Pitfalls",
+    title: "Buying Leads — Is It Worth It? Costs & Pitfalls",
     description:
       "A straight look at buying leads: how lead companies price leads (per-lead, shared vs. exclusive), the common pitfalls, the real math on cost per customer, and a cheaper alternative that converts better.",
     excerpt:
@@ -68,7 +68,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "google-business-profile",
-    title: "Google Business Profile — The Complete Local SEO Guide for 2026",
+    title: "Google Business Profile — The Complete Local SEO Guide",
     description:
       "How to set up and optimize your Google Business Profile to rank in the Google Maps 3-pack: verification, categories, photos, reviews, and posts. Essential for any local business.",
     excerpt:
@@ -81,7 +81,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "facebook-group-leads",
-    title: "How to Get Leads from Facebook Groups in 2026 — The Complete Guide",
+    title: "How to Get Leads from Facebook Groups in 2026",
     description:
       "The full playbook for getting hot leads from Facebook groups: why it works, how to filter the noise, what tools to use, what it costs, and how automation changes the game for local service businesses.",
     excerpt:
@@ -113,7 +113,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "hot-vs-cold-leads",
-    title: "Hot vs. Cold Leads — How to Tell Them Apart (and Why It Matters)",
+    title: "Hot vs. Cold Leads — How to Tell Them Apart",
     description:
       "The difference between a hot lead and a cold lead, how to spot each, and why treating them the same burns deals. A practical guide to reading buying intent for small businesses.",
     excerpt:
@@ -126,7 +126,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "speed-to-lead",
-    title: "Speed to Lead — Why the First 5 Minutes Are Worth More Than Everything Else",
+    title: "Speed to Lead — Why the First 5 Minutes Matter Most",
     description:
       "Studies show close rates drop up to 8x after 5 minutes. Here's why response time is the single biggest factor in closing a lead — and how a small business answers first, automatically.",
     excerpt:
@@ -139,7 +139,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "organic-vs-paid-leads",
-    title: "Organic vs. Paid Leads — What Actually Pays Off for a Small Business",
+    title: "Organic vs. Paid Leads — What Actually Pays Off",
     description:
       "A full comparison of organic and paid leads: cost, quality, close rate, and setup time. Real 2026 numbers and why many small businesses shift toward organic — or a smart mix.",
     excerpt:
@@ -165,7 +165,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "lead-automation",
-    title: "Lead Automation — How to Put Lead Generation on Autopilot in 2026",
+    title: "Lead Automation — Put Lead Generation on Autopilot",
     description:
       "What lead automation is, which parts of the lead process you can automate (capture, routing, response, follow-up), the tools that do it, and how a small business gets hot leads without lifting a finger.",
     excerpt:
@@ -243,7 +243,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "sales-call-script",
-    title: "The Sales Call Script That Books the Job (For Service Businesses)",
+    title: "The Sales Call Script That Books the Job",
     description:
       "A simple, proven sales call script for service businesses: how to open, qualify, present the price, and close — with the exact lines to use and the mistakes that lose the job on the phone.",
     excerpt:
@@ -256,7 +256,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "price-objection",
-    title: "How to Handle 'You're Too Expensive' — Beating the Price Objection",
+    title: "How to Handle the 'You're Too Expensive' Objection",
     description:
       "Why customers say you're too expensive, what they usually mean, and exactly how to respond without dropping your price. Real scripts to handle the price objection and win the job on value.",
     excerpt:
@@ -269,7 +269,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "lead-funnel",
-    title: "The Lead Funnel Explained — From First Contact to Paying Customer",
+    title: "The Lead Funnel Explained — Contact to Customer",
     description:
       "What a lead funnel is, the stages every customer moves through (awareness → interest → decision → action), where leads leak out, and how a small service business plugs the holes.",
     excerpt:
@@ -282,7 +282,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "b2b-leads",
-    title: "B2B Lead Generation in 2026 — A Practical Guide for Small Companies",
+    title: "B2B Lead Generation — A Practical Guide for 2026",
     description:
       "How B2B lead generation actually works for small companies: the best channels, why buying intent matters more than volume, outreach vs. inbound, and low-cost ways to fill your pipeline.",
     excerpt:
@@ -295,7 +295,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "google-vs-facebook-leads",
-    title: "Google vs. Facebook Leads — Which Channel Wins for Local Business?",
+    title: "Google vs. Facebook Leads — Which Wins for Local?",
     description:
       "A head-to-head comparison of Google and Facebook for local leads: buying intent, cost per lead, speed, and close rate. When search wins, when social wins, and why most businesses need both.",
     excerpt:
@@ -308,7 +308,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "filter-facebook-leads",
-    title: "How to Filter Facebook Group Leads — Cut the Noise, Keep the Buyers",
+    title: "How to Filter Facebook Group Leads — Cut the Noise",
     description:
       "Facebook groups are full of noise — spam, other businesses, tire-kickers. Here's how to filter group posts down to real buyers: keywords, negative keywords, intent signals, and AI filtering.",
     excerpt:
@@ -321,7 +321,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "message-templates-for-leads",
-    title: "Message Templates for Leads — Text & WhatsApp Scripts That Get Replies",
+    title: "Message Templates for Leads — Text & WhatsApp Scripts",
     description:
       "Copy-paste text and WhatsApp templates for every stage of a lead: first contact, quoting, following up, handling silence, and closing. Ready-to-use scripts for service businesses.",
     excerpt:
@@ -334,7 +334,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "close-deal-over-text",
-    title: "How to Close a Deal Over Text & WhatsApp (Without Being Pushy)",
+    title: "How to Close a Deal Over Text & WhatsApp",
     description:
       "Closing over text and WhatsApp is different from the phone. Here's how to move a chat to a booked job: build trust fast, quote clearly, create urgency, and ask for the yes — with example messages.",
     excerpt:
@@ -620,7 +620,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "leads-for-small-business",
-    title: "Leads for Small Business — How to Get a Steady Flow of Customers",
+    title: "Leads for Small Business — A Steady Flow of Customers",
     description:
       "A no-fluff guide to getting leads for a small business on a tight budget: the highest-ROI channels, why speed beats spend, what leads cost, and how to build a predictable stream of customers.",
     excerpt:
@@ -646,7 +646,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "marketing-for-content-creators",
-    title: "Marketing for Content Creators — How to Get Paid Clients & Brand Deals",
+    title: "Marketing for Content Creators — Get Paid Clients",
     description:
       "A practical guide for content creators who want paid work: how to land clients and brand deals, position your offer, use your portfolio, and find businesses actively looking for content help.",
     excerpt:
@@ -672,7 +672,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "marketing-for-influencers",
-    title: "Marketing for Influencers — How to Land Brand Deals & Monetize",
+    title: "Marketing for Influencers — Land Brand Deals",
     description:
       "A practical guide for influencers who want to monetize: landing brand deals, pitching brands, pricing your audience, and finding companies actively looking to collaborate with creators.",
     excerpt:
@@ -698,7 +698,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "best-lead-generation-system",
-    title: "The Best Lead Generation System in 2026 — How to Compare Them",
+    title: "The Best Lead Generation System in 2026",
     description:
       "There's no single 'best' lead generation system — only the best for your business. Here's how to compare lead systems on cost, intent, speed, and exclusivity, and pick the one that pays off.",
     excerpt:
@@ -711,7 +711,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "mover-leads",
-    title: "Mover Leads — How Moving Companies Get More Booked Jobs in 2026",
+    title: "Mover Leads — How Moving Companies Get More Jobs",
     description:
       "How moving companies get leads that actually book: why moving leads are so competitive and expensive, the best low-cost channels, how to win the speed race, and where to find people who just posted that they're moving.",
     excerpt:
@@ -828,7 +828,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "landscaping-leads",
-    title: "Landscaping & Lawn Care Leads — How to Get More Clients in 2026",
+    title: "Landscaping & Lawn Care Leads — Get More Clients",
     description:
       "How landscapers and lawn-care pros get clients: why recurring maintenance is the goal, seasonality, the best local channels, and where homeowners ask for lawn care and landscaping help.",
     excerpt:
@@ -893,7 +893,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "flooring-leads",
-    title: "Flooring Leads — How Flooring Installers Get More Jobs in 2026",
+    title: "Flooring Leads — How Installers Get More Jobs",
     description:
       "How flooring installers get leads that book: mid-to-large tickets, material choices, why the quote and portfolio win, and where homeowners ask for flooring installation.",
     excerpt:
@@ -945,7 +945,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "photographer-leads",
-    title: "Photography Leads — How Photographers Get More Bookings in 2026",
+    title: "Photography Leads — How to Get More Bookings",
     description:
       "How photographers get clients: why the portfolio and reviews win, weddings/events/portraits, booking ahead, and where people ask for a photographer.",
     excerpt:
@@ -971,7 +971,7 @@ export const guidesEn: GuideEn[] = [
   },
   {
     slug: "personal-training-leads",
-    title: "Personal Training Leads — How Trainers Get More Clients in 2026",
+    title: "Personal Training Leads — Get More Clients in 2026",
     description:
       "How personal trainers get clients: results and transformations sell, retention beats churn, online vs. in-person, and where people ask for a trainer.",
     excerpt:
