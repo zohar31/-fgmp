@@ -13,6 +13,23 @@ import {
 } from "./geo";
 import { STATIC_PATHS } from "./site-urls";
 import { SITE } from "./config";
+import { SITE_EN } from "./config-en";
+import { guidesEn } from "./guides-en";
+import { glossaryEn } from "./glossary-en";
+import {
+  professionsEn,
+  citiesEn,
+  allGeoEnParams,
+  getProfessionEn,
+  getCityEn,
+  buildGeoEnContent,
+} from "./geo-en";
+
+// The root layout appends " | FGMP" to every Hebrew page title (the metadata
+// template). English pages (/en) use a "%s" pass-through template, so their
+// titles render as-is. Measure the RENDERED title so the audit matches Google.
+const HE_TITLE_SUFFIX = ` | ${SITE.brand}`;
+const heTitle = (t: string) => t + HE_TITLE_SUFFIX;
 
 export type Inventory = {
   guides: number;
@@ -65,18 +82,55 @@ export function coreMeta(): MetaRow[] {
     rows.push({
       path: `/guides/${g.slug}`,
       kind: "מדריך",
-      title: g.title,
+      title: heTitle(g.title),
       desc: g.description,
-      issues: lengthIssues(g.title, g.description),
+      issues: lengthIssues(heTitle(g.title), g.description),
     });
   }
   for (const p of landingPages) {
+    // Landing metaTitle already includes "| FGMP" branding → no template suffix.
     rows.push({
       path: `/lidim/${p.slug}`,
       kind: "נחיתה",
       title: p.metaTitle,
       desc: p.metaDescription,
       issues: lengthIssues(p.metaTitle, p.metaDescription),
+    });
+  }
+  return rows;
+}
+
+// English meta (guides + glossary). English pages use a "%s" title template,
+// so titles render exactly as written — no branding suffix to add.
+export function coreMetaEn(): MetaRow[] {
+  const rows: MetaRow[] = [];
+  for (const g of guidesEn) {
+    rows.push({
+      path: `/en/guides/${g.slug}`,
+      kind: "מדריך",
+      title: g.title,
+      desc: g.description,
+      issues: lengthIssues(g.title, g.description),
+    });
+  }
+  void glossaryEn;
+  return rows;
+}
+
+// English geo meta (all /en/leads/<trade>/<city> pages).
+export function geoMetaEn(): MetaRow[] {
+  const rows: MetaRow[] = [];
+  for (const { profession, city } of allGeoEnParams()) {
+    const p = getProfessionEn(profession);
+    const c = getCityEn(city);
+    if (!p || !c) continue;
+    const content = buildGeoEnContent(p, c, SITE_EN.pricing.monthlyUSD, SITE_EN.pricing.refundDays);
+    rows.push({
+      path: `/en/leads/${profession}/${city}`,
+      kind: "גאו",
+      title: content.metaTitle,
+      desc: content.metaDescription,
+      issues: lengthIssues(content.metaTitle, content.metaDescription),
     });
   }
   return rows;
@@ -90,6 +144,8 @@ export function geoMeta(): MetaRow[] {
     const p = getGeoProfession(slug);
     const c = getCity(city);
     if (!p || !c) continue;
+    // Geo pages use an absolute title (their metaTitle already includes
+    // branding), so no template suffix is added.
     const content = buildGeoContent(p, c, SITE.pricing.monthlyILS, SITE.pricing.refundDays);
     rows.push({
       path: `/lidim/${slug}/${city}`,

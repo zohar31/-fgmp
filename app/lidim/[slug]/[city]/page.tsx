@@ -31,7 +31,7 @@ export async function generateMetadata({
   const content = buildGeoContent(p, c, SITE.pricing.monthlyILS, SITE.pricing.refundDays);
   const url = `${SITE.url}/lidim/${slug}/${city}`;
   return {
-    title: content.metaTitle,
+    title: { absolute: content.metaTitle },
     description: content.metaDescription,
     alternates: { canonical: url },
     openGraph: {

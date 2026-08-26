@@ -9,7 +9,7 @@ const URL = `${SITE.url}/en/terms`;
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: `Terms of service for the ${SITE.brand} lead-generation service.`,
-  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/terms`, "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/terms`, "en-US": URL, "x-default": `${SITE.url}/terms` } },
 };
 
 const P = SITE_EN.pricing.monthlyUSD;

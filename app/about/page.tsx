@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   title: "אודות FGMP — מערכת הלידים האוטומטית מקבוצות פייסבוק",
   description:
     "FGMP — שירות SaaS ישראלי שסורק 50,000+ קבוצות פייסבוק 24/7 ושולח לידים חמים לוואטסאפ. הטכנולוגיה היחידה כיום בעולם עם היכולת הזו.",
-  alternates: { canonical: `${SITE.url}/about` },
+  alternates: {
+    canonical: `${SITE.url}/about`,
+    languages: { "he-IL": `${SITE.url}/about`, "en-US": `${SITE.url}/en/about`, "x-default": `${SITE.url}/about` },
+  },
   openGraph: {
     title: "אודות FGMP",
     description: "השירות היחיד בעולם לסריקת קבוצות פייסבוק עם AI ושליחת לידים מיידית לוואטסאפ.",

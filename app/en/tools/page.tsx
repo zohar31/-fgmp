@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Free Business Tools — Lead & ROI Calculators | FGMP",
   description:
     "Free calculators for business owners: cost per lead, marketing ROI, and how many leads you need to hit your revenue goal.",
-  alternates: { canonical: URL, languages: { "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/tools`, "en-US": URL, "x-default": `${SITE.url}/tools` } },
   openGraph: { type: "website", locale: "en_US", title: "Free business tools — FGMP", url: URL },
 };
 

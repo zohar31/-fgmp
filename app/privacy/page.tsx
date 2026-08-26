@@ -6,7 +6,10 @@ import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 export const metadata: Metadata = {
   title: "מדיניות פרטיות",
   description: `מדיניות הפרטיות של ${SITE.brand}`,
-  alternates: { canonical: `${SITE.url}/privacy` },
+  alternates: {
+    canonical: `${SITE.url}/privacy`,
+    languages: { "he-IL": `${SITE.url}/privacy`, "en-US": `${SITE.url}/en/privacy`, "x-default": `${SITE.url}/privacy` },
+  },
 };
 
 export default function PrivacyPage() {

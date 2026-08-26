@@ -29,8 +29,8 @@ const assistant = Assistant({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `לידים מקבוצות פייסבוק בוואטסאפ — מערכת AI אוטומטית | ${SITE.brand}`,
-    template: `%s | לידים בוואטסאפ — ${SITE.brand}`,
+    default: `לידים מקבוצות פייסבוק בוואטסאפ — מערכת AI | ${SITE.brand}`,
+    template: `%s | ${SITE.brand}`,
   },
   description: SITE.descriptions.meta,
   // Note: meta-keywords is ignored by Google since ~2009 and most modern

@@ -6,7 +6,10 @@ import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 export const metadata: Metadata = {
   title: "הצהרת נגישות",
   description: `הצהרת נגישות לאתר ${SITE.brand} בהתאם לחוק שוויון זכויות לאנשים עם מוגבלות ולתקן הישראלי ת״י 5568`,
-  alternates: { canonical: `${SITE.url}/accessibility` },
+  alternates: {
+    canonical: `${SITE.url}/accessibility`,
+    languages: { "he-IL": `${SITE.url}/accessibility`, "en-US": `${SITE.url}/en/accessibility`, "x-default": `${SITE.url}/accessibility` },
+  },
 };
 
 export default function AccessibilityPage() {

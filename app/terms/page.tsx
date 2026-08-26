@@ -6,7 +6,10 @@ import { JsonLd, breadcrumbSchema } from "@/lib/jsonld";
 export const metadata: Metadata = {
   title: "תקנון ותנאי שימוש",
   description: `תקנון השימוש בשירות ${SITE.brand}`,
-  alternates: { canonical: `${SITE.url}/terms` },
+  alternates: {
+    canonical: `${SITE.url}/terms`,
+    languages: { "he-IL": `${SITE.url}/terms`, "en-US": `${SITE.url}/en/terms`, "x-default": `${SITE.url}/terms` },
+  },
 };
 
 export default function TermsPage() {

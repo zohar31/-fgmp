@@ -8,7 +8,7 @@ const URL = `${SITE.url}/en/privacy`;
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: `How ${SITE.brand} collects, uses, and protects your information.`,
-  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/privacy`, "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/privacy`, "en-US": URL, "x-default": `${SITE.url}/privacy` } },
 };
 
 export default function EnPrivacy() {

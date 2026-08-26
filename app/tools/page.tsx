@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   title: "כלים חינמיים לעסקים — מחשבוני לידים ו-ROI | FGMP",
   description:
     "כלים חינמיים לבעלי עסקים: מחשבון עלות לליד (CPL), מחשבון ROI לשיווק, ומחשבון כמה לידים צריך בחודש. חשב, תכנן, והחלט נכון.",
-  alternates: { canonical: `${SITE.url}/tools` },
+  alternates: {
+    canonical: `${SITE.url}/tools`,
+    languages: { "he-IL": `${SITE.url}/tools`, "en-US": `${SITE.url}/en/tools`, "x-default": `${SITE.url}/tools` },
+  },
   openGraph: {
     type: "website",
     title: "כלים חינמיים לעסקים — FGMP",

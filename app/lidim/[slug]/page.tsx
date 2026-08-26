@@ -23,7 +23,7 @@ export async function generateMetadata({
   const page = getLandingPage(slug);
   if (!page) return {};
   return {
-    title: page.metaTitle,
+    title: { absolute: page.metaTitle },
     description: page.metaDescription,
     alternates: { canonical: `${SITE.url}/lidim/${slug}` },
     openGraph: {
