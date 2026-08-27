@@ -12,9 +12,9 @@ import { SITE_EN } from "@/lib/config-en";
 const URL = `${SITE.url}/en/guides/glossary`;
 
 export const metadata: Metadata = {
-  title: "Lead Generation Glossary — 24 Terms Every Business Should Know | FGMP",
+  title: "Lead Generation Glossary — 24 Essential Terms | FGMP",
   description:
-    "A plain-English glossary of lead generation terms: hot lead, cold lead, CPL, CPA, close rate, lead funnel, exclusive lead, and more. Short, clear definitions — each linked to a deep-dive guide.",
+    "A plain-English glossary of lead-generation terms — hot lead, CPL, CPA, close rate, and more. Clear definitions, each linked to a deep-dive guide.",
   keywords: [
     "lead generation glossary",
     "lead terms",
