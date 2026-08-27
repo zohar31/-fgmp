@@ -3,13 +3,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
-import { eq, desc, asc } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { CreditCard, CheckCircle2, Clock, AlertCircle, ChevronLeft, Shield } from "lucide-react";
 import { SITE, isWithinRefundWindow, refundDaysLeft } from "@/lib/config";
 import { SITE_EN } from "@/lib/config-en";
 import { getServerLocale } from "@/lib/i18n-server";
 import { CheckoutButton } from "./CheckoutButton";
-import { CryptoCheckout } from "./CryptoCheckout";
 
 export const metadata: Metadata = { title: "תשלום ומנוי" };
 
@@ -20,7 +19,7 @@ export default async function BillingPage() {
   const locale = await getServerLocale();
   const en = locale === "en";
 
-  const [subscription, settings, recentPayments, cryptoPlans] = await Promise.all([
+  const [subscription, settings, recentPayments] = await Promise.all([
     db.query.subscriptions.findFirst({ where: eq(schema.subscriptions.userId, userId) }),
     db.query.businessSettings.findFirst({ where: eq(schema.businessSettings.userId, userId) }),
     db
@@ -29,11 +28,6 @@ export default async function BillingPage() {
       .where(eq(schema.invoices.userId, userId))
       .orderBy(desc(schema.invoices.issuedAt))
       .limit(10),
-    db
-      .select()
-      .from(schema.cryptoPlans)
-      .where(eq(schema.cryptoPlans.active, true))
-      .orderBy(asc(schema.cryptoPlans.sortOrder)),
   ]);
 
   const trialDaysLeft = subscription?.trialEndsAt
@@ -214,8 +208,6 @@ export default async function BillingPage() {
           </ul>
         </div>
       )}
-
-      {!isPaid && <CryptoCheckout plans={cryptoPlans} locale={locale} />}
 
       {recentPayments.length > 0 && (
         <div className="card p-6">
