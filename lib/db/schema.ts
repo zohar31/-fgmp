@@ -98,9 +98,6 @@ export const subscriptions = pgTable("subscriptions", {
   lastPaymentAt: timestamp("lastPaymentAt", { mode: "date" }),
   nextChargeAt: timestamp("nextChargeAt", { mode: "date" }),
   failedChargeCount: integer("failedChargeCount").notNull().default(0),
-  // Crypto prepaid: paid-through date (no standing order in crypto). While
-  // paidUntil is in the future the subscription is considered paid/active.
-  paidUntil: timestamp("paidUntil", { mode: "date" }),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
 });
@@ -151,22 +148,6 @@ export const notifications = pgTable(
   },
   (table) => [index("notifications_userId_idx").on(table.userId, table.createdAt)]
 );
-
-// Crypto prepaid plans — fully managed from the admin UI (months, price,
-// label, discount badge, active/order). The base $99/mo card plan stays as-is;
-// these are prepaid multi-month packages paid in USDT/USDC (no standing order
-// in crypto, so customers prepay a period).
-export const cryptoPlans = pgTable("crypto_plans", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  months: integer("months").notNull(),
-  priceUsd: integer("priceUsd").notNull(), // total price, whole USD
-  label: text("label"),
-  badge: text("badge"), // e.g. "Save 20%"
-  active: boolean("active").notNull().default(true),
-  sortOrder: integer("sortOrder").notNull().default(0),
-  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
-});
 
 export const invoiceStatus = pgEnum("invoice_status", [
   "pending",

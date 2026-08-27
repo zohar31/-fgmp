@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import { isAdmin } from "@/lib/admin";
 import { Logo } from "@/components/Logo";
-import { Users, FileText, LogOut, Home, Mail, BarChart3, Search, Bot, CreditCard, RotateCcw, Bitcoin } from "lucide-react";
+import { Users, FileText, LogOut, Home, Mail, BarChart3, Search, Bot, CreditCard, RotateCcw } from "lucide-react";
 
 export const metadata: Metadata = {
   title: { template: "%s · Admin", default: "Admin · FGMP" },
@@ -16,7 +16,6 @@ const navItems = [
   { href: "/admin/payments", label: "תשלומים", icon: CreditCard },
   { href: "/admin/cancellations", label: "בקשות ביטול וזיכויים", icon: RotateCcw },
   { href: "/admin/billing-test", label: "בדיקת סליקה (1 ₪)", icon: CreditCard },
-  { href: "/admin/crypto-plans", label: "חבילות קריפטו", icon: Bitcoin },
   { href: "/admin/agent-log", label: "פעולות סוכן", icon: Bot },
   { href: "/admin/analytics", label: "סטטיסטיקה", icon: BarChart3 },
   { href: "/admin/seo", label: "SEO ובריאות אתר", icon: Search },
