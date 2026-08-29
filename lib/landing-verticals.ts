@@ -883,6 +883,7 @@ export const verticalPages: LandingPage[] = [
       },
     ],
     relatedTerms: ["לידים למכירת רכב", "לידים לליסינג", "לידים למוסך", "לקוחות לסוכן רכב", "פניות ליסינג תפעולי", "לידים לרכב יד שנייה"],
+    relatedPages: [{ slug: "lidim-leshamai-rechev", label: "לידים לשמאי רכב" }],
   },
   {
     slug: "lidim-limudim-hachshara",
@@ -1073,6 +1074,7 @@ export const verticalPages: LandingPage[] = [
       },
     ],
     relatedTerms: ["לידים למתווך נדל\"ן", "לידים להשקעות", "לידים לדירה להשקעה", "לקוחות לסוכן נדל\"ן", "פניות נדל\"ן", "לידים לנכס מניב"],
+    relatedPages: [{ slug: "lidim-leshamai-mekarkein", label: "לידים לשמאי מקרקעין" }],
   },
   {
     slug: "lidim-finansim-bituach",
@@ -1111,6 +1113,7 @@ export const verticalPages: LandingPage[] = [
       },
     ],
     relatedTerms: ["לידים לסוכן ביטוח", "לידים להלוואות", "לידים למשכנתא", "לידים לייעוץ פנסיוני", "לידים להחזרי מס", "לקוחות לסוכן אשראי"],
+    relatedPages: [{ slug: "lidim-leshamai-rechush", label: "לידים לשמאי רכוש" }],
   },
 
   // ── שמאים ─────────────────────────────────────────────────────
@@ -1151,6 +1154,7 @@ export const verticalPages: LandingPage[] = [
       },
     ],
     relatedTerms: ["לידים לשמאי", "שמאי רכב אחרי תאונה", "שמאי ירידת ערך", "לקוחות לשמאי רכב", "פניות לשמאות רכב"],
+    relatedPages: [{ slug: "lidim-rechev-leasing", label: "לידים לרכב וליסינג" }],
   },
   {
     slug: "lidim-leshamai-mekarkein",
@@ -1189,6 +1193,7 @@ export const verticalPages: LandingPage[] = [
       },
     ],
     relatedTerms: ["לידים לשמאי", "שמאי מקרקעין הערכת שווי", "שמאי למשכנתא", "לקוחות לשמאי מקרקעין", "פניות לשמאות מקרקעין"],
+    relatedPages: [{ slug: "lidim-nadlan-hashkaot", label: "לידים לנדל\"ן והשקעות" }],
   },
   {
     slug: "lidim-leshamai-rechush",
@@ -1227,5 +1232,6 @@ export const verticalPages: LandingPage[] = [
       },
     ],
     relatedTerms: ["לידים לשמאי", "שמאי רכוש נזק מים", "שמאי לתביעת ביטוח", "לקוחות לשמאי רכוש", "פניות לשמאות רכוש"],
+    relatedPages: [{ slug: "lidim-finansim-bituach", label: "לידים לפיננסים וביטוח" }],
   },
 ];

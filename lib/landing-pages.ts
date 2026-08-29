@@ -32,6 +32,9 @@ export interface LandingPage {
   faq: { q: string; a: string }[];
   // Optional related-keywords section for internal context (renders as text)
   relatedTerms: string[];
+  // Optional links to related landing pages (renders as a linked section) —
+  // used to build topical clusters (e.g. a category hub ↔ a niche sub-page).
+  relatedPages?: { slug: string; label: string }[];
 }
 
 const basePages: LandingPage[] = [

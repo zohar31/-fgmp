@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, MessageCircle, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -237,6 +237,25 @@ export default async function LandingPageRoute({
                   </Link>
                 ))}
               </div>
+            </div>
+          )}
+
+          {page.relatedPages && page.relatedPages.length > 0 && (
+            <div className="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+              <h3 className="text-sm font-bold text-ink-100">עמודים קשורים</h3>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {page.relatedPages.map((rp) => (
+                  <li key={rp.slug}>
+                    <Link
+                      href={`/lidim/${rp.slug}`}
+                      className="inline-flex items-center gap-1 rounded-full bg-white/[0.04] px-3 py-1.5 text-sm text-brand-200 ring-1 ring-white/10 transition hover:bg-white/[0.08] hover:ring-brand-500/40"
+                    >
+                      {rp.label}
+                      <ChevronLeft className="h-3.5 w-3.5" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
