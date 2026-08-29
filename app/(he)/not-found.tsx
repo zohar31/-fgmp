@@ -15,9 +15,14 @@ export default function NotFound() {
           <p className="mt-2 text-ink-300">
             הקישור שגוי או שהדף הוסר.
           </p>
-          <Link href="/" className="btn-brand mt-8 inline-flex">
-            חזרה לעמוד הבית
-          </Link>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link href="/" className="btn-brand inline-flex">
+              חזרה לעמוד הבית
+            </Link>
+            <Link href="/en" className="btn-ghost inline-flex" dir="ltr">
+              English home
+            </Link>
+          </div>
         </div>
       </main>
       <Footer />
