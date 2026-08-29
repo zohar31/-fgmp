@@ -16,8 +16,25 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE.url}/lidim` },
 };
 
+// 8 קטגוריות-על (hub) — מוצגות בסקשן ייעודי בראש העמוד ומסוננות משאר הרשימה.
+const HUB_SLUGS = new Set([
+  "lidim-finansim-bituach",
+  "lidim-nadlan-hashkaot",
+  "lidim-shiputzim-ubniya",
+  "lidim-rechev-leasing",
+  "lidim-briut-estetika",
+  "lidim-limudim-hachshara",
+  "lidim-orchey-din-mishpat",
+  "lidim-digital-technologia",
+]);
+
 export default function LidimIndexPage() {
   const verticalSlugs = new Set(verticalPages.map((p) => p.slug));
+  // סדר תצוגה קבוע לקטגוריות-העל.
+  const hubs = [...HUB_SLUGS]
+    .map((slug) => verticalPages.find((p) => p.slug === slug))
+    .filter((p): p is (typeof verticalPages)[number] => Boolean(p));
+  const otherVerticals = verticalPages.filter((p) => !HUB_SLUGS.has(p.slug));
   const broad = landingPages.filter(
     (p) => !p.keyword.startsWith("לידים ל") && !verticalSlugs.has(p.slug)
   );
@@ -56,13 +73,27 @@ export default function LidimIndexPage() {
 
           <section className="mt-12">
             <h2 className="font-display text-2xl font-bold text-white">
-              לידים לפי סוג — לבעלי עסקים
+              לידים לפי תחום — קטגוריות ראשיות
             </h2>
             <p className="mt-2 text-ink-300">
-              קטגוריות הלידים המבוקשות ביותר: פיננסים, אשראי, ביטוח, נדל"ן, מימוש זכויות ויופי.
+              שמונה תחומי-העל המבוקשים ביותר. בחרו קטגוריה כדי לראות איך FGMP מביאה לכם לידים חמים בתחום.
+            </p>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {hubs.map((p) => (
+                <PageCard key={p.slug} page={p} />
+              ))}
+            </ul>
+          </section>
+
+          <section className="mt-16">
+            <h2 className="font-display text-2xl font-bold text-white">
+              לידים לפי סוג — פיננסים, זכויות ויופי
+            </h2>
+            <p className="mt-2 text-ink-300">
+              קטגוריות ממוקדות: ביטוח, הלוואות, משכנתאות, החזרי מס, מימוש זכויות, אסתטיקה, שמאות ועוד.
             </p>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {verticalPages.map((p) => (
+              {otherVerticals.map((p) => (
                 <li key={p.slug}>
                   <Link
                     href={`/lidim/${p.slug}`}
