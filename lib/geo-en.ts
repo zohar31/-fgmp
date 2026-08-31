@@ -73,6 +73,31 @@ export const professionsEn: ProfessionEn[] = [
   { slug: "insurance-agent", noun: "insurance agent", nounPlural: "insurance agents", service: "insurance", searchExamples: ["Looking for an insurance agent", "Recommend an insurance broker", "Need help with home insurance"] },
   { slug: "personal-trainer", noun: "personal trainer", nounPlural: "personal trainers", service: "personal training", searchExamples: ["Looking for a personal trainer", "Recommend a trainer", "Need a trainer near me"] },
   { slug: "auto-mechanic", noun: "auto mechanic", nounPlural: "auto mechanics", service: "auto repair", searchExamples: ["Need a trustworthy mechanic", "Recommend an auto shop", "Looking for a mechanic"] },
+
+  // ── High-value US verticals ──
+  { slug: "solar-installer", noun: "solar installer", nounPlural: "solar installers", service: "solar panel installation", searchExamples: ["Looking for a good solar company", "Anyone recommend solar installers?", "Getting quotes for solar panels"] },
+  { slug: "mortgage-broker", noun: "mortgage broker", nounPlural: "mortgage brokers", service: "mortgage and home loans", searchExamples: ["Recommend a mortgage broker?", "Looking for a good loan officer", "Who did your home refinance?"] },
+  { slug: "financial-advisor", noun: "financial advisor", nounPlural: "financial advisors", service: "financial planning", searchExamples: ["Looking for a financial advisor", "Recommend a fee-only planner", "Who do you use for retirement planning?"] },
+  { slug: "personal-injury-lawyer", noun: "personal injury lawyer", nounPlural: "personal injury lawyers", service: "personal injury representation", searchExamples: ["Need a personal injury lawyer after a car accident", "Recommend an injury attorney", "Looking for a PI lawyer"] },
+  { slug: "family-lawyer", noun: "family lawyer", nounPlural: "family lawyers", service: "family law and divorce", searchExamples: ["Looking for a divorce attorney", "Recommend a family lawyer", "Need a custody lawyer"] },
+  { slug: "dentist", noun: "dentist", nounPlural: "dentists", service: "dental care", searchExamples: ["Looking for a good dentist accepting new patients", "Recommend a dentist near me", "Need an emergency dentist"] },
+  { slug: "medicare-agent", noun: "Medicare agent", nounPlural: "Medicare agents", service: "Medicare plans", searchExamples: ["Need help choosing a Medicare plan", "Recommend a Medicare broker", "Turning 65, who do I talk to about Medicare?"] },
+  { slug: "tax-preparer", noun: "tax preparer", nounPlural: "tax preparers", service: "tax preparation", searchExamples: ["Looking for a good tax preparer", "Recommend a CPA for taxes", "Who does your small business taxes?"] },
+  { slug: "med-spa", noun: "med spa", nounPlural: "med spas", service: "aesthetic treatments", searchExamples: ["Recommend a good med spa", "Looking for Botox near me", "Where do you get your fillers done?"] },
+  { slug: "chiropractor", noun: "chiropractor", nounPlural: "chiropractors", service: "chiropractic care", searchExamples: ["Recommend a good chiropractor", "Looking for a chiropractor for back pain", "Who do you see for adjustments?"] },
+
+  // ── US home-service trades ──
+  { slug: "pool-service", noun: "pool service", nounPlural: "pool companies", service: "pool cleaning and maintenance", searchExamples: ["Looking for a reliable pool guy", "Recommend a pool cleaning service", "Need weekly pool maintenance"] },
+  { slug: "fencing-contractor", noun: "fencing contractor", nounPlural: "fencing contractors", service: "fence installation", searchExamples: ["Need a fence installed", "Recommend a fencing company", "Looking for a fence contractor"] },
+  { slug: "water-damage-restoration", noun: "water damage restoration", nounPlural: "restoration companies", service: "water damage restoration", searchExamples: ["Flooded basement, need help ASAP", "Recommend a water damage company", "Who handles water damage cleanup?"] },
+  { slug: "window-installer", noun: "window installer", nounPlural: "window installers", service: "window replacement", searchExamples: ["Getting quotes for window replacement", "Recommend a window company", "Need new windows installed"] },
+  { slug: "gutter-installer", noun: "gutter installer", nounPlural: "gutter installers", service: "gutter installation and cleaning", searchExamples: ["Need gutters cleaned", "Recommend a gutter installer", "Looking for gutter guards"] },
+  { slug: "concrete-contractor", noun: "concrete contractor", nounPlural: "concrete contractors", service: "concrete work", searchExamples: ["Need a concrete driveway poured", "Recommend a concrete contractor", "Looking for someone to do a patio"] },
+  { slug: "deck-builder", noun: "deck builder", nounPlural: "deck builders", service: "deck building", searchExamples: ["Looking for a deck builder", "Recommend someone to build a deck", "Getting quotes for a new deck"] },
+  { slug: "drywall-contractor", noun: "drywall contractor", nounPlural: "drywall contractors", service: "drywall installation and repair", searchExamples: ["Need drywall repair", "Recommend a drywall guy", "Looking for someone to hang drywall"] },
+  { slug: "chimney-sweep", noun: "chimney sweep", nounPlural: "chimney sweeps", service: "chimney cleaning", searchExamples: ["Need my chimney cleaned", "Recommend a chimney sweep", "Looking for chimney inspection"] },
+  { slug: "kitchen-remodeler", noun: "kitchen remodeler", nounPlural: "kitchen remodelers", service: "kitchen remodeling", searchExamples: ["Getting quotes for a kitchen remodel", "Recommend a kitchen remodeler", "Who did your kitchen renovation?"] },
+  { slug: "bathroom-remodeler", noun: "bathroom remodeler", nounPlural: "bathroom remodelers", service: "bathroom remodeling", searchExamples: ["Looking for a bathroom remodeler", "Recommend someone for a bathroom reno", "Getting quotes to redo a bathroom"] },
 ];
 
 // ── lookups ────────────────────────────────────────────────────────────────
