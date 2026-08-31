@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
+import { isEnglishCustomer } from "@/lib/config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -106,12 +107,21 @@ export async function POST(req: Request) {
     })
     .where(eq(schema.subscriptions.userId, sub.userId));
 
-  // הודעה ב-Notifications
+  // הודעה ב-Notifications — בשפת הלקוח
+  const settings = await db.query.businessSettings.findFirst({
+    where: eq(schema.businessSettings.userId, sub.userId),
+  });
+  const en = isEnglishCustomer({
+    leadPhone: settings?.leadPhone ?? phone,
+    serviceAreas: settings?.serviceAreas,
+  });
   await db.insert(schema.notifications).values({
     userId: sub.userId,
     type: "success",
-    title: "המערכת הופעלה ✓",
-    body: `החשבון שלך מאומת ופעיל. לידים יישלחו לוואטסאפ במספר ${phone}. בהצלחה!`,
+    title: en ? "System activated ✓" : "המערכת הופעלה ✓",
+    body: en
+      ? `Your account is verified and active. Leads will be sent to WhatsApp at ${phone}. Good luck!`
+      : `החשבון שלך מאומת ופעיל. לידים יישלחו לוואטסאפ במספר ${phone}. בהצלחה!`,
   });
 
   return NextResponse.json({
