@@ -41,6 +41,7 @@ const TRADE_GUIDE: Record<string, { slug: string; label: string }> = {
   "real-estate-agent": { slug: "real-estate-leads", label: "How agents get more clients" },
   "personal-trainer": { slug: "personal-training-leads", label: "How trainers get more clients" },
   "auto-mechanic": { slug: "auto-repair-leads", label: "How mechanics get more customers" },
+  "solar-installer": { slug: "solar-leads", label: "How solar companies get more installs" },
 };
 
 export async function generateMetadata({

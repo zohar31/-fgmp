@@ -995,6 +995,19 @@ export const guidesEn: GuideEn[] = [
     updatedAt: "2026-08-23",
     keywords: ["auto repair leads", "mechanic leads", "how to get auto repair customers", "auto shop marketing", "car repair leads"],
   },
+  {
+    slug: "solar-leads",
+    title: "Solar Leads — How Solar Companies Get More Installs in 2026",
+    description:
+      "How solar companies get high-quality leads without overpaying: why bought solar leads fail, where homeowners ask about going solar, and how to reach them first.",
+    excerpt:
+      "Solar leads are among the most expensive in home services — and most are shared. Here's how solar installers get exclusive, high-intent leads from local Facebook groups and close more installs.",
+    category: "Industry Guides",
+    readTime: 9,
+    publishedAt: "2026-08-31",
+    updatedAt: "2026-08-31",
+    keywords: ["solar leads", "how to get solar leads", "solar installer leads", "solar sales leads", "residential solar leads"],
+  },
 ];
 
 export function getGuideEn(slug: string): GuideEn | undefined {
