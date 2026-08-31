@@ -41,6 +41,22 @@ export const cities: City[] = [
   { slug: "beit-shemesh", name: "בית שמש", region: "ירושלים", nearby: ["ירושלים", "מודיעין", "קרית גת"] },
   { slug: "nahariya", name: "נהריה", region: "צפון", nearby: ["עכו", "כרמיאל", "מעלות"] },
   { slug: "tveria", name: "טבריה", region: "צפון", nearby: ["כרמיאל", "צפת", "בית שאן"] },
+  { slug: "bnei-brak", name: "בני ברק", region: "מרכז", nearby: ["רמת גן", "גבעתיים", "פתח תקווה", "תל אביב"] },
+  { slug: "ramat-hasharon", name: "רמת השרון", region: "שרון", nearby: ["הרצליה", "הוד השרון", "תל אביב"] },
+  { slug: "rosh-haayin", name: "ראש העין", region: "מרכז", nearby: ["פתח תקווה", "אלעד", "כפר קאסם"] },
+  { slug: "lod", name: "לוד", region: "מרכז", nearby: ["רמלה", "באר יעקב", "נס ציונה"] },
+  { slug: "ramla", name: "רמלה", region: "מרכז", nearby: ["לוד", "באר יעקב", "רחובות"] },
+  { slug: "yavne", name: "יבנה", region: "מרכז", nearby: ["אשדוד", "גן יבנה", "רחובות"] },
+  { slug: "eilat", name: "אילת", region: "דרום", nearby: ["באר שבע", "ערד"] },
+  { slug: "dimona", name: "דימונה", region: "דרום", nearby: ["באר שבע", "ערד", "ירוחם"] },
+  { slug: "karmiel", name: "כרמיאל", region: "צפון", nearby: ["עכו", "נהריה", "צפת"] },
+  { slug: "akko", name: "עכו", region: "צפון", nearby: ["נהריה", "כרמיאל", "קרית ביאליק"] },
+  { slug: "afula", name: "עפולה", region: "צפון", nearby: ["בית שאן", "נצרת", "מגדל העמק"] },
+  { slug: "nazareth", name: "נצרת", region: "צפון", nearby: ["עפולה", "מגדל העמק", "כרמיאל"] },
+  { slug: "kiryat-bialik", name: "קרית ביאליק", region: "צפון", nearby: ["קרית מוצקין", "קרית ים", "חיפה"] },
+  { slug: "or-yehuda", name: "אור יהודה", region: "מרכז", nearby: ["יהוד", "אזור", "תל אביב"] },
+  { slug: "elad", name: "אלעד", region: "מרכז", nearby: ["ראש העין", "פתח תקווה", "שוהם"] },
+  { slug: "sderot", name: "שדרות", region: "דרום", nearby: ["אשקלון", "נתיבות", "אופקים"] },
 ];
 
 // professionSlug MUST match an existing entry in landing-pages.ts so the geo
