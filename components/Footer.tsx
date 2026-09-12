@@ -122,7 +122,18 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-white/5 pt-6 text-xs text-ink-400 sm:flex-row sm:items-center">
           <div>{t.rights(year)}</div>
-          <div>{SITE.domain}</div>
+          <div className="flex items-center gap-2">
+            <span>{SITE.domain}</span>
+            <span aria-hidden="true" className="text-ink-500">·</span>
+            <a
+              href="https://www.mayfly-travel.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+            >
+              Mayfly Travel
+            </a>
+          </div>
         </div>
       </div>
     </footer>
