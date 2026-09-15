@@ -203,7 +203,7 @@ export default function GuidePage() {
 
           <RelatedGuides
             currentSlug={SLUG}
-            related={["leads-from-facebook", "hot-vs-cold-leads", "leads-from-facebook-groups"]}
+            related={["quality-leads", "leads-from-facebook", "hot-vs-cold-leads", "leads-from-facebook-groups"]}
           />
 
           <div className="mt-12 border-t border-white/5 pt-8">

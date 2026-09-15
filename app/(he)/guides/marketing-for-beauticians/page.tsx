@@ -77,7 +77,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["marketing-for-contractors", "whatsapp-templates", "speed-to-lead"]}
+      related={["leads-briut-estetika", "marketing-for-contractors", "whatsapp-templates", "speed-to-lead"]}
     />
   );
 }

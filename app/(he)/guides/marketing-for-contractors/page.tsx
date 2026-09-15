@@ -77,7 +77,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["leads-for-service-businesses", "speed-to-lead", "google-business-profile-guide"]}
+      related={["leads-shiputzim-ubniya", "leads-for-service-businesses", "speed-to-lead", "google-business-profile-guide"]}
     />
   );
 }

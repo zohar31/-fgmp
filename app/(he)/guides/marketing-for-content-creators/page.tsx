@@ -81,7 +81,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["marketing-for-social-media-managers", "marketing-for-influencers", "lead-generation-system"]}
+      related={["leads-digital-technologia", "marketing-for-social-media-managers", "marketing-for-influencers", "lead-generation-system"]}
     />
   );
 }

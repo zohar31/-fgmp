@@ -213,7 +213,7 @@ export default function LeadPricesProfessionalsGuide() {
 
           <RelatedGuides
             currentSlug={SLUG}
-            related={["lead-price-list", "leads-for-service-businesses", "exclusive-vs-shared-leads"]}
+            related={["leads-shiputzim-ubniya", "lead-price-list", "leads-for-service-businesses", "exclusive-vs-shared-leads"]}
           />
 
           <div className="mt-12 border-t border-white/5 pt-8">

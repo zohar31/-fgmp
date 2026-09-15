@@ -77,7 +77,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["marketing-for-lawyers", "follow-up-cold-leads", "whatsapp-business-setup"]}
+      related={["leads-finansim-bituach", "marketing-for-lawyers", "follow-up-cold-leads", "whatsapp-business-setup"]}
     />
   );
 }

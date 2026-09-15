@@ -105,7 +105,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["manage-leads-whatsapp", "whatsapp-templates", "close-deal-whatsapp"]}
+      related={["whatsapp-vs-phone-leads", "manage-leads-whatsapp", "whatsapp-templates", "close-deal-whatsapp"]}
     />
   );
 }

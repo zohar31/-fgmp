@@ -129,7 +129,7 @@ export default function Page() {
         "p" in b ? { p: b.p.replace("{DAYS}", String(SITE.pricing.refundDays)) } : b
       )}
       faq={FAQ}
-      related={["b2b-leads", "lead-generation-system", "lead-sources"]}
+      related={["leads-for-small-business", "b2b-leads", "lead-generation-system", "lead-sources"]}
     />
   );
 }

@@ -77,7 +77,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["marketing-for-insurance-agents", "sales-call-script", "leads-for-service-businesses"]}
+      related={["leads-orchey-din", "marketing-for-insurance-agents", "sales-call-script", "leads-for-service-businesses"]}
     />
   );
 }

@@ -88,7 +88,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["leads-for-service-businesses", "free-leads", "google-business-profile-guide"]}
+      related={["leads-limudim-hachshara", "leads-for-service-businesses", "free-leads", "google-business-profile-guide"]}
     />
   );
 }

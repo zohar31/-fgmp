@@ -110,7 +110,7 @@ export default function Page() {
           : b
       )}
       faq={FAQ}
-      related={["leads-for-businesses", "lead-generation-system", "follow-up-cold-leads"]}
+      related={["leads-nadlan-hashkaot", "leads-for-businesses", "lead-generation-system", "follow-up-cold-leads"]}
     />
   );
 }

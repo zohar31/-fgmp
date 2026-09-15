@@ -108,7 +108,7 @@ export default function Page() {
           : b
       )}
       faq={FAQ}
-      related={["leads-for-businesses", "b2b-leads", "lead-strategy"]}
+      related={["lead-automation", "leads-for-businesses", "b2b-leads", "lead-strategy"]}
     />
   );
 }

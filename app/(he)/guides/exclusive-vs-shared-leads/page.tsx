@@ -166,7 +166,7 @@ export default function ExclusiveVsSharedGuide() {
 
           <RelatedGuides
             currentSlug={SLUG}
-            related={["lead-price-list", "buying-leads-israel", "speed-to-lead"]}
+            related={["real-time-leads", "lead-price-list", "buying-leads-israel", "speed-to-lead"]}
           />
 
           <div className="mt-12 border-t border-white/5 pt-8">
