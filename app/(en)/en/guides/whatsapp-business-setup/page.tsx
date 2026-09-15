@@ -67,5 +67,5 @@ const FAQ = [
 ];
 
 export default function Page() {
-  return <GuideLayoutEn slug={SLUG} blocks={BLOCKS} faq={FAQ} related={["manage-leads-in-whatsapp", "message-templates-for-leads", "speed-to-lead"]} />;
+  return <GuideLayoutEn slug={SLUG} blocks={BLOCKS} faq={FAQ} related={["whatsapp-vs-phone-leads", "manage-leads-in-whatsapp", "message-templates-for-leads", "speed-to-lead"]} />;
 }

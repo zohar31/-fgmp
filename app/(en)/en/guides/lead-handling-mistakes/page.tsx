@@ -73,5 +73,5 @@ const FAQ = [
 ];
 
 export default function Page() {
-  return <GuideLayoutEn slug={SLUG} blocks={BLOCKS} faq={FAQ} related={["speed-to-lead", "follow-up-cold-leads", "first-message-to-lead"]} />;
+  return <GuideLayoutEn slug={SLUG} blocks={BLOCKS} faq={FAQ} related={["lead-management-system", "speed-to-lead", "follow-up-cold-leads", "first-message-to-lead"]} />;
 }
