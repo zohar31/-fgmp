@@ -68,7 +68,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["mover-leads", "speed-to-lead", "leads-for-service-businesses"]}
+      related={["mover-leads", "tree-service-leads", "auto-repair-leads"]}
     />
   );
 }

@@ -89,7 +89,7 @@ export default function Page() {
           : b
       )}
       faq={FAQ}
-      related={["speed-to-lead", "leads-for-businesses", "lead-generation-system"]}
+      related={["quality-leads", "leads-for-businesses", "lead-generation-system"]}
     />
   );
 }

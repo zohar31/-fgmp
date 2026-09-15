@@ -89,7 +89,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["price-objection", "close-deal-whatsapp", "speed-to-lead"]}
+      related={["price-objection", "close-deal-whatsapp", "price-quote-that-closes"]}
     />
   );
 }

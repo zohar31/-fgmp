@@ -79,7 +79,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["leads-from-facebook-groups", "posting-in-facebook-groups", "filter-facebook-leads"]}
+      related={["avoid-facebook-block", "posting-in-facebook-groups", "filter-facebook-leads"]}
     />
   );
 }

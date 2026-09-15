@@ -68,7 +68,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["electrician-leads", "hvac-leads", "leads-for-service-businesses"]}
+      related={["electrician-leads", "hvac-leads", "solar-leads"]}
     />
   );
 }

@@ -103,7 +103,7 @@ export default function Page() {
           : b
       )}
       faq={FAQ}
-      related={["why-buying-leads-fails", "buying-leads-israel", "choose-leads-system"]}
+      related={["best-facebook-leads-system", "buying-leads-israel", "choose-leads-system"]}
     />
   );
 }

@@ -75,7 +75,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["leads-from-facebook-groups", "lead-sources", "best-facebook-groups-for-leads"]}
+      related={["lead-automation", "lead-sources", "best-facebook-groups-for-leads"]}
     />
   );
 }

@@ -66,5 +66,5 @@ const FAQ = [
 ];
 
 export default function Page() {
-  return <GuideLayoutEn slug={SLUG} blocks={BLOCKS} faq={FAQ} related={["lead-generation", "facebook-group-leads", "speed-to-lead"]} />;
+  return <GuideLayoutEn slug={SLUG} blocks={BLOCKS} faq={FAQ} related={["first-customers-new-business", "free-leads", "lead-generation-strategy"]} />;
 }

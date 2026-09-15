@@ -100,7 +100,7 @@ export default function Page() {
           : b
       )}
       faq={FAQ}
-      related={["hot-vs-cold-leads", "filter-facebook-leads", "leads-for-businesses"]}
+      related={["real-time-leads", "filter-facebook-leads", "leads-for-businesses"]}
     />
   );
 }

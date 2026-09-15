@@ -76,7 +76,7 @@ export default function Page() {
       slug={SLUG}
       blocks={BLOCKS}
       faq={FAQ}
-      related={["locksmith-leads", "leads-for-service-businesses", "speed-to-lead"]}
+      related={["locksmith-leads", "pest-control-leads", "flooring-leads"]}
     />
   );
 }
