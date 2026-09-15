@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, CheckCircle2, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema, faqSchema } from "@/lib/jsonld";
 import { SITE } from "@/lib/config";
 import { SITE_EN } from "@/lib/config-en";
-import { professionsEn, getProfessionEn, citiesEn } from "@/lib/geo-en";
+import { professionsEn, getProfessionEn } from "@/lib/geo-en";
 
 export function generateStaticParams() {
   return professionsEn.map((p) => ({ profession: p.slug }));
@@ -156,25 +156,6 @@ export default async function ProfessionEnPage({
               </p>
             </div>
           )}
-
-          <section className="mt-12">
-            <h2 className="flex items-center gap-2 font-display text-2xl font-bold text-white">
-              <MapPin className="h-5 w-5 text-brand-300" />
-              {Noun} leads by city
-            </h2>
-            <p className="mt-2 text-ink-300">A dedicated page for each metro — with that city's local groups.</p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {citiesEn.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/en/leads/${profession}/${c.slug}`}
-                  className="rounded-full bg-white/5 px-3 py-1.5 text-sm text-ink-200 ring-1 ring-white/10 transition hover:text-white hover:ring-brand-500/40"
-                >
-                  {c.name}, {c.state}
-                </Link>
-              ))}
-            </div>
-          </section>
 
           <div className="mt-14 rounded-3xl bg-gradient-to-br from-brand-500/15 to-wa/15 p-8 ring-1 ring-white/10 md:p-10">
             <div className="flex items-start gap-3">

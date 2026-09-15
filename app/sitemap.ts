@@ -2,9 +2,8 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/config";
 import { guides } from "@/lib/guides";
 import { landingPages } from "@/lib/landing-pages";
-import { allGeoParams } from "@/lib/geo";
 import { guidesEn } from "@/lib/guides-en";
-import { professionsEn, allGeoEnParams } from "@/lib/geo-en";
+import { professionsEn } from "@/lib/geo-en";
 
 // תאריכי lastModified אמיתיים פר-תוכן — לא new Date() בכל deploy.
 // גוגל מתעלם מ"טריות מזויפת" (כל הדפים מתעדכנים בכל בנייה); תאריך אמיתי
@@ -45,21 +44,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  // מטריצת מקצוע × עיר (Local SEO) — תאריך שינוי מהותי אחרון: יולי 2026.
-  const GEO_LASTMOD = new Date("2026-07-25");
-  const geoUrls: MetadataRoute.Sitemap = allGeoParams().map(({ slug, city }) => ({
-    url: `${SITE.url}/lidim/${slug}/${city}`,
-    lastModified: GEO_LASTMOD,
-    changeFrequency: "monthly" as const,
-    priority: 0.75,
-  }));
+  // מטריצת מקצוע × עיר הוסרה (ספטמבר 2026): ~3,000 עמודים מתבנית אחת
+  // עם החלפת שם עיר — Scaled content / Doorway לפי מדיניות הספאם של גוגל.
+  // העמודים נמחקו ומופנים 301 לעמוד המקצוע (next.config.mjs).
 
   return [
     { url: `${SITE.url}/`, lastModified: NEWEST, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE.url}/about`, lastModified: STATIC_LASTMOD, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE.url}/lidim`, lastModified: LANDING_LASTMOD, changeFrequency: "weekly", priority: 0.9 },
     ...landingUrls,
-    ...geoUrls,
     { url: `${SITE.url}/data`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE.url}/success-stories`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.75 },
     { url: `${SITE.url}/tools`, lastModified: NEWEST, changeFrequency: "monthly", priority: 0.7 },
@@ -99,12 +92,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: NEWEST,
       changeFrequency: "monthly" as const,
       priority: 0.8,
-    })),
-    ...allGeoEnParams().map(({ profession, city }) => ({
-      url: `${SITE.url}/en/leads/${profession}/${city}`,
-      lastModified: NEWEST,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
     })),
   ];
 }

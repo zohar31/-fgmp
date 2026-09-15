@@ -43,7 +43,7 @@ export type Inventory = {
 };
 
 export function inventory(): Inventory {
-  const geo = allGeoParams().length;
+  const geo = 0; // דפי מקצוע×עיר הוסרו — ראה geoMeta()
   return {
     guides: guides.length,
     landing: landingPages.length,
@@ -119,6 +119,10 @@ export function coreMetaEn(): MetaRow[] {
 
 // English geo meta (all /en/leads/<trade>/<city> pages).
 export function geoMetaEn(): MetaRow[] {
+  return [];
+}
+
+function _geoMetaEnLegacy(): MetaRow[] {
   const rows: MetaRow[] = [];
   for (const { profession, city } of allGeoEnParams()) {
     const p = getProfessionEn(profession);
@@ -136,9 +140,13 @@ export function geoMetaEn(): MetaRow[] {
   return rows;
 }
 
-// מטא של כל דפי הגאו (960) — נגזר דרך buildGeoContent. מוחזר לצורך זיהוי
-// כפילויות וסטטיסטיקה מצטברת, לא להצגת שורות בטבלה.
+// דפי המקצוע×עיר הוסרו (ספטמבר 2026) — ראה next.config.mjs. הפונקציה
+// נשארת ומחזירה ריק כדי שלוח האודיט לא ידווח על דפים שכבר לא קיימים.
 export function geoMeta(): MetaRow[] {
+  return [];
+}
+
+function _geoMetaLegacy(): MetaRow[] {
   const rows: MetaRow[] = [];
   for (const { slug, city } of allGeoParams()) {
     const p = getGeoProfession(slug);

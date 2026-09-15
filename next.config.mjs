@@ -11,6 +11,26 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  // ── מטריצת מקצוע × עיר הוסרה (ספטמבר 2026) ──────────────────────────
+  // היו ~3,000 עמודים (48×40 עברית, 45×24 אנגלית) שנוצרו מתבנית אחת עם
+  // החלפת שם עיר ומקצוע — Scaled content abuse + Doorway abuse לפי מדיניות
+  // הספאם של גוגל. הם דיללו את האתר והורידו אמון מכלל הדומיין.
+  // 301 (ולא 404) כדי שערך הקישורים והסיגנלים של אותם URL יתרכזו בעמוד
+  // המקצוע, שנשאר ומכיל תוכן אמיתי.
+  async redirects() {
+    return [
+      {
+        source: "/lidim/:slug/:city",
+        destination: "/lidim/:slug",
+        permanent: true,
+      },
+      {
+        source: "/en/leads/:profession/:city",
+        destination: "/en/leads/:profession",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
