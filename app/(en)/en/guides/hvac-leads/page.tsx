@@ -43,7 +43,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'AC is out' post automatically" },
   {
-    p: `During a heatwave, 'my AC died, who do I call?' posts flood local groups — and they're answered in minutes. You can't watch them all while on service calls. ${SITE.brand} scans local Facebook groups 24/7, filters for HVAC requests in your area, and pushes them to your WhatsApp instantly — so you're first to reply 'we can come today', without paying for shared leads. See HVAC lead pages for your city on the [HVAC leads hub](/en/leads/hvac).`,
+    p: `During a heatwave, 'my AC died, who do I call?' posts flood local groups — and they're answered in minutes. You can't watch them all while on service calls. ${SITE.brand} scans local Facebook groups 24/7, filters for HVAC requests in your area, and pushes them to your WhatsApp instantly — so you're first to reply 'we can come today', without paying for shared leads. See the [leads hub](/en/leads).`,
   },
 ];
 

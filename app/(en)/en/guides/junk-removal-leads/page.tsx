@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every cleanout request automatically" },
   {
-    p: `Junk-removal requests appear in local groups all the time — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for junk-removal requests in your area, and sends them to your WhatsApp instantly — so you're first to reply and book the load. See junk-removal lead pages for your city on the [junk removal leads hub](/en/leads/junk-removal).`,
+    p: `Junk-removal requests appear in local groups all the time — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for junk-removal requests in your area, and sends them to your WhatsApp instantly — so you're first to reply and book the load. See the [leads hub](/en/leads).`,
   },
 ];
 

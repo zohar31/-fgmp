@@ -43,7 +43,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every lockout post the second it's posted" },
   {
-    p: `A 'locked out, need a locksmith NOW' post in a local group is a hot lead — but it's answered in minutes and gone. You can't watch every group all day. ${SITE.brand} scans local Facebook groups 24/7, filters for locksmith requests in your area, and pushes them to your WhatsApp instantly — so you're the first to reply 'on my way' while competitors are still scrolling. See locksmith lead pages for your city on the [locksmith leads hub](/en/leads/locksmith).`,
+    p: `A 'locked out, need a locksmith NOW' post in a local group is a hot lead — but it's answered in minutes and gone. You can't watch every group all day. ${SITE.brand} scans local Facebook groups 24/7, filters for locksmith requests in your area, and pushes them to your WhatsApp instantly — so you're the first to reply 'on my way' while competitors are still scrolling. See the [leads hub](/en/leads).`,
   },
 ];
 

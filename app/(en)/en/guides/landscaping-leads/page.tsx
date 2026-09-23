@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every lawn-care request automatically" },
   {
-    p: `Lawn and landscaping requests flood local groups every spring and fall — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for landscaping and lawn-care requests in your area, and sends them to your WhatsApp instantly — so you're first to reply and can lock in recurring routes. See landscaping lead pages for your city on the [landscaping leads hub](/en/leads/landscaper).`,
+    p: `Lawn and landscaping requests flood local groups every spring and fall — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for landscaping and lawn-care requests in your area, and sends them to your WhatsApp instantly — so you're first to reply and can lock in recurring routes. See the [leads hub](/en/leads).`,
   },
 ];
 

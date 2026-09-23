@@ -34,7 +34,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'is solar worth it?' post automatically" },
   {
-    p: `Solar-interest posts appear across local groups every day and get answered fast by other installers. You can't monitor them all while you're on site or on the phone. ${SITE.brand} scans local Facebook groups 24/7, filters for solar-related requests in your service area, and pushes each one to your WhatsApp instantly — so you're first to reply, exclusively, without paying for shared aggregator leads. See solar lead pages for your city on the [solar leads hub](/en/leads/solar-installer).`,
+    p: `Solar-interest posts appear across local groups every day and get answered fast by other installers. You can't monitor them all while you're on site or on the phone. ${SITE.brand} scans local Facebook groups 24/7, filters for solar-related requests in your service area, and pushes each one to your WhatsApp instantly — so you're first to reply, exclusively, without paying for shared aggregator leads. See the [leads hub](/en/leads).`,
   },
 ];
 

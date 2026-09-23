@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'need a trainer' post automatically" },
   {
-    p: `People ask for trainers in local and community groups constantly — especially in January and before summer. ${SITE.brand} scans local Facebook groups 24/7, filters for personal-training requests in your area, and sends them to your WhatsApp instantly — so you reach out first. See personal-training lead pages for your city on the [personal trainer leads hub](/en/leads/personal-trainer).`,
+    p: `People ask for trainers in local and community groups constantly — especially in January and before summer. ${SITE.brand} scans local Facebook groups 24/7, filters for personal-training requests in your area, and sends them to your WhatsApp instantly — so you reach out first. See the [leads hub](/en/leads).`,
   },
 ];
 

@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'need an exterminator' post automatically" },
   {
-    p: `Pest problems are posted in local groups the moment they happen — and answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for pest-control requests in your area, and sends them to your WhatsApp instantly — so you're first to respond and can turn the urgent call into a recurring plan. See pest-control lead pages for your city on the [pest control leads hub](/en/leads/pest-control).`,
+    p: `Pest problems are posted in local groups the moment they happen — and answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for pest-control requests in your area, and sends them to your WhatsApp instantly — so you're first to respond and can turn the urgent call into a recurring plan. See the [leads hub](/en/leads).`,
   },
 ];
 

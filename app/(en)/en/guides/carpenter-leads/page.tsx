@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every carpentry request automatically" },
   {
-    p: `Custom-work requests appear in local groups and get several replies fast. ${SITE.brand} scans local Facebook groups 24/7, filters for carpentry requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your portfolio. See carpentry lead pages for your city on the [carpenter leads hub](/en/leads/carpenter).`,
+    p: `Custom-work requests appear in local groups and get several replies fast. ${SITE.brand} scans local Facebook groups 24/7, filters for carpentry requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your portfolio. See the [leads hub](/en/leads).`,
   },
 ];
 

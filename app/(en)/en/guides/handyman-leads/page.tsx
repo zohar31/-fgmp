@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Fill the calendar automatically" },
   {
-    p: `Handyman requests appear all day in local groups — and get answered fast. You can't watch them all while on a job. ${SITE.brand} scans local Facebook groups 24/7, filters for handyman requests in your area, and sends them to your WhatsApp instantly — so you're the reliable first reply. See handyman lead pages for your city on the [handyman leads hub](/en/leads/handyman).`,
+    p: `Handyman requests appear all day in local groups — and get answered fast. You can't watch them all while on a job. ${SITE.brand} scans local Facebook groups 24/7, filters for handyman requests in your area, and sends them to your WhatsApp instantly — so you're the reliable first reply. See the [leads hub](/en/leads).`,
   },
 ];
 

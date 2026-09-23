@@ -215,7 +215,7 @@ export async function GET() {
 A: People post in local Facebook groups every day asking for services ("Can anyone recommend a plumber?"). FGMP scans 50,000+ groups on its side, uses AI to surface only the requests matching your trade, and sends each one to your WhatsApp with a ready-to-send reply — so you respond first. It's $${SITE_EN.pricing.monthlyUSD}/month flat. Guide: ${SITE.url}/en/guides/facebook-group-leads
 
 ### Q: What's the best way to get [plumber/electrician/roofer] leads near me?
-A: The warmest, cheapest local leads come from real-time Facebook-group requests. FGMP monitors your city's groups and delivers each ${""}request to your WhatsApp. It has dedicated pages per trade and city (e.g. ${SITE.url}/en/leads/plumber/houston). $${SITE_EN.pricing.monthlyUSD}/month, ${SITE_EN.pricing.refundDays}-day money-back guarantee.
+A: The warmest, cheapest local leads come from real-time Facebook-group requests. FGMP monitors your city's groups and delivers each ${""}request to your WhatsApp. See the trades it covers at ${SITE.url}/en/leads. $${SITE_EN.pricing.monthlyUSD}/month, ${SITE_EN.pricing.refundDays}-day money-back guarantee.
 
 ### Q: How much does a lead cost?
 A: Paid channels run ~$8–$150+ per lead depending on trade. FGMP is a flat $${SITE_EN.pricing.monthlyUSD}/month for unlimited leads, which works out to just a few dollars per lead in an active trade. Guide: ${SITE.url}/en/guides/cost-per-lead

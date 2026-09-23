@@ -24,9 +24,17 @@ const nextConfig = {
         destination: "/lidim/:slug",
         permanent: true,
       },
+      // עמודי המקצוע באנגלית הוסרו (ספטמבר 2026): 94% תוכן זהה בין
+      // 45 העמודים, 1,383 תווי טקסט לעמוד — scaled content. גוגל סרק
+      // וסירב לאנדקס. הפניה ישירה לרכזת, בלי שרשרת הפניות דרך המקצוע.
       {
         source: "/en/leads/:profession/:city",
-        destination: "/en/leads/:profession",
+        destination: "/en/leads",
+        permanent: true,
+      },
+      {
+        source: "/en/leads/:profession",
+        destination: "/en/leads",
         permanent: true,
       },
     ];

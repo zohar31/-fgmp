@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every flooring request automatically" },
   {
-    p: `Flooring requests appear in local groups and get several replies fast. ${SITE.brand} scans local Facebook groups 24/7, filters for flooring requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your portfolio. See flooring lead pages for your city on the [flooring leads hub](/en/leads/flooring).`,
+    p: `Flooring requests appear in local groups and get several replies fast. ${SITE.brand} scans local Facebook groups 24/7, filters for flooring requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your portfolio. See the [leads hub](/en/leads).`,
   },
 ];
 

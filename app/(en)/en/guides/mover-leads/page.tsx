@@ -51,7 +51,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'we're moving' post — automatically" },
   {
-    p: `You can't sit in every local group refreshing for 'need movers' posts while you're on a job. ${SITE.brand} does it for you: it scans local Facebook groups 24/7, filters for real moving requests in your service area, and sends them to your WhatsApp in under a minute — so you reply first, before competitors and without paying $80 a shared lead. See mover lead pages for your city on the [moving leads hub](/en/leads/mover).`,
+    p: `You can't sit in every local group refreshing for 'need movers' posts while you're on a job. ${SITE.brand} does it for you: it scans local Facebook groups 24/7, filters for real moving requests in your service area, and sends them to your WhatsApp in under a minute — so you reply first, before competitors and without paying $80 a shared lead. See the [leads hub](/en/leads).`,
   },
 ];
 

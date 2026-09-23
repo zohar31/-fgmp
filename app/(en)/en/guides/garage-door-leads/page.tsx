@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every garage door request automatically" },
   {
-    p: `Stuck-door posts hit local groups the moment they happen — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for garage-door requests in your area, and sends them to your WhatsApp instantly — so you're first to reply. See garage-door lead pages for your city on the [garage door leads hub](/en/leads/garage-door).`,
+    p: `Stuck-door posts hit local groups the moment they happen — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for garage-door requests in your area, and sends them to your WhatsApp instantly — so you're first to reply. See the [leads hub](/en/leads).`,
   },
 ];
 

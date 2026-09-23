@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every tree request automatically" },
   {
-    p: `Downed-tree and removal posts flood local groups after storms — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for tree-service requests in your area, and sends them to your WhatsApp instantly — so you're first to respond with proof of insurance. See tree-service lead pages for your city on the [tree service leads hub](/en/leads/tree-service).`,
+    p: `Downed-tree and removal posts flood local groups after storms — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for tree-service requests in your area, and sends them to your WhatsApp instantly — so you're first to respond with proof of insurance. See the [leads hub](/en/leads).`,
   },
 ];
 

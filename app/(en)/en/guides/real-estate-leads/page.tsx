@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'need an agent' post automatically" },
   {
-    p: `People announce moves and ask for agent recommendations in local groups all the time — and other agents pounce fast. ${SITE.brand} scans local Facebook groups 24/7, filters for real-estate requests in your area, and sends them to your WhatsApp instantly — so you can reach out first, while it's fresh. See real-estate lead pages for your city on the [real estate leads hub](/en/leads/real-estate-agent).`,
+    p: `People announce moves and ask for agent recommendations in local groups all the time — and other agents pounce fast. ${SITE.brand} scans local Facebook groups 24/7, filters for real-estate requests in your area, and sends them to your WhatsApp instantly — so you can reach out first, while it's fresh. See the [leads hub](/en/leads).`,
   },
 ];
 

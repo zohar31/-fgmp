@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every request automatically" },
   {
-    p: `Pressure-washing requests fill local groups every spring — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for pressure-washing requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your before/after gallery. See pressure-washing lead pages for your city on the [pressure washing leads hub](/en/leads/pressure-washing).`,
+    p: `Pressure-washing requests fill local groups every spring — and get answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for pressure-washing requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your before/after gallery. See the [leads hub](/en/leads).`,
   },
 ];
 

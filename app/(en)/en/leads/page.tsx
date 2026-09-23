@@ -33,7 +33,7 @@ export default function EnLeadsIndex() {
           </h1>
           <p className="mt-4 text-lg leading-8 text-ink-200">
             FGMP scans 50,000+ Facebook groups and sends every relevant request to your WhatsApp, in
-            real time. Pick your trade — then your city. ${SITE_EN.pricing.monthlyUSD}/month,{" "}
+            real time. Pick your trade. ${SITE_EN.pricing.monthlyUSD}/month,{" "}
             {SITE_EN.pricing.refundDays}-day money-back guarantee.
           </p>
         </header>
@@ -42,16 +42,12 @@ export default function EnLeadsIndex() {
           <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">Leads by trade</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {professionsEn.map((p) => (
-              <Link
+              <div
                 key={p.slug}
-                href={`/en/leads/${p.slug}`}
-                className="group flex items-center justify-between gap-2 rounded-2xl bg-white/[0.03] px-4 py-3 ring-1 ring-white/10 transition hover:bg-white/[0.06] hover:ring-brand-500/40"
+                className="flex items-center justify-between gap-2 rounded-2xl bg-white/[0.03] px-4 py-3 ring-1 ring-white/10"
               >
-                <span className="font-medium text-white capitalize group-hover:text-brand-200">
-                  {p.noun} leads
-                </span>
-                <ArrowRight className="h-4 w-4 shrink-0 text-brand-300" />
-              </Link>
+                <span className="font-medium text-white capitalize">{p.noun} leads</span>
+              </div>
             ))}
           </div>
         </section>

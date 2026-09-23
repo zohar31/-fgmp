@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every painting request automatically" },
   {
-    p: `Painting requests appear in local groups and get multiple replies fast. ${SITE.brand} scans local Facebook groups 24/7, filters for painting requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your portfolio and lock in the estimate. See painting lead pages for your city on the [painting leads hub](/en/leads/painter).`,
+    p: `Painting requests appear in local groups and get multiple replies fast. ${SITE.brand} scans local Facebook groups 24/7, filters for painting requests in your area, and sends them to your WhatsApp instantly — so you're first to reply with your portfolio and lock in the estimate. See the [leads hub](/en/leads).`,
   },
 ];
 

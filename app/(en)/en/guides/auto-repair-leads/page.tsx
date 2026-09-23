@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'need a mechanic' post automatically" },
   {
-    p: `Drivers ask for a trustworthy mechanic in local groups all the time — and recommendations fly fast. ${SITE.brand} scans local Facebook groups 24/7, filters for auto-repair requests in your area, and sends them to your WhatsApp instantly — so you're first to respond and earn the trust. See auto-repair lead pages for your city on the [auto repair leads hub](/en/leads/auto-mechanic).`,
+    p: `Drivers ask for a trustworthy mechanic in local groups all the time — and recommendations fly fast. ${SITE.brand} scans local Facebook groups 24/7, filters for auto-repair requests in your area, and sends them to your WhatsApp instantly — so you're first to respond and earn the trust. See the [leads hub](/en/leads).`,
   },
 ];
 

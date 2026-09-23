@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every roof request automatically" },
   {
-    p: `You can't watch every local group after a storm while you're on a roof. ${SITE.brand} scans local Facebook groups 24/7, filters for roofing requests in your area, and sends them to your WhatsApp in under a minute — so you're first to respond, without paying $100+ a shared lead. See roofing lead pages for your city on the [roofing leads hub](/en/leads/roofer).`,
+    p: `You can't watch every local group after a storm while you're on a roof. ${SITE.brand} scans local Facebook groups 24/7, filters for roofing requests in your area, and sends them to your WhatsApp in under a minute — so you're first to respond, without paying $100+ a shared lead. See the [leads hub](/en/leads).`,
   },
 ];
 

@@ -47,7 +47,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Never miss an electrician request" },
   {
-    p: `You can't monitor every local group while you're on a job. ${SITE.brand} scans local Facebook groups 24/7, filters for electrician requests in your area, and sends them to your WhatsApp instantly — so you're the first licensed pro to reply, while the homeowner is still looking. See electrician lead pages for your city on the [electrician leads hub](/en/leads/electrician).`,
+    p: `You can't monitor every local group while you're on a job. ${SITE.brand} scans local Facebook groups 24/7, filters for electrician requests in your area, and sends them to your WhatsApp instantly — so you're the first licensed pro to reply, while the homeowner is still looking. See the [leads hub](/en/leads).`,
   },
 ];
 

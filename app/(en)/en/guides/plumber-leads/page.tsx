@@ -43,7 +43,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'need a plumber' post automatically" },
   {
-    p: `You can't watch every local group while you're under a sink. ${SITE.brand} scans local Facebook groups 24/7, filters for plumbing requests in your service area, and pushes them to your WhatsApp in under a minute — so you're the first to reply 'I can be there today', without paying $80 a shared lead. See plumber lead pages for your city on the [plumbing leads hub](/en/leads/plumber).`,
+    p: `You can't watch every local group while you're under a sink. ${SITE.brand} scans local Facebook groups 24/7, filters for plumbing requests in your service area, and pushes them to your WhatsApp in under a minute — so you're the first to reply 'I can be there today', without paying $80 a shared lead. See the [leads hub](/en/leads).`,
   },
 ];
 

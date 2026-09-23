@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every repair request automatically" },
   {
-    p: `Appliance breakdowns get posted in local groups the moment they happen — and answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for appliance-repair requests in your area, and sends them to your WhatsApp instantly — so you're first to reply. See appliance-repair lead pages for your city on the [appliance repair leads hub](/en/leads/appliance-repair).`,
+    p: `Appliance breakdowns get posted in local groups the moment they happen — and answered fast. ${SITE.brand} scans local Facebook groups 24/7, filters for appliance-repair requests in your area, and sends them to your WhatsApp instantly — so you're first to reply. See the [leads hub](/en/leads).`,
   },
 ];
 

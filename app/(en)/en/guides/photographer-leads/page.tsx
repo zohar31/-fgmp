@@ -42,7 +42,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "Catch every 'need a photographer' post automatically" },
   {
-    p: `Requests for photographers fill local and community groups constantly — and popular dates get claimed fast. ${SITE.brand} scans local Facebook groups 24/7, filters for photography requests in your area and niche, and sends them to your WhatsApp instantly — so you can reply first with your portfolio before the date's booked. See photography lead pages for your city on the [photographer leads hub](/en/leads/photographer).`,
+    p: `Requests for photographers fill local and community groups constantly — and popular dates get claimed fast. ${SITE.brand} scans local Facebook groups 24/7, filters for photography requests in your area and niche, and sends them to your WhatsApp instantly — so you can reply first with your portfolio before the date's booked. See the [leads hub](/en/leads).`,
   },
 ];
 

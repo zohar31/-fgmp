@@ -46,7 +46,7 @@ const BLOCKS: Block[] = [
   },
   { h2: "A steady stream of local clients" },
   {
-    p: `Cleaning requests pop up daily in local groups and get snapped up fast. ${SITE.brand} scans local Facebook groups 24/7, filters for cleaning requests in your area, and sends them to your WhatsApp instantly — so you're first to reply and can turn each into a recurring client. See house-cleaning lead pages for your city on the [house cleaning leads hub](/en/leads/house-cleaner).`,
+    p: `Cleaning requests pop up daily in local groups and get snapped up fast. ${SITE.brand} scans local Facebook groups 24/7, filters for cleaning requests in your area, and sends them to your WhatsApp instantly — so you're first to reply and can turn each into a recurring client. See the [leads hub](/en/leads).`,
   },
 ];
 
