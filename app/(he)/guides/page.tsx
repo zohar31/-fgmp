@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "מדריכי לידים — איך להשיג לקוחות מקבוצות פייסבוק",
   description:
     "מדריכים מעמיקים בעברית: איך משיגים לידים חמים מקבוצות פייסבוק, השוואת מערכות, מילות מפתח מנצחות, ועוד. עדכון רציף.",
-  alternates: { canonical: `${SITE.url}/guides` },
+  alternates: { canonical: `${SITE.url}/guides`, languages: { "he-IL": `${SITE.url}/guides`, "en-US": `${SITE.url}/en/guides`, "x-default": `${SITE.url}/guides` } },
   openGraph: {
     title: "מדריכי לידים — FGMP",
     description: "מדריכים מעמיקים בעברית על איתור לידים מקבוצות פייסבוק.",

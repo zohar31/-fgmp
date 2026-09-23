@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "The source and method behind every number on FGMP — 50,000+ groups, 60,000+ posts daily, 4,670+ keywords, 1,000+ leads a day. Updated in real time.",
   alternates: {
     canonical: `${SITE.url}/en/methodology`,
-    languages: { "he-IL": `${SITE.url}/methodology`, "en-US": `${SITE.url}/en/methodology` },
+    languages: { "he-IL": `${SITE.url}/methodology`, "en-US": `${SITE.url}/en/methodology`, "x-default": `${SITE.url}/methodology` },
   },
   openGraph: {
     type: "article",

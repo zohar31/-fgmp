@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "Free calculator: enter your revenue goal, average deal size, and close rate to see exactly how many leads you need per month and per day to hit your target.",
   keywords: ["how many leads do i need", "leads calculator", "lead goal calculator"],
-  alternates: { canonical: URL, languages: { "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/tools/leads-target-calculator`, "en-US": URL, "x-default": `${SITE.url}/tools/leads-target-calculator` } },
   openGraph: { type: "website", locale: "en_US", title: "How Many Leads Do I Need? — FGMP", url: URL },
 };
 

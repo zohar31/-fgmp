@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: g.title,
   description: g.description,
   keywords: g.keywords,
-  alternates: { canonical: URL, languages: { "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/guides/exclusive-vs-shared-leads`, "en-US": URL, "x-default": `${SITE.url}/guides/exclusive-vs-shared-leads` } },
   openGraph: { type: "article", locale: "en_US", title: g.title, description: g.description, url: URL },
 };
 

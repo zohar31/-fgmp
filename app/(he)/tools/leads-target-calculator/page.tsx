@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "מחשבון לידים חינמי: הזן יעד הכנסה, שווי עסקה ושיעור סגירה — וגלה כמה לידים אתה צריך בחודש וביום כדי להגיע ליעד. כלי תכנון לבעלי עסקים בישראל.",
   keywords: ["כמה לידים צריך", "מחשבון לידים", "יעד לידים", "כמות לידים בחודש", "חישוב לידים להכנסה"],
-  alternates: { canonical: `${SITE.url}/tools/leads-target-calculator` },
+  alternates: { canonical: `${SITE.url}/tools/leads-target-calculator`, languages: { "he-IL": `${SITE.url}/tools/leads-target-calculator`, "en-US": `${SITE.url}/en/tools/leads-target-calculator`, "x-default": `${SITE.url}/tools/leads-target-calculator` } },
   openGraph: {
     type: "website",
     title: "מחשבון: כמה לידים אני צריך? — FGMP",

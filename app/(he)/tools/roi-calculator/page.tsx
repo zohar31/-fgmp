@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "מחשבון ROI חינמי לשיווק: הזן הוצאה, לידים, שיעור סגירה ורווח לעסקה — וגלה את ההחזר על ההשקעה, עלות ללקוח (CPA) והרווח החודשי. כלי לבעלי עסקים.",
   keywords: ["מחשבון ROI", "החזר השקעה שיווק", "ROI לידים", "עלות ללקוח", "CPA מחשבון"],
-  alternates: { canonical: `${SITE.url}/tools/roi-calculator` },
+  alternates: { canonical: `${SITE.url}/tools/roi-calculator`, languages: { "he-IL": `${SITE.url}/tools/roi-calculator`, "en-US": `${SITE.url}/en/tools/roi-calculator`, "x-default": `${SITE.url}/tools/roi-calculator` } },
   openGraph: {
     type: "website",
     title: "מחשבון ROI לשיווק לידים — FGMP",

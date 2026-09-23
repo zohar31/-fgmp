@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "Free cost-per-lead calculator: enter your monthly spend and lead count to see your true CPL — and compare it to FGMP. Quick tool for US business owners.",
   keywords: ["cost per lead calculator", "cpl calculator", "how much does a lead cost"],
-  alternates: { canonical: URL, languages: { "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/tools/cpl-calculator`, "en-US": URL, "x-default": `${SITE.url}/tools/cpl-calculator` } },
   openGraph: { type: "website", locale: "en_US", title: "Cost Per Lead Calculator — FGMP", url: URL },
 };
 

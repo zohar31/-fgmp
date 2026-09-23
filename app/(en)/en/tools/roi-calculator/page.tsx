@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "Free marketing ROI calculator: enter spend, leads, close rate, and profit per deal to see your ROI, cost per customer (CPA), and monthly revenue.",
   keywords: ["roi calculator", "marketing roi", "cost per acquisition calculator"],
-  alternates: { canonical: URL, languages: { "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/tools/roi-calculator`, "en-US": URL, "x-default": `${SITE.url}/tools/roi-calculator` } },
   openGraph: { type: "website", locale: "en_US", title: "Marketing ROI Calculator — FGMP", url: URL },
 };
 

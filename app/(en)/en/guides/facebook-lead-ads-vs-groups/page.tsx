@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: g.title,
   description: g.description,
   keywords: g.keywords,
-  alternates: { canonical: URL, languages: { "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/guides/facebook-lead-ads-vs-groups`, "en-US": URL, "x-default": `${SITE.url}/guides/facebook-lead-ads-vs-groups` } },
   openGraph: { type: "article", locale: "en_US", title: g.title, description: g.description, url: URL },
 };
 

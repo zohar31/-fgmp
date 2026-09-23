@@ -8,7 +8,7 @@ const URL = `${SITE.url}/en/accessibility`;
 export const metadata: Metadata = {
   title: "Accessibility Statement",
   description: `${SITE.brand}'s commitment to an accessible website for all users.`,
-  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/accessibility`, "en-US": URL } },
+  alternates: { canonical: URL, languages: { "he-IL": `${SITE.url}/accessibility`, "en-US": URL, "x-default": `${SITE.url}/accessibility` } },
 };
 
 export default function EnAccessibility() {

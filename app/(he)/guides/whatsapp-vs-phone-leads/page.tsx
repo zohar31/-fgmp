@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: guide.title,
   description: guide.description,
   keywords: guide.keywords,
-  alternates: { canonical: `${SITE.url}/guides/${SLUG}` },
+  alternates: { canonical: `${SITE.url}/guides/${SLUG}`, languages: { "he-IL": `${SITE.url}/guides/whatsapp-vs-phone-leads`, "en-US": `${SITE.url}/en/guides/whatsapp-vs-phone-leads`, "x-default": `${SITE.url}/guides/whatsapp-vs-phone-leads` } },
   openGraph: {
     type: "article",
     title: guide.title,

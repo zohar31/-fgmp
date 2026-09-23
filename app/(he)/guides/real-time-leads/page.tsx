@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: g.title,
   description: g.description,
   keywords: g.keywords,
-  alternates: { canonical: `${SITE.url}/guides/${SLUG}` },
+  alternates: { canonical: `${SITE.url}/guides/${SLUG}`, languages: { "he-IL": `${SITE.url}/guides/real-time-leads`, "en-US": `${SITE.url}/en/guides/real-time-leads`, "x-default": `${SITE.url}/guides/real-time-leads` } },
   openGraph: {
     type: "article",
     title: g.title,

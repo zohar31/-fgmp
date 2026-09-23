@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   title: guide.title,
   description: guide.description,
   keywords: guide.keywords,
-  alternates: { canonical: `${SITE.url}/guides/${SLUG}` },
+  alternates: { canonical: `${SITE.url}/guides/${SLUG}`, languages: { "he-IL": `${SITE.url}/guides/organic-vs-paid-leads`, "en-US": `${SITE.url}/en/guides/organic-vs-paid-leads`, "x-default": `${SITE.url}/guides/organic-vs-paid-leads` } },
   openGraph: {
     type: "article",
     title: guide.title,

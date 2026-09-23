@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "מחשבון עלות לליד חינמי: הזן הוצאה חודשית וכמות לידים וגלה את ה-CPL האמיתי שלך — והשווה לעלות של FGMP. כלי מהיר לבעלי עסקים בישראל.",
   keywords: ["מחשבון עלות לליד", "CPL", "חישוב עלות לליד", "כמה עולה ליד", "מחשבון לידים"],
-  alternates: { canonical: `${SITE.url}/tools/cpl-calculator` },
+  alternates: { canonical: `${SITE.url}/tools/cpl-calculator`, languages: { "he-IL": `${SITE.url}/tools/cpl-calculator`, "en-US": `${SITE.url}/en/tools/cpl-calculator`, "x-default": `${SITE.url}/tools/cpl-calculator` } },
   openGraph: {
     type: "website",
     title: "מחשבון עלות לליד (CPL) — FGMP",
